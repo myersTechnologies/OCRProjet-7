@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.details.DetailsActivity">
+
+    <ImageView
+        android:id="@+id/restaurant_image"
+        android:layout_width="match_parent"
+        android:layout_height="380dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="fitXY"/>
+
+    <include
+        android:id="@+id/restaurant_details_info_bar"
+        layout="@layout/restaurant_info_bar"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        app:layout_constraintTop_toBottomOf="@id/restaurant_image"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/user_choice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="10dp"
+        app:fabCustomSize="80dp"
+        android:backgroundTint="#8BC34A"
+        android:src="@drawable/ic_check_black_24dp"
+        app:maxImageSize="50dp"
+        />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/nav_options_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/restaurant_details_info_bar"
+        android:background="@android:color/white"
+        app:menu="@menu/details_options_menu_bar"
+        app:itemTextColor="@color/colorPrimary"
+        app:itemIconTint="@color/colorPrimary"></android.support.design.widget.BottomNavigationView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/joinin_users_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/nav_options_details"></android.support.v7.widget.RecyclerView>
+
+</android.support.constraint.ConstraintLayout>

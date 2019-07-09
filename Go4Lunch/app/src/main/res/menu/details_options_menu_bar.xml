@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/details_call_item"
+        android:title="CALL"
+        android:icon="@drawable/ic_call_24dp"/>
+    <item
+        android:id="@+id/details_like_item"
+        android:title="LIKE"
+        android:icon="@drawable/ic_star_orange_24dp"/>
+    <item
+        android:id="@+id/website_item"
+        android:title="WEBSITE"
+        android:icon="@drawable/ic_website_24dp"/>
+</menu>
