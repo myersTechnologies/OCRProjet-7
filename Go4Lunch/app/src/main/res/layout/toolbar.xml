@@ -6,11 +6,7 @@
     app:titleTextColor="@android:color/white"
     android:background="@color/colorPrimary">
 
-    <fragment android:id="@+id/autocomplete_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-        />
+
 
 
 </android.support.v7.widget.Toolbar>

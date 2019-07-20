@@ -1,9 +1,6 @@
 package dasilva.marco.go4lunch.model;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
-
-import com.google.android.gms.maps.model.LatLng;
 
 public class User {
 
@@ -13,13 +10,13 @@ public class User {
     private String imageUrl;
     private String choice;
     private String radius;
+    private String likedPlacesId;
 
     public User(@NonNull String userId, @NonNull String userName, @NonNull String userEmail, @NonNull String imageUrl) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.imageUrl = imageUrl;
         this.id = userId;
-        this.radius = radius;
     }
 
     public String getId() {
@@ -69,5 +66,13 @@ public class User {
 
     public void setRadius(String radius) {
         this.radius = radius;
+    }
+
+    public String getLikedPlacesId() {
+        return likedPlacesId;
+    }
+
+    public void setLikedPlacesId(String likedPlacesId) {
+        this.likedPlacesId = likedPlacesId;
     }
 }

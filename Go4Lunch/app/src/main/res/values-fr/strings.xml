@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Go4Lunch</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="already_choosed">Vous avez déjà choisi le restaurant !</string>
+    <string name="already_liked">Vous avez déjà aimé ce lieu !</string>
+    <string name="authentication_failed">Échec d\'authetification</string>
+    <string name="cancel_button">Annuler</string>
+    <string name="confirm_delete">Vous êtes sûr de vouloir supprimer ?</string>
+    <string name="create_user_failed">Échec à la création de l\'utilisateur</string>
+    <string name="google_auth_failed">Échec de connexion au compte Google</string>
+    <string name="settings">Paramètres</string>
+    <string name="sure_button">Oui</string>
+    <string name="title_activity_map_view">J\'ai faim</string>
+    <string name="radius_search">Proximité : </string>
+    <string name="joining_true">mange au (</string>
+    <string name="joining_false">n\'a pas encore choisi</string>
+    <string name="open_true">Ouvert</string>
+    <string name="open_false">Fermé</string>
+    <string name="is_joining"> participe</string>
+    <string name="call">APPELER</string>
+    <string name="like">AIMER</string>
+    <string name="website">SITE WEB</string>
+    <string name="your_lunch">VOTRE DÉJEUNER</string>
+    <string name="settings_maj">PARAMÈTRES</string>
+    <string name="log_out">DECONNEXION</string>
+    <string name="search_zone_hint">Distance de recherche (en mètres) :</string>
+    <string name="delete_lunch">Effacer le choix du restaurant</string>
+    <string name="delete_account">Supprimer votre compte</string>
+    <string name="map_string">Map</string>
+    <string name="list_string">Liste</string>
+    <string name="workmates_string">Collègues</string>
+</resources>

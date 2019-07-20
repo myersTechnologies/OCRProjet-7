@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -43,14 +42,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
 import dasilva.marco.go4lunch.R;
 import dasilva.marco.go4lunch.di.DI;
 import dasilva.marco.go4lunch.model.User;
 import dasilva.marco.go4lunch.service.Go4LunchService;
-import dasilva.marco.go4lunch.ui.map.MapView;
-import dasilva.marco.notification.NotificationService;
+import dasilva.marco.go4lunch.ui.map.activities.MapView;
+import dasilva.marco.go4lunch.notification.NotificationService;
 
 public class Main extends AppCompatActivity {
 
@@ -128,7 +125,7 @@ public class Main extends AppCompatActivity {
 
                             @Override
                             public void onCancel() {
-                                // App code
+
                             }
 
                             @Override
@@ -152,11 +149,12 @@ public class Main extends AppCompatActivity {
                                 onAuthSuccess(fbUser);
                                 startActivity(mapViewActivity);
                             } catch (NullPointerException e){
-                                Log.d("Failed", "Create userFailed");
+                                Toast.makeText(getApplicationContext(), R.string.create_user_failed,
+                                        Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(getApplicationContext(), "Authentication failed.",
+                            Toast.makeText(getApplicationContext(), R.string.authentication_failed,
                                     Toast.LENGTH_SHORT).show();
 
                         }
@@ -204,19 +202,15 @@ public class Main extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == 5) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 if (account != null) {
                     firebaseAuthWithGoogle(account);
                 }
             } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                Log.w("Failed", "Google sign in failed", e);
-                // ...
+                Toast.makeText(this, R.string.google_auth_failed, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -230,13 +224,9 @@ public class Main extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d("Success", "signInWithCredential:success");
                             FirebaseUser fbUser = task.getResult().getUser();
                             onAuthSuccess(fbUser);
                             startActivity(mapViewActivity);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("Failed", "signInWithCredential:failure", task.getException());
                         }
                     }
                 });
@@ -254,37 +244,52 @@ public class Main extends AppCompatActivity {
     //add new user to firebase real time data base
     public void addNewUser(final String userId, String name, String email, String photoUri){
         final User user = new User(userId, name, email, photoUri);
+        service.setUser(user);
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseRef = firebaseDatabase.getReference("users");
-        Query applesQuery = databaseRef.child(userId);
-        applesQuery.addValueEventListener(new ValueEventListener() {
+        if (databaseRef.child(userId).child("radius").equals(null)){
+            databaseRef.child(user.getId()).setValue(user);
+        }
+        Query querry = databaseRef.child(userId);
+        querry.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if (dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     if (dataSnapshot.child("id").getValue().toString().equals(userId)) {
                         try {
                             String choice = dataSnapshot.child("choice").getValue().toString();
-                            String radius = dataSnapshot.child("radius").getValue().toString();
                             user.setChoice(choice);
-                            user.setRadius(radius);
                             databaseRef.child(userId).child("choice").setValue(choice);
-                            databaseRef.child(userId).child("radius").setValue(radius);
                         } catch (NullPointerException e) {
 
                         }
+
+                        try {
+                            String likedPlaces = dataSnapshot.child("likedPlacesId").getValue().toString();
+                            user.setLikedPlacesId(likedPlaces);
+                            databaseRef.child(userId).child("likedPlacesId").setValue(likedPlaces);
+                        } catch (Exception e) {
+
+                        }
+
+                        try {
+                            String radius = dataSnapshot.child("radius").getValue().toString();
+                            user.setRadius(radius);
+                            databaseRef.child(userId).child("radius").setValue(radius);
+                        } catch (Exception e) {
+
+                        }
                     }
-                }else{
-                    databaseRef.child(user.getId()).setValue(user);
                 }
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Log.e(TAG, "onCancelled", databaseError.toException());
+
             }
         });
-        service.setUser(user);
     }
 
 }

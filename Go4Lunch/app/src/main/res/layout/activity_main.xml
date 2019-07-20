@@ -7,8 +7,13 @@
     tools:context=".ui.main.Main"
     android:orientation="vertical"
     android:theme="@style/MainTheme"
-    android:background="@drawable/lunch_time"
     >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/lunch_time"
+        />
 
     <ImageView
         android:id="@+id/goLunchImage"
@@ -20,7 +25,8 @@
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="50dp"
+        />
 
     <TextView
         android:id="@+id/goLunchText"

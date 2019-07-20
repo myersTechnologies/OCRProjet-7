@@ -1,30 +1,26 @@
 package dasilva.marco.go4lunch.model;
 
-import android.content.Context;
-import android.location.Geocoder;
-import android.net.Uri;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.PointOfInterest;
 
-import java.io.IOException;
 
 public class PlaceMarker {
 
-    String id;
-    LatLng latLng;
-    String adress;
-    String city;
-    String country;
-    String[] completAdress;
-    String name;
-    Marker point;
-    String telephone;
-    String webSite;
-    String photoUrl;
-    String like;
-    boolean openingHours;
+    private String id;
+    private LatLng latLng;
+    private String adress;
+    private String city;
+    private String country;
+    private String[] completAdress;
+    private String name;
+    private Marker point;
+    private String telephone;
+    private String webSite;
+    private String photoUrl;
+    private boolean openingHours;
+    private int likes;
+    private int selectedTimes = 0;
 
     public PlaceMarker(Marker point){
         try {
@@ -86,10 +82,6 @@ public class PlaceMarker {
         this.point = point;
     }
 
-    public void setLike(String like) {
-        this.like = like;
-    }
-
     public void setWebSite(String webSite) {
         this.webSite = webSite;
     }
@@ -130,9 +122,6 @@ public class PlaceMarker {
         return country;
     }
 
-    public String getLike() {
-        return like;
-    }
 
     public Marker getPoint() {
         return point;
@@ -144,5 +133,21 @@ public class PlaceMarker {
 
     public String getWebSite() {
         return webSite;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes() {
+        likes++;
+    }
+
+    public int getSelectedTimes() {
+        return selectedTimes;
+    }
+
+    public void setSelectedTimes() {
+        selectedTimes++;
     }
 }

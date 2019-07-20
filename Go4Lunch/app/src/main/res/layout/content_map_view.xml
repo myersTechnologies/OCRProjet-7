@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ui.map.MapView"
+    tools:context=".ui.map.activities.MapView"
     tools:showIn="@layout/app_bar_map_view"
     android:id="@+id/container">
 
@@ -16,7 +16,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.map.MapView"
+        tools:context=".ui.map.activities.MapView"
         />
 
 
@@ -41,5 +41,7 @@
         android:backgroundTint="#FFFF"
         app:maxImageSize="30dp"
         />
+
+
 
 </android.support.constraint.ConstraintLayout>

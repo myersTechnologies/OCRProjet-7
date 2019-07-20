@@ -1,21 +1,19 @@
 package dasilva.marco.go4lunch.model;
 
-import com.google.android.gms.maps.model.LatLng;
-
 public class SelectedPlace {
 
-    String id;
-    String name;
-    String latLng;
-    String userId;
-    String placeId;
+    private String id;
+    private String name;
+    private String latLng;
+    private String userId;
 
-    public SelectedPlace(String id, String name, String latLng, String userId, String placeId) {
+
+    public SelectedPlace(String id, String name, String latLng, String userId) {
         this.id = id;
         this.name = name;
         this.latLng = latLng;
         this.userId = userId;
-        this.placeId = placeId;
+
     }
 
     public String getId() {
@@ -38,6 +36,7 @@ public class SelectedPlace {
         return latLng;
     }
 
+
     public void setLatLng(String latLng) {
         this.latLng = latLng;
     }
@@ -50,11 +49,6 @@ public class SelectedPlace {
         this.userId = userId;
     }
 
-    public String getPlaceId() {
-        return placeId;
-    }
 
-    public void setPlaceId(String placeId) {
-        this.placeId = placeId;
-    }
+
 }

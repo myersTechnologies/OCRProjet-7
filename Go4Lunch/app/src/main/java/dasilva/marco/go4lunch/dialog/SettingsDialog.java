@@ -11,20 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 
 public class SettingsDialog implements View.OnClickListener {
 
     private Context context;
     private EditText editTextRadius;
-    private Button deleteAccountBtn, deleteLunchBtn;
     private Go4LunchService service = DI.getService();
     private String deleteString;
-    private AlertDialog.Builder settingsDialog;
-
 
     public SettingsDialog(Context context){
         this.context = context;
@@ -33,30 +28,31 @@ public class SettingsDialog implements View.OnClickListener {
     public void createSettingsDialog(){
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.custom_settings_dialog, null);
-        settingsDialog = new AlertDialog.Builder(context);
+        AlertDialog.Builder settingsDialog = new AlertDialog.Builder(context);
 
-        editTextRadius = (EditText) view.findViewById(R.id.radius_editText);
-        deleteLunchBtn = (Button) view.findViewById(R.id.delete_choosed_lunch);
-        deleteAccountBtn = (Button) view.findViewById(R.id.delete_user_button);
+        editTextRadius = view.findViewById(R.id.radius_editText);
+        Button deleteLunchBtn = view.findViewById(R.id.delete_choosed_lunch);
+        Button deleteAccountBtn = view.findViewById(R.id.delete_user_button);
         deleteLunchBtn.setOnClickListener(this);
         deleteAccountBtn.setOnClickListener(this);
 
         settingsDialog.setView(view);
-        settingsDialog.setTitle("Settings");
+        settingsDialog.setTitle(R.string.settings);
        if (service.getUser().getRadius() != null){
-            editTextRadius.setText("Search Zone : " + service.getUser().getRadius());
+           String radiusText = context.getString(R.string.search_zone_hint)+ service.getUser().getRadius();
+            editTextRadius.setText(radiusText);
         } else {
-            editTextRadius.setHint("Radius Search");
+            editTextRadius.setHint(R.string.radius_search);
         }
         editTextRadius.setOnClickListener(this);
-        settingsDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        settingsDialog.setPositiveButton(R.string.ok_button, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 service.getUser().setRadius(editTextRadius.getText().toString());
                 service.setUserRadius(service.getUser().getRadius());
             }
         });
-        settingsDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        settingsDialog.setNegativeButton(R.string.cancel_button, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -69,35 +65,35 @@ public class SettingsDialog implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.delete_choosed_lunch:
-                deleteString = "lunch";
+                deleteString = context.getString(R.string.lunch_string);
                 confirmDialog();
                 break;
             case R.id.delete_user_button:
-                deleteString = "user";
+                deleteString = context.getString(R.string.user_string);
                 confirmDialog();
                 break;
             case R.id.radius_editText:
                 editTextRadius.setText("");
-                editTextRadius.setHint("Radius Search");
+                editTextRadius.setHint(R.string.radius_search);
                 break;
         }
     }
 
-    public void confirmDialog(){
+    private void confirmDialog(){
         final AlertDialog.Builder confirmDialog = new AlertDialog.Builder(context);
-        confirmDialog.setTitle("Are you sure to delete the selected item ?");
-        confirmDialog.setPositiveButton("I'm sure", new DialogInterface.OnClickListener() {
+        confirmDialog.setTitle(R.string.confirm_delete);
+        confirmDialog.setPositiveButton(R.string.sure_button, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (deleteString == "lunch"){
+                if (deleteString.equals(context.getString(R.string.lunch_string))){
                     service.removeCompleteSelectionDatabase();
                 }
-                if (deleteString == "user"){
-
+                if (deleteString.equals(context.getString(R.string.user_string))){
+                    Toast.makeText(context, R.string.id, Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        confirmDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        confirmDialog.setNegativeButton(R.string.cancel_button, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -105,7 +101,4 @@ public class SettingsDialog implements View.OnClickListener {
         });
         confirmDialog.show();
     }
-
-
-
 }

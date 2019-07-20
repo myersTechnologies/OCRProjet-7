@@ -3,6 +3,8 @@ package dasilva.marco.go4lunch.service;
 import android.content.Context;
 import android.location.Location;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.List;
 
 import dasilva.marco.go4lunch.model.PlaceMarker;
@@ -27,5 +29,8 @@ public interface Go4LunchService {
     void setListOfSelectedPlaces();
     void removeCompleteSelectionDatabase();
     void setUserRadius(String radius);
-
+    void setUserLikedPlaces(String userLikedPlaces);
+    void countPlaceSelectedByUsers();
+    LatLng getRealLatLng(SelectedPlace place);
+    void countPlacesLikes();
 }

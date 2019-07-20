@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,25 +22,21 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.List;
-
 import dasilva.marco.go4lunch.R;
 import dasilva.marco.go4lunch.di.DI;
 import dasilva.marco.go4lunch.model.SelectedPlace;
-import dasilva.marco.go4lunch.model.User;
+
 import dasilva.marco.go4lunch.service.Go4LunchService;
 
 
 public class DetailsActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
-    TextView restaurantInfo, restaurantAdress;
-    ImageView restaurantImage;
-    Go4LunchService service;
-    BottomNavigationView navigationView;
-    FloatingActionButton fab;
-    RecyclerView detailsUsersRecyclerView;
-    DetailsRecyclerViewAdapter adapter;
-    DatabaseReference databaseReference;
+    private TextView restaurantInfo, restaurantAdress;
+    private ImageView restaurantImage;
+    private Go4LunchService service;
+    private RecyclerView detailsUsersRecyclerView;
+    private DatabaseReference databaseReference;
+    private RatingBar placeRate;
 
 
     @Override
@@ -49,39 +46,61 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
 
         service = DI.getService();
 
-        restaurantInfo = (TextView) findViewById(R.id.restaurant_details_info);
-        restaurantAdress = (TextView)  findViewById(R.id.restaurant_details_adress);
-        restaurantImage = (ImageView) findViewById(R.id.restaurant_image);
-        navigationView =  (BottomNavigationView) findViewById(R.id.nav_options_details);
-        detailsUsersRecyclerView = (RecyclerView) findViewById(R.id.joinin_users_list);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-        detailsUsersRecyclerView.setLayoutManager(mLayoutManager);
-        fab = (FloatingActionButton) findViewById(R.id.user_choice);
-        navigationView.setOnNavigationItemSelectedListener(this);
-        fab.setOnClickListener(this);
+        setViews();
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         restaurantInfo.setText(service.getPlaceMarker().getName());
         restaurantAdress.setText(service.getPlaceMarker().getAdress());
         Glide.with(this).load(service.getPlaceMarker().getPhotoUrl()).apply(RequestOptions.noTransformation()).into(restaurantImage);
+        placeRate.setRating(service.getPlaceMarker().getLikes());
 
-        try {
-            adapter = new DetailsRecyclerViewAdapter(service.getUsersList(), service.getListOfSelectedPlaces());
+        initList();
+    }
+
+    public void setViews(){
+        placeRate = findViewById(R.id.details_rating_bar);
+        restaurantInfo = findViewById(R.id.restaurant_details_info);
+        restaurantAdress =  findViewById(R.id.restaurant_details_adress);
+        restaurantImage = findViewById(R.id.restaurant_image);
+        BottomNavigationView navigationView = findViewById(R.id.nav_options_details);
+        detailsUsersRecyclerView = findViewById(R.id.joinin_users_list);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        detailsUsersRecyclerView.setLayoutManager(mLayoutManager);
+        FloatingActionButton fab = findViewById(R.id.user_choice);
+        navigationView.setOnNavigationItemSelectedListener(this);
+        fab.setOnClickListener(this);
+    }
+
+    public void initList(){
+        if (service.getUsersList().size() > 0) {
+            DetailsRecyclerViewAdapter adapter = new DetailsRecyclerViewAdapter(service.getUsersList(), service.getListOfSelectedPlaces());
             detailsUsersRecyclerView.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
-        } catch (Exception e){
-
         }
-
     }
 
     public void setUserChoice(){
-        SelectedPlace selectedPlace = new SelectedPlace(service.getUser().getId(), service.getPlaceMarker().getName(), service.getPlaceMarker().getLatLng().toString(),
-                service.getUser().getId(), service.getPlaceMarker().getId());
+        if (service.getListOfSelectedPlaces().size() > 0) {
+            for (SelectedPlace place : service.getListOfSelectedPlaces()) {
+                if (place.getId().equals(service.getPlaceMarker().getId())) {
+                    place.setUserId(place.getUserId() + "," + service.getUser().getId());
+                    databaseReference.child(getString(R.string.selection)).child(service.getPlaceMarker().getId()).setValue(place);
+                } else {
+                    SelectedPlace selectedPlace = new SelectedPlace(service.getPlaceMarker().getId(), service.getPlaceMarker().getName(),
+                            String.valueOf(service.getPlaceMarker().getLatLng()), service.getUser().getId());
+
+                    databaseReference.child(getString(R.string.selection)).child(service.getPlaceMarker().getId()).setValue(selectedPlace);
+                }
+            }
+        } else {
+            SelectedPlace selectedPlace = new SelectedPlace(service.getPlaceMarker().getId(), service.getPlaceMarker().getName(),
+                    String.valueOf(service.getPlaceMarker().getLatLng()), service.getUser().getId());
+
+            databaseReference.child(getString(R.string.selection)).child(service.getPlaceMarker().getId()).setValue(selectedPlace);
+        }
         service.getUser().setChoice(service.getPlaceMarker().getName());
-        databaseReference.child("selection").child(service.getUser().getId()).setValue(selectedPlace);
-        databaseReference.child("users").child(service.getUser().getId()).child("choice").setValue(service.getPlaceMarker().getName());
+        databaseReference.child(getString(R.string.users)).child(service.getUser().getId()).child(getString(R.string.choice)).setValue(service.getPlaceMarker().getName());
+        initList();
     }
 
     @Override
@@ -98,6 +117,19 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
                 }
                 break;
             case R.id.details_like_item:
+                service.getPlaceMarker().setLikes();
+                if (service.getUser().getLikedPlacesId() != null){
+
+                    if (!service.getUser().getLikedPlacesId().contains(service.getPlaceMarker().getId())) {
+                        service.getUser().setLikedPlacesId(service.getUser().getLikedPlacesId() + "," + service.getPlaceMarker().getId());
+                        service.setUserLikedPlaces(service.getUser().getLikedPlacesId() + "," + service.getPlaceMarker().getId());
+                    } else {
+                            Toast.makeText(this, R.string.already_liked, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    service.getUser().setLikedPlacesId(service.getPlaceMarker().getId());
+                    service.setUserLikedPlaces(service.getPlaceMarker().getId());
+                }
 
                 break;
         }
@@ -107,14 +139,14 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
     public void openWebSite(){
         String url = service.getPlaceMarker().getWebSite();
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        intent.setPackage("com.android.chrome");
+        intent.setPackage(getString(R.string.web_package));
         startActivity(intent);
     }
 
     public void callRestaurant(){
         String phoneNumber = service.getPlaceMarker().getTelephone().trim();
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse("tel:" + phoneNumber));
+        intent.setData(Uri.parse(getString(R.string.telephone_util) + phoneNumber));
         startActivity(intent);
     }
 
@@ -125,7 +157,7 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
                 if (service.getUser().getChoice() == null){
                     setUserChoice();
                 } else {
-                    Toast.makeText(this, "Restaurant déja choisi!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.already_choosed, Toast.LENGTH_LONG).show();
                 }
                 break;
         }

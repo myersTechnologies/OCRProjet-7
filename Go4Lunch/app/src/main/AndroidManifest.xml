@@ -16,21 +16,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <receiver android:name="dasilva.marco.notification.AlarmReceiver" />
+        <receiver android:name=".notification.AlarmReceiver" />
         <service
-            android:name="dasilva.marco.notification.NotificationService"
+            android:name=".notification.NotificationService"
             android:enabled="true"
             android:exported="true"></service>
 
-        <activity android:name=".ui.details.DetailsActivity" />
-        <activity android:name=".ui.main.Main">
+        <activity android:name=".ui.details.DetailsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.main.Main"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.map.MapView" />
+        <activity android:name=".ui.map.activities.MapView"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

@@ -1,19 +1,103 @@
 <resources>
     <string name="app_name">Go4Lunch</string>
     <string name="title_activity_map_view">I\'m Hungry</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="nav_header_title" translatable="false">Android Studio</string>
+    <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
+    <string name="nav_header_desc" translatable="false">Navigation header</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_maps" translatable="false">Map</string>
 
     <!-- Facebook -->
-    <string name="facebook_app_id">755191558233878</string>
-    <string name="fb_login_protocol_scheme">fb755191558233878</string>
+    <string name="facebook_app_id" translatable="false">755191558233878</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb755191558233878</string>
+    <string name="photo_type_fb" translatable="false">type=large</string>
 
+   <!--Utils-->
+    <string name="google_string" translatable="false">google</string>
+    <string name="web_package" translatable="false">com.android.chrome</string>
+    <string name="telephone_util" translatable="false">tel:</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- For Toasts-->
+    <string name="create_user_failed">Create user failed</string>
+    <string name="authentication_failed">Authentication failed.</string>
+    <string name="google_auth_failed">Authentication with google account failed</string>
+    <string name="already_liked">You already liked this place !</string>
+    <string name="already_choosed">You already choosed your restaurant !</string>
+
+    <!-- Fragments-->
+    <string name="map_fragment" translatable="false">MapViewFragment</string>
+    <string name="list_fragment" translatable="false">ListViewFragment</string>
+    <string name="workmates_fragment" translatable="false">WorkMatesFragment</string>
+
+    <!-- Settings dialog activity -->
+    <string name="settings">Settings</string>
+    <string name="radius_search">Radius Search</string>
+    <string name="ok_button" translatable="false">OK</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="confirm_delete">Are you sure to delete the selected item ?</string>
+    <string name="sure_button">Yes</string>
+
+    <string name="is_joining"> is joining</string>
+
+    <!-- Workmates adapter -->
+    <string name="joining_true"> is eating at (</string>
+    <string name="joining_false"> hasn\'t decided yet</string>
+    <string name="open_true">Open</string>
+    <string name="open_false">Closed</string>
+
+    <!-- Bottom navigation -->
+    <string name="call">CALL</string>
+    <string name="like">LIKE</string>
+    <string name="website">WEBSITE</string>
+
+    <!-- Mapview drawer menu -->
+    <string name="your_lunch">YOUR LUNCH</string>
+    <string name="settings_maj">SETTINGS</string>
+    <string name="log_out">LOG OUT</string>
+
+    <!--Settings dialog -->
+    <string name="search_zone_hint">Search Zone (in meters) :</string>
+    <string name="delete_lunch">Delete your lunch choice</string>
+    <string name="delete_account">Delete your account</string>
+    <string name="lunch_string" translatable="false">lunch</string>
+    <string name="user_string" translatable="false">user</string>
+
+    <!-- Bottom navigation -->
+    <string name="map_string">Map View</string>
+    <string name="list_string">List View</string>
+    <string name="workmates_string">Workmates</string>
+
+    <!--Firebase database-->
+    <string name="selection" translatable="false">selection</string>
+    <string name="choice" translatable="false">choice</string>
+    <string name="users" translatable="false">users</string>
+    <string name="user_email" translatable="false">userEmail</string>
+    <string name="id" translatable="false">id</string>
+    <string name="user_name" translatable="false">userName</string>
+    <string name="user_photo" translatable="false">imageUrl</string>
+    <string name="user_likes" translatable="false">likedplacesId</string>
+    <string name="place_lat_lng" translatable="false">latLng</string>
+    <string name="place_name" translatable="false">name</string>
+    <string name="place_user_id" translatable="false">userId</string>
+    <string name="radius" translatable="false">radius</string>
+
+    <!-- Google nearby search -->
+    <string name="first_part_url" translatable="false">https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=</string>
+    <string name="restaurant_type_url" translatable="false">&amp;type=restaurant&amp;keyword=food&amp;key="</string>
+    <string name="radius_search_url" translatable="false">&amp;radius=</string>
+
+    <!-- Google places details url-->
+    <string name="url_begin" translatable="false">https://maps.googleapis.com/maps/api/place/details/json?placeid=</string>
+    <string name="and_key" translatable="false">&amp;key=</string>
+
+    <!-- Google places photo -->
+    <string name="google_photo_url" translatable="false">https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&amp;photoreference=</string>;
+    <!-- Letters -->
+    <string name="m" translatable="false">m</string>
+
+    <!-- onBind -->
+    <string name="on_bind_string" translatable="false">Not yet implemented</string>
+
 </resources>

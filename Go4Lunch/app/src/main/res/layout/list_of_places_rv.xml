@@ -8,7 +8,6 @@
         android:id="@+id/place_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Le Zinc"
         android:textColor="@android:color/black"
         android:textSize="22dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,17 +17,14 @@
         android:id="@+id/place_adress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="French - 78a Avenue de paris"
         app:layout_constraintTop_toBottomOf="@id/place_name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/horaires_place"/>
+        app:layout_constraintBottom_toTopOf="@id/horaires_place" />
 
     <TextView
         android:id="@+id/horaires_place"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Open until 7pm"
         android:textStyle="italic"
         app:layout_constraintTop_toBottomOf="@+id/place_adress"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -40,7 +36,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
-        android:text="120m"
         app:layout_constraintRight_toLeftOf="@id/place_image"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/people_comming"/>
@@ -51,7 +46,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
         android:layout_marginEnd="5dp"
-        android:text="(2)"
         app:layout_constraintRight_toLeftOf="@id/place_image"
         app:layout_constraintTop_toBottomOf="@id/place_distance" />
 
@@ -85,8 +79,8 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="5dp"
         android:scaleType="fitXY"
-        android:src="@drawable/bar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
