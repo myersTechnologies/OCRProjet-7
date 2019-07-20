@@ -184,6 +184,7 @@ public class ApiService implements Go4LunchService {
                 selectedPlace.setUserId(usersId);
                 databaseReference.child(selectedPlace.getId()).setValue(selectedPlace);
                 user.setChoice(null);
+                userReference.child(user.getId()).child("choice").removeValue();
             }
         } else {
             selectedPlaces.remove(selectedPlace);

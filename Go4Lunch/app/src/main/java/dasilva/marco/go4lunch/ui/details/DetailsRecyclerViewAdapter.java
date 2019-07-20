@@ -34,13 +34,9 @@ public class DetailsRecyclerViewAdapter extends RecyclerView.Adapter<DetailsRecy
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         User user = userList.get(i);
-
         String userIsJoining = user.getFirtName() + " " + viewHolder.itemView.getContext().getString(R.string.is_joining);
         viewHolder.usersNames.setText(userIsJoining);
         Glide.with(viewHolder.itemView.getContext()).load(user.getImageUrl()).apply(RequestOptions.circleCropTransform()).into(viewHolder.usersAvatars);
-
-
-
 
     }
 
