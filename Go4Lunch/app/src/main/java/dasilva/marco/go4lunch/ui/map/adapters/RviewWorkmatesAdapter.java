@@ -37,11 +37,11 @@ public class RviewWorkmatesAdapter extends RecyclerView.Adapter<RviewWorkmatesAd
     public void onBindViewHolder(@NonNull RviewWorkmatesAdapter.ViewHolder viewHolder, int i) {
         User user = listOfUsers.get(i);
         if (user.getChoice() != null) {
-            String choiceText = user.getUserName() + " " + viewHolder.itemView.getContext().getString(R.string.joining_true) + user.getChoice() + ")";
+            String choiceText = user.getFirtName() + " " + viewHolder.itemView.getContext().getString(R.string.joining_true) + user.getChoice() + ")";
             viewHolder.userName.setText(choiceText);
             Glide.with(viewHolder.itemView.getContext()).load(user.getImageUrl()).apply(RequestOptions.circleCropTransform()).into(viewHolder.userAvatar);
         } else {
-            viewHolder.userName.setHint(user.getUserName() + " " + viewHolder.itemView.getContext().getString(R.string.joining_false));
+            viewHolder.userName.setHint(user.getFirtName() + " " + viewHolder.itemView.getContext().getString(R.string.joining_false));
             Glide.with(viewHolder.itemView.getContext()).load(user.getImageUrl()).apply(RequestOptions.circleCropTransform()).into(viewHolder.userAvatar);
         }
 

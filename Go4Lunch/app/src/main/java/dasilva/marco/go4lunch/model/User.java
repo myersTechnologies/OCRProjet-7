@@ -75,4 +75,10 @@ public class User {
     public void setLikedPlacesId(String likedPlacesId) {
         this.likedPlacesId = likedPlacesId;
     }
+
+    public String getFirtName(){
+        String[] completeName = userName.split(" ");
+        String firstName = completeName[0];
+        return firstName;
+    }
 }

@@ -37,8 +37,6 @@ public class WorkmatesFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         workmatesRecyclerView.setLayoutManager(mLayoutManager);
         getAllUsers();
-
-
         return view;
     }
 

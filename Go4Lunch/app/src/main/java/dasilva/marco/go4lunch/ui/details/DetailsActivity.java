@@ -22,10 +22,14 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dasilva.marco.go4lunch.R;
 import dasilva.marco.go4lunch.di.DI;
 import dasilva.marco.go4lunch.model.SelectedPlace;
 
+import dasilva.marco.go4lunch.model.User;
 import dasilva.marco.go4lunch.service.Go4LunchService;
 
 
@@ -37,6 +41,7 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
     private RecyclerView detailsUsersRecyclerView;
     private DatabaseReference databaseReference;
     private RatingBar placeRate;
+    private List<User> userList;
 
 
     @Override
@@ -73,8 +78,18 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
     }
 
     public void initList(){
+        userList = new ArrayList<>();
+        for(SelectedPlace place : service.getListOfSelectedPlaces()){
+            for (User user : service.getUsersList()){
+                    if (place.getId().equals(service.getPlaceMarker().getId())){
+                        if (place.getUserId().contains(user.getId())){
+                            userList.add(user);
+                        }
+                    }
+            }
+        }
         if (service.getUsersList().size() > 0) {
-            DetailsRecyclerViewAdapter adapter = new DetailsRecyclerViewAdapter(service.getUsersList(), service.getListOfSelectedPlaces());
+            DetailsRecyclerViewAdapter adapter = new DetailsRecyclerViewAdapter(userList);
             detailsUsersRecyclerView.setAdapter(adapter);
         }
     }

@@ -1,8 +1,5 @@
 package dasilva.marco.go4lunch.ui.map.utils;
 
-import android.util.Log;
-
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,7 +30,6 @@ public class DownloadUrl {
 
             while ((line = reader.readLine()) != null){
                 stringBuffer.append(line);
-                Log.d("Response: ", "> " + line);
 
             }
 

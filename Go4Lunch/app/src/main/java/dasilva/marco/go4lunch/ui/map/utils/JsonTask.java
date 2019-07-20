@@ -1,15 +1,9 @@
 package dasilva.marco.go4lunch.ui.map.utils;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.net.Uri;
+
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.google.gson.JsonArray;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,8 +51,7 @@ public class JsonTask extends AsyncTask<String, String, String> {
 
             while ((line = reader.readLine()) != null) {
                 buffer.append(line+"\n");
-                Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
-
+                Log.d("Response: ", "> " + line);
             }
 
             JSONObject jObj = new JSONObject(buffer.toString());
