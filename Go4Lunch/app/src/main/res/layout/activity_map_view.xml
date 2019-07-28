@@ -23,7 +23,6 @@
         app:menu="@menu/activity_map_view_drawer"
         app:itemIconTint="@color/quantum_white_100"
         app:itemTextColor="@color/quantum_white_100"
-
         android:background="@color/colorPrimary"/>
 
 </android.support.v4.widget.DrawerLayout>

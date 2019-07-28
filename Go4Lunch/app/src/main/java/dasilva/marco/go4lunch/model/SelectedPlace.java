@@ -7,13 +7,11 @@ public class SelectedPlace {
     private String latLng;
     private String userId;
 
-
     public SelectedPlace(String id, String name, String latLng, String userId) {
         this.id = id;
         this.name = name;
         this.latLng = latLng;
         this.userId = userId;
-
     }
 
     public String getId() {

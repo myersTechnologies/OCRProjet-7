@@ -1,33 +1,43 @@
 package dasilva.marco.go4lunch.service;
 
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
-import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
+import dasilva.marco.go4lunch.firebase.DataBaseService;
 import dasilva.marco.go4lunch.model.PlaceMarker;
 import dasilva.marco.go4lunch.model.SelectedPlace;
 import dasilva.marco.go4lunch.model.User;
+import dasilva.marco.go4lunch.ui.map.adapters.RviewListAdapter;
 
 public class ApiService implements Go4LunchService {
 
     private PlaceMarker placeMarker;
     private User user;
     private List<PlaceMarker> places;
-    private List<User>  users;
     private Location location;
-    private SelectedPlace selectedPlace;
-    private List<SelectedPlace> selectedPlaces;
+    private SupportMapFragment googleMap;
+    private OnMapReadyCallback callback;
+    private GoogleMap map;
+    private DataBaseService dataBaseService;
+    private RviewListAdapter adapter;
 
 
     @Override
@@ -75,148 +85,31 @@ public class ApiService implements Go4LunchService {
         return target.distanceTo(current);
     }
 
-    //Get users info from database
-    @Override
-    public void setUsersList() {
-        users = new ArrayList<>();
-            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-            DatabaseReference databaseRef = firebaseDatabase.getReference("users");
-            databaseRef.orderByChild("id").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    users.clear();
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        String id = postSnapshot.child("id").getValue().toString();
-                        String name = postSnapshot.child("userName").getValue().toString();
-                        String email = postSnapshot.child("userEmail").getValue().toString();
-                        String image = postSnapshot.child("imageUrl").getValue().toString();
-                        User user = new User(id, name, email, image);
-                        try {
-                            String userChoice = postSnapshot.child("choice").getValue().toString();
-                            user.setChoice(userChoice);
-                        } catch (Exception e) {
-
-                        }
-                        try {
-                            String likedPlaces = postSnapshot.child("likedplacesId").getValue().toString();
-                            user.setLikedPlacesId(likedPlaces);
-                        }catch (Exception e){
-
-                        }
-                        users.add(user);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
-
-    @Override
-    public List<User> getUsersList() {
-        return users;
-    }
-
-    @Override
-    public void addUserToDatabase() {
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
-        mDatabase.child(user.getId()).setValue(user);
-    }
-
-    @Override
-    public List<SelectedPlace> getListOfSelectedPlaces() {
-        return selectedPlaces;
-    }
-
-    @Override
-    public void setListOfSelectedPlaces() {
-        selectedPlaces = new ArrayList<>();
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference("selection");
-        databaseReference.orderByChild("id").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                selectedPlaces.clear();
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
-                    String id = postSnapshot.child("id").getValue().toString();
-                    String name = postSnapshot.child("name").getValue().toString();
-                    String latLng = postSnapshot.child("latLng").getValue().toString();
-                    String userId = postSnapshot.child("userId").getValue().toString();
-                    SelectedPlace selectedPlace = new SelectedPlace(id, name, latLng, userId);
-                    selectedPlaces.add(selectedPlace);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-
-    @Override
-    public void removeCompleteSelectionDatabase() {
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference("selection");
-        DatabaseReference userReference = firebaseDatabase.getReference("users");
-        if (selectedPlaces.size() > 0) {
-            for (int i = 0; i < selectedPlaces.size(); i++) {
-                for (String userId : selectedPlaces.get(i).getUserId().split(",")) {
-                    if (user.getId().contains(userId)) {
-                        selectedPlace = selectedPlaces.get(i);
-                    }
-                }
-            }
-        }
-        String[] places = selectedPlace.getUserId().split(",");
-        if (places.length > 1){
-            if (places[0].contains(user.getId())){
-                String usersId = selectedPlace.getUserId().replace(user.getId() + ",", "");
-                selectedPlace.setUserId(usersId);
-                databaseReference.child(selectedPlace.getId()).setValue(selectedPlace);
-                user.setChoice(null);
-                userReference.child(user.getId()).child("choice").removeValue();
-            } else {
-                String usersId = selectedPlace.getUserId().replace("," + user.getId(), "");
-                selectedPlace.setUserId(usersId);
-                databaseReference.child(selectedPlace.getId()).setValue(selectedPlace);
-                user.setChoice(null);
-                userReference.child(user.getId()).child("choice").removeValue();
-            }
-        } else {
-            selectedPlaces.remove(selectedPlace);
-            databaseReference.child(selectedPlace.getId()).removeValue();
-            user.setChoice(null);
-            userReference.child(user.getId()).child("choice").removeValue();
-        }
-    }
-
     @Override
     public void setUserRadius(String radius) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("users").child(user.getId()).child("radius").setValue(radius);
         user.setRadius(radius);
+        dataBaseService.setUserRadius(radius);
     }
 
     @Override
     public void setUserLikedPlaces(String userLikedPlaces) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("users").child(user.getId()).child("likedplacesId").setValue(userLikedPlaces);
+        dataBaseService.setUserLikedPlaces(userLikedPlaces);
     }
 
     @Override
     public void countPlaceSelectedByUsers() {
-
-        for (PlaceMarker marker : places){
-            for (User user : users){
-                for (SelectedPlace selectedPlace : selectedPlaces){
-                    for (String userId : selectedPlace.getUserId().split(","))
-                    if (user.getId().compareTo(userId) == 0){
-                        if (marker.getId().contains(selectedPlace.getId())){
-                            marker.setSelectedTimes();
+        List<User> users = dataBaseService.getUsersList();
+        List<SelectedPlace> selectedPlaces = dataBaseService.getListOfSelectedPlaces();
+        for (PlaceMarker marker : places) {
+            int count = 0;
+            for (User user : users) {
+                for (SelectedPlace selectedPlace : selectedPlaces) {
+                    for (String userId : selectedPlace.getUserId().split(",")) {
+                        if (user.getId().equals(userId)) {
+                            if (marker.getId().contains(selectedPlace.getId())) {
+                                count++;
+                                marker.setSelectedTimes(count);
+                            }
                         }
                     }
                 }
@@ -233,22 +126,191 @@ public class ApiService implements Go4LunchService {
            String latString = coordinatesLat[1];
            double lat = Double.valueOf(latString);
            double lng = Double.valueOf(lngString);
-           LatLng realLatLng = new LatLng(lat, lng);
-        return realLatLng;
+        return new LatLng(lat, lng);
     }
 
     @Override
     public void countPlacesLikes() {
+        List<User> users = dataBaseService.getUsersList();
         for (PlaceMarker marker : places){
+            int count = 0;
             for (User user : users){
                 if (user.getLikedPlacesId() != null) {
                     for (String likedPlaces : user.getLikedPlacesId().split(",")) {
-                        if (marker.getId().equals(likedPlaces)) {
-                            marker.setLikes();
+                        if (marker.getId().contains(likedPlaces)) {
+                            count++;
+                            marker.setLikes(count);
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
+    @Override
+    public String getTodayClosingHour(PlaceMarker placeMarker) {
+            String openUntil = "";
+        if (placeMarker.getWeekdayHous() != null) {
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEEEE");
+            String dayOfTheWeek = dateFormat.format(calendar.getTime());
+            int day = calendar.get(Calendar.DAY_OF_WEEK);
+            List<String> openHourList = placeMarker.getWeekdayHous();
+            int count = 1;
+            for (String today : openHourList) {
+                count++;
+                if (count == day) {
+                    if (calendar.get(Calendar.AM_PM) == Calendar.AM) {
+                        try {
+                            String[] openHours = today.split(",");
+                            String[] openedUntil = openHours[0].split("–");
+                            openUntil = openedUntil[1];
+                        } catch (ArrayIndexOutOfBoundsException e){
+                            String[] openHours = today.split("–");
+                            String[] openHourWithoutDay = openHours[0].split(dayOfTheWeek + ":");
+                            if (Arrays.toString(openHours).contains("Open 24 hours")){
+                                openUntil = "24/7";
+                            } else {
+                                openUntil = openHourWithoutDay[1];
+                            }
+                        }
+                    } else {
+                        try {
+                            String[] openHours = today.split(",");
+                            String[] openedUntil = openHours[1].split("–");
+                            openUntil = openedUntil[1];
+                        } catch (ArrayIndexOutOfBoundsException e){
+                            String[] openHours = today.split("–");
+                            openUntil = openHours[1];
                         }
                     }
                 }
             }
         }
+        return openUntil;
     }
+
+    @Override
+    public String getTodayOpenHour(PlaceMarker placeMarker) {
+        String openUntil = "";
+        if (placeMarker.getWeekdayHous() != null) {
+            Calendar calendar = Calendar.getInstance();
+            int day = calendar.get(Calendar.DAY_OF_WEEK);
+            String dayOfTheWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH);
+            List<String> openHourList = placeMarker.getWeekdayHous();
+            int count = 1;
+            for (String today : openHourList) {
+                count++;
+                if (count == day) {
+                    if (calendar.get(Calendar.AM_PM) == Calendar.AM) {
+                        try {
+                        String[] openHours = today.split(",");
+                        String[] openedUntil = openHours[0].split("–");
+                        String [] openHourWithoutDay = openedUntil[0].split(dayOfTheWeek + ":");
+                        openUntil = openHourWithoutDay[1];
+                        } catch (ArrayIndexOutOfBoundsException e){
+                            String[] openHours = today.split("–");
+                            String[] openedUntil = openHours[0].split(dayOfTheWeek + ":");
+                            openUntil = openedUntil[1];
+                        }
+                    } else {
+                        try {
+                            String[] openHours = today.split(",");
+                            String[] openedUntil = openHours[0].split("–");
+                            String[] openHourWithoutDay = openedUntil[0].split(dayOfTheWeek + ":");
+                            openUntil = openHourWithoutDay[1];
+                        } catch (ArrayIndexOutOfBoundsException e){
+                            String[] openHours = today.split("–");
+                            String [] openHourWithoutDay = openHours[0].split(dayOfTheWeek + ":");
+                            openUntil = openHourWithoutDay[0];
+                        }
+
+                    }
+                }
+            }
+        }
+        return openUntil;
+    }
+
+    @Override
+    public SupportMapFragment getMapView() {
+        return googleMap;
+    }
+
+    @Override
+    public void setMapView(SupportMapFragment mapView) {
+        this.googleMap = mapView;
+    }
+
+    @Override
+    public OnMapReadyCallback getCallback() {
+        return callback;
+    }
+
+    @Override
+    public void setCallback(OnMapReadyCallback callback) {
+        this.callback = callback;
+    }
+
+
+    @Override
+    public GoogleMap getGoogleMap() {
+        return map;
+    }
+
+    @Override
+    public void setGoogleMap(GoogleMap map) {
+        this.map = map;
+    }
+
+    @Override
+    public void setDataBase(DataBaseService dataBase) {
+        this.dataBaseService = dataBase;
+    }
+
+    @Override
+    public void addAdapter(RviewListAdapter adapter) {
+        this.adapter = adapter;
+    }
+
+    @Override
+    public RviewListAdapter getAdapter() {
+        return adapter;
+    }
+
+    @Override
+    public void setUserLunchChoice(PlaceMarker placeMarker, Context context) {
+        if (places == null){
+            places = new ArrayList<>();
+        }
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        List<Address> addresses  = null;
+        try {
+            addresses = geocoder.getFromLocation(placeMarker.getLatLng().latitude, placeMarker.getLatLng().longitude, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String address = null;
+        if (addresses != null) {
+            address = addresses.get(0).getAddressLine(0);
+        }
+        String city = null;
+        if (addresses != null) {
+            city = addresses.get(0).getLocality();
+        }
+        String country = null;
+        if (addresses != null) {
+            country = addresses.get(0).getCountryName();
+        }
+        placeMarker.setAdress(address + ", " + city + ", " + country);
+
+        if (!places.contains(placeMarker)) {
+            places.add(placeMarker);
+        }
+        Log.d("LISTSIZE", String.valueOf(places.size()));
+
+
+    }
+
 }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Go4Lunch</string>
+    <string name="action_settings">Preferencias</string>
+    <string name="already_choosed">Já escolheu o restaurante !</string>
+    <string name="already_liked">Já gosta deste restaurante !</string>
+    <string name="authentication_failed">Erro de identificação</string>
+    <string name="cancel_button">Anular</string>
+    <string name="confirm_delete">tem certeza que quer remover ?</string>
+    <string name="create_user_failed">Erro de criação do utilisador</string>
+    <string name="google_auth_failed">Erro de acesso a conta Google</string>
+    <string name="settings">Preferencias</string>
+    <string name="sure_button">Sim</string>
+    <string name="title_activity_map_view">Tenho fome</string>
+    <string name="radius_search">Proximidade :</string>
+    <string name="joining_true">almoça no </string>
+    <string name="joining_false">ainda não escolheur</string>
+    <string name="open_true">Aberto</string>
+    <string name="open_false">Fechado</string>
+    <string name="is_joining"> participa</string>
+    <string name="call">CHAMAR</string>
+    <string name="like">GOSTAR</string>
+    <string name="website">WEBSITE</string>
+    <string name="your_lunch">O SEU ALMOÇO</string>
+    <string name="settings_maj">PREFERENCIAS</string>
+    <string name="log_out">DESCONECTAR</string>
+    <string name="search_zone_hint">Distancia de procura ( em metros ) :</string>
+    <string name="delete_lunch">Remover a minha escolha</string>
+    <string name="delete_account">Remover conta</string>
+    <string name="map_string">Mapa</string>
+    <string name="list_string">Lista</string>
+    <string name="workmates_string">Colegas</string>
+    <string name="until">Até</string>
+    <string name="notification_text_1">Escolheu almoçar ao </string>
+    <string name="single_join"> também vai</string>
+    <string name="multiple_join"> também vêem</string>
+    <string name="bon_appetit"> Bom apetite !</string>
+    <string name="main_text">Procure un restaurante e convide os seu colegas a almoçar !</string>
+    <string name="nobody_joining">Ninguém</string>
+
+
+</resources>

@@ -1,6 +1,5 @@
 package dasilva.marco.go4lunch.ui.map.adapters;
 
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -11,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -25,7 +23,6 @@ import dasilva.marco.go4lunch.events.DetailsEvent;
 import dasilva.marco.go4lunch.model.PlaceMarker;
 import dasilva.marco.go4lunch.service.Go4LunchService;
 import dasilva.marco.go4lunch.ui.details.DetailsActivity;
-import dasilva.marco.go4lunch.ui.map.utils.JsonTask;
 
 public class RviewListAdapter extends RecyclerView.Adapter<RviewListAdapter.ViewHolder> {
 
@@ -35,6 +32,7 @@ public class RviewListAdapter extends RecyclerView.Adapter<RviewListAdapter.View
     public RviewListAdapter(List<PlaceMarker> placeList){
         this.placeMarkerList = placeList;
         service = DI.getService();
+
     }
 
     @NonNull
@@ -47,10 +45,11 @@ public class RviewListAdapter extends RecyclerView.Adapter<RviewListAdapter.View
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
         final PlaceMarker placeMarker = placeMarkerList.get(i);
+        service.setPlaceMarker(placeMarker);
             viewHolder.placeName.setText(placeMarker.getName());
             viewHolder.placeAdress.setText(placeMarker.getAdress());
             viewHolder.placePartipants.setText(String.valueOf(placeMarker.getSelectedTimes()));
-            viewHolder.placeRate.setRating(placeMarker.getLikes());
+            viewHolder.placeRate.setRating(placeMarker.getLikes() / 2);
             Location target = new Location(placeMarker.getName());
             target.setLatitude(placeMarker.getLatLng().latitude);
             target.setLongitude(placeMarker.getLatLng().longitude);
@@ -59,11 +58,24 @@ public class RviewListAdapter extends RecyclerView.Adapter<RviewListAdapter.View
             String[] distanceSeparator = distance.split("\\.");
             String placeDistance = distanceSeparator[0] + viewHolder.itemView.getContext().getString(R.string.m);
             viewHolder.placeDistance.setText(placeDistance);
+            String openInfo;
             if (placeMarker.getOpeninHours()) {
-                viewHolder.placeHoraires.setText(R.string.open_true);
-                viewHolder.placeHoraires.setTextColor(viewHolder.placeHoraires.getContext().getResources().getColor(R.color.green));
+                String opened = viewHolder.itemView.getContext().getString(R.string.open_true);
+                String until = viewHolder.itemView.getContext().getString(R.string.until);
+                if (service.getTodayClosingHour(placeMarker).equals(viewHolder.itemView.getContext().getString(R.string.open_24))) {
+                    openInfo = opened + " " + service.getTodayClosingHour(placeMarker);
+                    viewHolder.placeHoraires.setText(openInfo);
+                    viewHolder.placeHoraires.setTextColor(viewHolder.placeHoraires.getContext().getResources().getColor(R.color.green));
+                } else {
+                    openInfo = opened + " " + until + service.getTodayClosingHour(placeMarker);
+                    viewHolder.placeHoraires.setText(openInfo);
+                    viewHolder.placeHoraires.setTextColor(viewHolder.placeHoraires.getContext().getResources().getColor(R.color.green));
+                }
             } else {
-                viewHolder.placeHoraires.setText(R.string.open_false);
+                String closed = viewHolder.itemView.getContext().getString(R.string.open_false);
+                String until = viewHolder.itemView.getContext().getString(R.string.until);
+                openInfo = closed + " " + until + service.getTodayOpenHour(placeMarker);
+                viewHolder.placeHoraires.setText(openInfo);
                 viewHolder.placeHoraires.setTextColor(viewHolder.placeAdress.getContext().getResources().getColor(R.color.red));
             }
             Glide.with(viewHolder.itemView.getContext()).load(placeMarker.getPhotoUrl()).into(viewHolder.placeImage);
@@ -72,12 +84,9 @@ public class RviewListAdapter extends RecyclerView.Adapter<RviewListAdapter.View
             @Override
             public void onClick(View v) {
                 EventBus.getDefault().post(new DetailsEvent(placeMarker));
-                Context context = viewHolder.itemView.getContext();
-                String url = context.getString(R.string.url_begin) + service.getPlaceMarker().getId() +
-                        context.getString(R.string.and_key) + context.getString(R.string.google_api_key);
-                new JsonTask(url).execute();
                 Intent intent = new Intent(viewHolder.itemView.getContext(), DetailsActivity.class);
                 viewHolder.itemView.getContext().startActivity(intent);
+                service.setPlaceMarker(placeMarker);
             }
         });
     }
@@ -109,4 +118,6 @@ public class RviewListAdapter extends RecyclerView.Adapter<RviewListAdapter.View
             placeImage = itemView.findViewById(R.id.place_image);
         }
     }
+
+
 }

@@ -13,7 +13,7 @@
     <string name="sure_button">Oui</string>
     <string name="title_activity_map_view">J\'ai faim</string>
     <string name="radius_search">Proximité : </string>
-    <string name="joining_true">mange au (</string>
+    <string name="joining_true">mange au </string>
     <string name="joining_false">n\'a pas encore choisi</string>
     <string name="open_true">Ouvert</string>
     <string name="open_false">Fermé</string>
@@ -30,4 +30,12 @@
     <string name="map_string">Map</string>
     <string name="list_string">Liste</string>
     <string name="workmates_string">Collègues</string>
+    <string name="until">jusqu\'à</string>
+    <string name="notification_text_1" >Vous avez choisi de déjeuner chez </string>
+    <string name="single_join"> se joint à vous</string>
+    <string name="multiple_join"> se joignent à vous</string>
+    <string name="bon_appetit"> Bon appétit !</string>
+    <string name="main_text">Trouvez un restaurant et invitez vos collègues à déjeuner !</string>
+    <string name="nobody_joining">Personne</string>
+
 </resources>

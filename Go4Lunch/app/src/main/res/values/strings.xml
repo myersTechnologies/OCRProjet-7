@@ -13,8 +13,9 @@
     <string name="facebook_app_id" translatable="false">755191558233878</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb755191558233878</string>
     <string name="photo_type_fb" translatable="false">type=large</string>
+    <string name="email" translatable="false">email</string>
 
-   <!--Utils-->
+    <!--Utils-->
     <string name="google_string" translatable="false">google</string>
     <string name="web_package" translatable="false">com.android.chrome</string>
     <string name="telephone_util" translatable="false">tel:</string>
@@ -30,6 +31,7 @@
     <string name="map_fragment" translatable="false">MapViewFragment</string>
     <string name="list_fragment" translatable="false">ListViewFragment</string>
     <string name="workmates_fragment" translatable="false">WorkMatesFragment</string>
+    <string name="auto_complete_fragment" translatable="false">AutoCompleteFragment</string>
 
     <!-- Settings dialog activity -->
     <string name="settings">Settings</string>
@@ -42,10 +44,14 @@
     <string name="is_joining"> is joining</string>
 
     <!-- Workmates adapter -->
-    <string name="joining_true"> is eating at (</string>
+    <string name="joining_true"> is eating at </string>
     <string name="joining_false"> hasn\'t decided yet</string>
     <string name="open_true">Open</string>
     <string name="open_false">Closed</string>
+    <string name="until">until</string>
+
+    <!-- Listview adparter -->
+    <string name="open_24" translatable="false">24/7</string>
 
     <!-- Bottom navigation -->
     <string name="call">CALL</string>
@@ -77,7 +83,7 @@
     <string name="id" translatable="false">id</string>
     <string name="user_name" translatable="false">userName</string>
     <string name="user_photo" translatable="false">imageUrl</string>
-    <string name="user_likes" translatable="false">likedplacesId</string>
+    <string name="user_likes" translatable="false">likedPlacesId</string>
     <string name="place_lat_lng" translatable="false">latLng</string>
     <string name="place_name" translatable="false">name</string>
     <string name="place_user_id" translatable="false">userId</string>
@@ -93,11 +99,25 @@
     <string name="and_key" translatable="false">&amp;key=</string>
 
     <!-- Google places photo -->
-    <string name="google_photo_url" translatable="false">https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&amp;photoreference=</string>;
+    <string name="google_photo_url" translatable="false">https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&amp;photoreference=</string>
+    ;
     <!-- Letters -->
     <string name="m" translatable="false">m</string>
 
     <!-- onBind -->
     <string name="on_bind_string" translatable="false">Not yet implemented</string>
+
+    <string name="google_places_api_key" translatable="false">AIzaSyB8UrOG_Axpme4PiJ0Z_HPBwDcI-m9xnFA</string>
+
+    //for notification
+    <string name="choice_adress" translatable="false">choiceAdress</string>
+    <string name="joining_users" translatable="false">joiningUsers</string>
+    <string name="notification_text_1" >You choosed to lunch at </string>
+    <string name="single_join"> is joining you</string>
+    <string name="multiple_join"> are joining you</string>
+    <string name="bon_appetit"> Have a nice meal !</string>
+    <string name="nobody_joining">Nobody</string>
+
+    <string name="main_text">Find a nice restaurant and invite your co-workers for lunch !</string>
 
 </resources>

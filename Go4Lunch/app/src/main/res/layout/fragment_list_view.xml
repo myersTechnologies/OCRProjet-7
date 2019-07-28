@@ -10,6 +10,6 @@
       android:id="@+id/list_of_places"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_marginBottom="?attr/actionBarSize"></android.support.v7.widget.RecyclerView>
+      android:layout_marginBottom="?attr/actionBarSize" />
 
 </FrameLayout>

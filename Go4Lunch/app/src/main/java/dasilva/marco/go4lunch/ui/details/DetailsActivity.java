@@ -1,14 +1,21 @@
 package dasilva.marco.go4lunch.ui.details;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,9 +34,11 @@ import java.util.List;
 
 import dasilva.marco.go4lunch.R;
 import dasilva.marco.go4lunch.di.DI;
+import dasilva.marco.go4lunch.firebase.DataBaseService;
 import dasilva.marco.go4lunch.model.SelectedPlace;
 
 import dasilva.marco.go4lunch.model.User;
+import dasilva.marco.go4lunch.notification.NotificationService;
 import dasilva.marco.go4lunch.service.Go4LunchService;
 
 
@@ -42,6 +51,9 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
     private DatabaseReference databaseReference;
     private RatingBar placeRate;
     private List<User> userList;
+    private FloatingActionButton fab;
+    private DataBaseService dataBaseService;
+    private SharedPreferences sharedPreferences;
 
 
     @Override
@@ -50,6 +62,8 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
         setContentView(R.layout.activity_details);
 
         service = DI.getService();
+        dataBaseService = DI.getDatabaseService();
+        sharedPreferences = getSharedPreferences(getString(R.string.app_name), MODE_PRIVATE);
 
         setViews();
 
@@ -58,9 +72,10 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
         restaurantInfo.setText(service.getPlaceMarker().getName());
         restaurantAdress.setText(service.getPlaceMarker().getAdress());
         Glide.with(this).load(service.getPlaceMarker().getPhotoUrl()).apply(RequestOptions.noTransformation()).into(restaurantImage);
-        placeRate.setRating(service.getPlaceMarker().getLikes());
-
+        placeRate.setRating(service.getPlaceMarker().getLikes() / 2);
         initList();
+
+
     }
 
     public void setViews(){
@@ -72,15 +87,22 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
         detailsUsersRecyclerView = findViewById(R.id.joinin_users_list);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         detailsUsersRecyclerView.setLayoutManager(mLayoutManager);
-        FloatingActionButton fab = findViewById(R.id.user_choice);
+        fab = findViewById(R.id.user_choice);
         navigationView.setOnNavigationItemSelectedListener(this);
         fab.setOnClickListener(this);
+        if (service.getUser().getChoice() != null){
+            fab.setImageResource(R.drawable.ic_check);
+            fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.green)));
+        } else{
+            fab.setImageResource(R.drawable.ic_uncheck);
+            fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.white)));
+        }
     }
 
     public void initList(){
         userList = new ArrayList<>();
-        for(SelectedPlace place : service.getListOfSelectedPlaces()){
-            for (User user : service.getUsersList()){
+        for(SelectedPlace place : dataBaseService.getListOfSelectedPlaces()){
+            for (User user : dataBaseService.getUsersList()){
                     if (place.getId().equals(service.getPlaceMarker().getId())){
                         if (place.getUserId().contains(user.getId())){
                             userList.add(user);
@@ -88,15 +110,22 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
                     }
             }
         }
-        if (service.getUsersList().size() > 0) {
-            DetailsRecyclerViewAdapter adapter = new DetailsRecyclerViewAdapter(userList);
-            detailsUsersRecyclerView.setAdapter(adapter);
+        if (userList != null) {
+            for (int i = 0; i < userList.size(); i++) {
+                if (userList.get(i).getId().equals(service.getUser().getId())) {
+                    userList.remove(userList.get(i));
+                }
+            }
+            if (dataBaseService.getUsersList().size() > 0) {
+                DetailsRecyclerViewAdapter adapter = new DetailsRecyclerViewAdapter(userList);
+                detailsUsersRecyclerView.setAdapter(adapter);
+            }
         }
     }
 
     public void setUserChoice(){
-        if (service.getListOfSelectedPlaces().size() > 0) {
-            for (SelectedPlace place : service.getListOfSelectedPlaces()) {
+        if (dataBaseService.getListOfSelectedPlaces().size() > 0) {
+            for (SelectedPlace place : dataBaseService.getListOfSelectedPlaces()) {
                 if (place.getId().equals(service.getPlaceMarker().getId())) {
                     place.setUserId(place.getUserId() + "," + service.getUser().getId());
                     databaseReference.child(getString(R.string.selection)).child(service.getPlaceMarker().getId()).setValue(place);
@@ -114,8 +143,25 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
             databaseReference.child(getString(R.string.selection)).child(service.getPlaceMarker().getId()).setValue(selectedPlace);
         }
         service.getUser().setChoice(service.getPlaceMarker().getName());
+        sharedPreferences.edit().putString(getString(R.string.choice_adress), service.getPlaceMarker().getAdress()).apply();
+        sharedPreferences.edit().putString(getString(R.string.joining_users), getJoiningUsers()).apply();
         databaseReference.child(getString(R.string.users)).child(service.getUser().getId()).child(getString(R.string.choice)).setValue(service.getPlaceMarker().getName());
+        service.countPlaceSelectedByUsers();
+        startAlarmToSendANotification();
         initList();
+    }
+
+    public String getJoiningUsers(){
+        List<String> usersFistName = new ArrayList<>();
+        if (userList.size() > 0) {
+            for (User user : userList) {
+                usersFistName.add(user.getFirtName());
+            }
+        } else {
+            usersFistName.add(getString(R.string.nobody_joining));
+        }
+        String joiningUsers = TextUtils.join(", ", usersFistName);
+        return joiningUsers;
     }
 
     @Override
@@ -132,18 +178,24 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
                 }
                 break;
             case R.id.details_like_item:
-                service.getPlaceMarker().setLikes();
                 if (service.getUser().getLikedPlacesId() != null){
+                    for (String likedPLacesId : service.getUser().getLikedPlacesId().split(",")) {
+                        if (!likedPLacesId.equals(service.getPlaceMarker().getId())) {
+                            service.getUser().setLikedPlacesId(service.getUser().getLikedPlacesId() + "," + service.getPlaceMarker().getId());
+                            service.setUserLikedPlaces(service.getUser().getLikedPlacesId() + "," + service.getPlaceMarker().getId());
+                            int likes = service.getPlaceMarker().getLikes();
+                            service.getPlaceMarker().setLikes(likes++);
+                            service.countPlacesLikes();
 
-                    if (!service.getUser().getLikedPlacesId().contains(service.getPlaceMarker().getId())) {
-                        service.getUser().setLikedPlacesId(service.getUser().getLikedPlacesId() + "," + service.getPlaceMarker().getId());
-                        service.setUserLikedPlaces(service.getUser().getLikedPlacesId() + "," + service.getPlaceMarker().getId());
-                    } else {
+                        } else {
                             Toast.makeText(this, R.string.already_liked, Toast.LENGTH_SHORT).show();
+                        }
                     }
                 } else {
                     service.getUser().setLikedPlacesId(service.getPlaceMarker().getId());
                     service.setUserLikedPlaces(service.getPlaceMarker().getId());
+                    int likes = service.getPlaceMarker().getLikes();
+                    service.getPlaceMarker().setLikes(likes++);
                 }
 
                 break;
@@ -159,10 +211,16 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
     }
 
     public void callRestaurant(){
-        String phoneNumber = service.getPlaceMarker().getTelephone().trim();
-        Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(getString(R.string.telephone_util) + phoneNumber));
-        startActivity(intent);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CALL_PHONE},
+                    15);
+        } else {
+            String phoneNumber = service.getPlaceMarker().getTelephone().trim();
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            intent.setData(Uri.parse(getString(R.string.telephone_util) + phoneNumber));
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -171,6 +229,8 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
             case R.id.user_choice:
                 if (service.getUser().getChoice() == null){
                     setUserChoice();
+                    fab.setImageResource(R.drawable.ic_check);
+                    fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.green)));
                 } else {
                     Toast.makeText(this, R.string.already_choosed, Toast.LENGTH_LONG).show();
                 }
@@ -178,5 +238,10 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
         }
     }
 
+    private void startAlarmToSendANotification() {
+        Intent notificationService = new Intent(this, NotificationService.class);
+        sharedPreferences.edit().putString(getString(R.string.choice), service.getUser().getChoice()).apply();
+        startService(notificationService);
+    }
 
 }

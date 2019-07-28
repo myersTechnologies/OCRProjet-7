@@ -12,7 +12,8 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/lunch_time"
+        android:src="@drawable/app_img"
+        android:scaleType="centerCrop"
         />
 
     <ImageView
@@ -32,7 +33,7 @@
         android:id="@+id/goLunchText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Go4Lunch"
+        android:text="@string/app_name"
         android:textSize="75sp"
         app:layout_constraintTop_toBottomOf="@+id/goLunchImage"
         android:textColor="@android:color/white"
@@ -47,9 +48,9 @@
         android:id="@+id/description_not_used_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Find a nice restaurant and invite your co-workers for lunch!"
+        android:text="@string/main_text"
         app:layout_constraintTop_toBottomOf="@id/goLunchText"
-        android:textSize="12dp"
+        android:textSize="12sp"
         android:textColor="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,25 +61,25 @@
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/fb_login_button"
-        android:layout_width="350dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/description_not_used_textview"
-        android:textSize="15dp" />
+        android:textSize="19sp"
+        />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/signInGoogle"
-        android:layout_width="350dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/fb_login_button"
         android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        ></com.google.android.gms.common.SignInButton>
+        android:layout_marginEnd="20dp" />
 
 
 

@@ -30,16 +30,23 @@ public class DownloadUrl {
 
             while ((line = reader.readLine()) != null){
                 stringBuffer.append(line);
-
             }
 
             data = stringBuffer.toString();
 
+            reader.close();
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
 
         return data;

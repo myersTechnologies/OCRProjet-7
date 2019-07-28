@@ -1,8 +1,8 @@
 package dasilva.marco.go4lunch.model;
 
-
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class PlaceMarker {
@@ -12,36 +12,21 @@ public class PlaceMarker {
     private String adress;
     private String city;
     private String country;
-    private String[] completAdress;
     private String name;
-    private Marker point;
     private String telephone;
     private String webSite;
     private String photoUrl;
     private boolean openingHours;
-    private int likes;
+    private int likes = 0;
     private int selectedTimes = 0;
+    private List<String> weekdayList;
 
-    public PlaceMarker(Marker point){
-        try {
-            this.latLng = new LatLng(point.getPosition().latitude, point.getPosition().longitude);
-            this.name = point.getTitle();
-            this.point = point;
-            this.id = point.getId();
-        } catch (Exception e) {
-        }
+    public PlaceMarker(){
+
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String[] getCompletAdress() {
-        return completAdress;
-    }
-
-    public void setCompletAdress(String[] completAdress) {
-        this.completAdress = completAdress;
     }
 
     public boolean getOpeninHours() {
@@ -78,9 +63,6 @@ public class PlaceMarker {
         this.country = country;
     }
 
-    public void setPoint(Marker point) {
-        this.point = point;
-    }
 
     public void setWebSite(String webSite) {
         this.webSite = webSite;
@@ -123,9 +105,6 @@ public class PlaceMarker {
     }
 
 
-    public Marker getPoint() {
-        return point;
-    }
 
     public String getTelephone() {
         return telephone;
@@ -139,15 +118,28 @@ public class PlaceMarker {
         return likes;
     }
 
-    public void setLikes() {
-        likes++;
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 
     public int getSelectedTimes() {
         return selectedTimes;
     }
 
-    public void setSelectedTimes() {
-        selectedTimes++;
+    public void setSelectedTimes(int selectedTimes) {
+        this.selectedTimes = selectedTimes;
     }
+
+    public void addWeekToList(String day){
+        if (weekdayList == null) {
+            weekdayList = new ArrayList<String>();
+        }
+        weekdayList.add(day);
+
+    }
+    public List<String> getWeekdayHous() {
+        return weekdayList;
+    }
+
+
 }

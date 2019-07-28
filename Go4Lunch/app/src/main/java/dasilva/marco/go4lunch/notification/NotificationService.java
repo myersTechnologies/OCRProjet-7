@@ -4,8 +4,10 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.IBinder;
+
 
 import java.util.Calendar;
 import java.util.Timer;
@@ -18,6 +20,11 @@ public class NotificationService extends Service {
     private long timeToCheck;
     private long currentTime;
     private PendingIntent pendingIntent;
+    private String choice;
+    private String choiceAdress;
+    private String joiningUsers;
+    private SharedPreferences preferences;
+    private boolean timesOn = false;
 
     public NotificationService() {
     }
@@ -34,6 +41,10 @@ public class NotificationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        preferences = getSharedPreferences(getString(R.string.app_name), MODE_PRIVATE);
+        choice = preferences.getString(getString(R.string.choice), null);
+        choiceAdress = preferences.getString(getString(R.string.choice_adress), null);
+        joiningUsers = preferences.getString(getString(R.string.joining_users), null);
         runTimer();
         return START_STICKY;
     }
@@ -46,7 +57,17 @@ public class NotificationService extends Service {
 
     public void alarmToNoticateUser(){
         Intent intent = new Intent(this, AlarmReceiver.class);
+        intent.putExtra(getString(R.string.choice), choice);
+        intent.putExtra(getString(R.string.choice_adress), choiceAdress);
+        intent.putExtra(getString(R.string.joining_users), joiningUsers);
+        sendBroadcast(intent);
         pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        preferences.edit().remove(getString(R.string.choice)).apply();
+        preferences.edit().remove(getString(R.string.choice_adress)).apply();
+        choice = null;
+        choiceAdress = null;
+        joiningUsers = null;
+        timesOn = true;
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, timeToCheck, AlarmManager.INTERVAL_DAY , pendingIntent);
     }
@@ -61,8 +82,10 @@ public class NotificationService extends Service {
             @Override
             public void run() {
                 checkIfTimeMatchesToNotify();
-                if(timeToCheck == currentTime) {
-                    alarmToNoticateUser();
+                if (currentTime == timeToCheck) {
+                    if (!timesOn) {
+                        alarmToNoticateUser();
+                    }
                 }
             }
         };

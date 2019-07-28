@@ -39,15 +39,15 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import dasilva.marco.go4lunch.R;
 import dasilva.marco.go4lunch.di.DI;
+import dasilva.marco.go4lunch.firebase.DataBaseService;
 import dasilva.marco.go4lunch.model.User;
 import dasilva.marco.go4lunch.service.Go4LunchService;
 import dasilva.marco.go4lunch.ui.map.activities.MapView;
-import dasilva.marco.go4lunch.notification.NotificationService;
+
 
 public class Main extends AppCompatActivity {
 
@@ -57,18 +57,20 @@ public class Main extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Go4LunchService service;
     private SignInButton googleSignIn;
+    private DataBaseService dataBaseService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         service = DI.getService();
-        service.setUsersList();
-        service.setListOfSelectedPlaces();
+        dataBaseService = DI.getDatabaseService();
 
-        googleSignIn = (SignInButton) findViewById(R.id.signInGoogle);
-        signInFb = (LoginButton) findViewById(R.id.fb_login_button);
+        googleSignIn = findViewById(R.id.signInGoogle);
+        signInFb = findViewById(R.id.fb_login_button);
 
         mapViewActivity = new Intent(this, MapView.class);
 
@@ -81,15 +83,11 @@ public class Main extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
         signInFb.setReadPermissions("email");
 
-        checkIfUserIsConnected();
+        service.setDataBase(dataBaseService);
+        dataBaseService.setUsersList();
+        dataBaseService.setListOfSelectedPlaces();
+        connectUser();
 
-        startAlarmToSendANotification();
-
-    }
-
-    private void startAlarmToSendANotification() {
-        Intent notificationService = new Intent(this, NotificationService.class);
-        startService(notificationService);
     }
 
     @Override
@@ -98,17 +96,22 @@ public class Main extends AppCompatActivity {
         checkIfUserIsConnected();
     }
 
+    public void connectUser(){
+        LoginManager.getInstance().logOut();
+        signInWithFacebook();
+        signInWithGoogle();
+    }
+
     //if user id connected get to map activity directly
     public void checkIfUserIsConnected(){
-        if (mAuth.getCurrentUser() != null){
-            onAuthSuccess(mAuth.getCurrentUser());
+        if (mAuth.getCurrentUser() != null) {
+            startMapActivity();
             startActivity(mapViewActivity);
         } else {
             LoginManager.getInstance().logOut();
             signInWithFacebook();
             signInWithGoogle();
         }
-
     }
 
     //Login with facebook
@@ -136,7 +139,7 @@ public class Main extends AppCompatActivity {
             }
         });
     }
-    //check if facebook authentification is successful and pass parameters to set user onAuthSuccess method
+    //check if facebook auth is successful and pass parameters to set user onAuthSuccess method
     private void handleFacebookToken(AccessToken token) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
@@ -148,6 +151,7 @@ public class Main extends AppCompatActivity {
                                 FirebaseUser fbUser = task.getResult().getUser();
                                 onAuthSuccess(fbUser);
                                 startActivity(mapViewActivity);
+
                             } catch (NullPointerException e){
                                 Toast.makeText(getApplicationContext(), R.string.create_user_failed,
                                         Toast.LENGTH_SHORT).show();
@@ -184,11 +188,6 @@ public class Main extends AppCompatActivity {
         ActivityCompat.requestPermissions(this,
                 new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                 1);
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CALL_PHONE},
-                    15);
-        }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET,
@@ -215,7 +214,7 @@ public class Main extends AppCompatActivity {
         }
     }
 
-    //Firebase authentification with google
+    //auth with google
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -241,55 +240,81 @@ public class Main extends AppCompatActivity {
 
     }
 
-    //add new user to firebase real time data base
+    //add new user to real time data base
     public void addNewUser(final String userId, String name, String email, String photoUri){
-        final User user = new User(userId, name, email, photoUri);
+        User user = new User(userId, name, email, photoUri);
         service.setUser(user);
+        getAdditionalUserData(userId);
+    }
+
+    public void startMapActivity(){
+        FirebaseUser databaseUser = mAuth.getCurrentUser();
+        String userName = null;
+        if (databaseUser != null) {
+            userName = databaseUser.getDisplayName();
+        }
+        String email = null;
+        if (databaseUser != null) {
+            email = databaseUser.getEmail();
+        }
+        Uri photoUrl = null;
+        if (databaseUser != null) {
+            photoUrl = databaseUser.getPhotoUrl();
+        }
+        User user = null;
+        if (databaseUser != null) {
+            if (userName != null) {
+                if (email != null) {
+                    user = new User(databaseUser.getUid(), userName, email, String.valueOf(photoUrl));
+                }
+            }
+        }
+        service.setUser(user);
+        if (databaseUser != null) {
+            getAdditionalUserData(databaseUser.getUid());
+        }
+    }
+
+
+    public void getAdditionalUserData(String userId){
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         final DatabaseReference databaseRef = firebaseDatabase.getReference("users");
-        if (databaseRef.child(userId).child("radius").equals(null)){
-            databaseRef.child(user.getId()).setValue(user);
-        }
-        Query querry = databaseRef.child(userId);
-        querry.addValueEventListener(new ValueEventListener() {
+        databaseRef.child(userId).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 if (dataSnapshot.exists()) {
-                    if (dataSnapshot.child("id").getValue().toString().equals(userId)) {
-                        try {
-                            String choice = dataSnapshot.child("choice").getValue().toString();
-                            user.setChoice(choice);
-                            databaseRef.child(userId).child("choice").setValue(choice);
-                        } catch (NullPointerException e) {
+                    if (dataSnapshot.child("id").getValue().toString().equals(service.getUser().getId())) {
 
+                        if (dataSnapshot.child("choice").getValue() != null) {
+                                String choice = dataSnapshot.child("choice").getValue().toString();
+                                service.getUser().setChoice(choice);
                         }
 
-                        try {
+                        if (dataSnapshot.child("likedPlacesId").getValue() != null) {
                             String likedPlaces = dataSnapshot.child("likedPlacesId").getValue().toString();
-                            user.setLikedPlacesId(likedPlaces);
-                            databaseRef.child(userId).child("likedPlacesId").setValue(likedPlaces);
-                        } catch (Exception e) {
-
+                            service.getUser().setLikedPlacesId(likedPlaces);
                         }
-
-                        try {
+                        if (dataSnapshot.child("radius").getValue() != null) {
                             String radius = dataSnapshot.child("radius").getValue().toString();
-                            user.setRadius(radius);
-                            databaseRef.child(userId).child("radius").setValue(radius);
-                        } catch (Exception e) {
-
+                            service.getUser().setRadius(radius);
+                        } else {
+                            service.getUser().setRadius("0");
                         }
                     }
                 }
+                if (service.getUser() != null) {
+                    databaseRef.child(service.getUser().getId()).setValue(service.getUser());
+                }
+                }
 
-            }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
     }
+
 
 }

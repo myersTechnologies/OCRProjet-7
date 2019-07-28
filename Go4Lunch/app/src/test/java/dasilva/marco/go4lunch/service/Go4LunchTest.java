@@ -1,14 +1,25 @@
 package dasilva.marco.go4lunch.service;
 
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.support.annotation.NonNull;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.mockito.Mockito;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import java.util.Calendar;
+
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -24,11 +35,11 @@ public class Go4LunchTest {
     private User user;
 
     @Before
-    public void setUp(){
+    public void setUp() {
     }
 
     @Test
-    public void checkIfUserIsAddedWithSuccess(){
+    public void checkIfUserIsAddedWithSuccess() {
         user = new User("lmp25klo", "Marco da Silva", "marco@gmail.com", "imageUrl");
         List<User> users = new ArrayList<>();
         users.add(user);
@@ -37,8 +48,8 @@ public class Go4LunchTest {
     }
 
     @Test
-    public void checkIfPlaceMarkerIsAddedWithSuccessToList(){
-        PlaceMarker placeMarker = new PlaceMarker(null);
+    public void checkIfPlaceMarkerIsAddedWithSuccessToList() {
+        PlaceMarker placeMarker = new PlaceMarker();
         placeMarker.setName("new place marker");
         placeMarker.setId("1");
         List<PlaceMarker> placeMarkers = new ArrayList<>();
@@ -47,7 +58,7 @@ public class Go4LunchTest {
     }
 
     @Test
-    public void checkIfSelectedPlaceIsAddedWithSucess(){
+    public void checkIfSelectedPlaceIsAddedWithSucess() {
         SelectedPlace selectedPlace = new SelectedPlace("1", "new selected place", "12.30, 1420", "5");
         List<SelectedPlace> selectedPlaces = new ArrayList<>();
         selectedPlaces.add(selectedPlace);
@@ -55,7 +66,7 @@ public class Go4LunchTest {
     }
 
     @Test
-    public void countSelectedPlacesShouldGiveNumberOfUsersLikes(){
+    public void countSelectedPlacesShouldGiveNumberOfUsersLikes() {
         List<PlaceMarker> places = new ArrayList<>();
         List<User> users = new ArrayList<>();
         List<SelectedPlace> selectedPlaces = new ArrayList<>();
@@ -63,7 +74,7 @@ public class Go4LunchTest {
         User currentUser = new User("5", "Marco", "marco@gmail.com", "https://jhjhjhd.png");
         users.add(currentUser);
 
-        PlaceMarker placeMarker = new PlaceMarker(null);
+        PlaceMarker placeMarker = new PlaceMarker();
         placeMarker.setName("new place marker");
         placeMarker.setId("1");
         places.add(placeMarker);
@@ -71,13 +82,15 @@ public class Go4LunchTest {
         SelectedPlace selected = new SelectedPlace("1", "new place marker", "12.30, 1420", "5");
         selectedPlaces.add(selected);
 
-        for (PlaceMarker marker : places){
-            for (User user : users){
-                for (SelectedPlace selectedPlace : selectedPlaces){
+        for (PlaceMarker marker : places) {
+            int count = 0;
+            for (User user : users) {
+                for (SelectedPlace selectedPlace : selectedPlaces) {
                     for (String userId : selectedPlace.getUserId().split(","))
-                        if (user.getId().compareTo(userId) == 0){
-                            if (marker.getId().contains(selectedPlace.getId())){
-                                marker.setSelectedTimes();
+                        if (user.getId().compareTo(userId) == 0) {
+                            if (marker.getId().contains(selectedPlace.getId())) {
+                                count++;
+                                marker.setSelectedTimes(count);
                             }
                         }
                 }
@@ -88,7 +101,7 @@ public class Go4LunchTest {
     }
 
     @Test
-    public void countRestaurantLikesFromUser(){
+    public void countRestaurantLikesFromUser() {
         List<PlaceMarker> places = new ArrayList<>();
         List<User> users = new ArrayList<>();
         List<SelectedPlace> selectedPlaces = new ArrayList<>();
@@ -96,7 +109,7 @@ public class Go4LunchTest {
         SelectedPlace selected = new SelectedPlace("1", "new place marker", "12.30, 1420", "5");
         selectedPlaces.add(selected);
 
-        PlaceMarker placeMarker = new PlaceMarker(null);
+        PlaceMarker placeMarker = new PlaceMarker();
         placeMarker.setName("new place marker");
         placeMarker.setId("1");
         places.add(placeMarker);
@@ -106,12 +119,14 @@ public class Go4LunchTest {
         users.add(currentUser);
 
 
-        for (PlaceMarker marker : places){
-            for (User user : users){
+        for (PlaceMarker marker : places) {
+            int count = 0;
+            for (User user : users) {
                 if (user.getLikedPlacesId() != null) {
                     for (String likedPlaces : user.getLikedPlacesId().split(",")) {
                         if (marker.getId().equals(likedPlaces)) {
-                            marker.setLikes();
+                            count++;
+                            marker.setLikes(count);
                         }
                     }
                 }
@@ -122,7 +137,7 @@ public class Go4LunchTest {
     }
 
     @Test
-    public void getSplittedRealLatLng(){
+    public void getSplittedRealLatLng() {
         SelectedPlace place = new SelectedPlace("1", "Etablishment", "lat/lng: (46.794237, 4.848902)", "5");
         String[] coordinates = place.getLatLng().split(",");
         String[] coordinatesLat = coordinates[0].split(Pattern.quote("("));
@@ -136,7 +151,7 @@ public class Go4LunchTest {
     }
 
     @Test
-    public void setUserChoiceWithSuccess(){
+    public void setUserChoiceWithSuccess() {
         List<SelectedPlace> selectedPlaces = new ArrayList<>();
         List<User> users = new ArrayList<>();
 
@@ -152,7 +167,7 @@ public class Go4LunchTest {
     }
 
     @Test
-    public void deletingLunchShouldRemoveLunchChoiceFromUserAndRemoveItFromTheList(){
+    public void deletingLunchShouldRemoveLunchChoiceFromUserAndRemoveItFromTheList() {
         List<SelectedPlace> selectedPlaces = new ArrayList<>();
         List<User> users = new ArrayList<>();
 
@@ -172,7 +187,7 @@ public class Go4LunchTest {
     }
 
     @Test
-    public void deleteUserIdFromSelectedPlace(){
+    public void deleteUserIdFromSelectedPlace() {
         List<SelectedPlace> selectedPlaces = new ArrayList<>();
         List<User> users = new ArrayList<>();
 
@@ -198,7 +213,7 @@ public class Go4LunchTest {
         }
 
         String[] places = place.getUserId().split(",");
-        if (places[0].contains(user.getId())){
+        if (places[0].contains(user.getId())) {
             String usersId = place.getUserId().replace(user.getId() + ",", "");
             place.setUserId(usersId);
             user.setChoice(null);
@@ -213,8 +228,178 @@ public class Go4LunchTest {
     }
 
     @Test
-    public void checkIfDistanceIsCorrect(){
+    public void checkIfDistanceIsCorrect() {
+        Location current = Mockito.mock(Location.class);
+        Location target = Mockito.mock(Location.class);
+        Mockito.when(target.distanceTo(current)).thenReturn(Float.parseFloat("194"));
+        double actual = target.distanceTo(current);
+        String distance = String.valueOf(actual);
+        String[] distanceSeparator = distance.split("\\.");
+        String placeDistance = distanceSeparator[0];
+        assertEquals(placeDistance, String.valueOf(194));
+    }
 
+    @Test
+    public void getAmClosingHour() {
+        String openUntil = "";
+
+        PlaceMarker placeMarker = new PlaceMarker();
+        placeMarker.setName("new place marker");
+        placeMarker.setId("1");
+        placeMarker.addWeekToList("Sunday: 09:00 – 14:30");
+
+        if (placeMarker.getWeekdayHous() != null) {
+            Calendar calendar = Mockito.mock(Calendar.class);
+            calendar.set(2019, Calendar.JULY, 22, 8, 0);
+            Mockito.when(Calendar.getInstance()).thenCallRealMethod();
+            Mockito.when(calendar.get(Calendar.DAY_OF_WEEK)).thenReturn(1);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEEEE");
+            Mockito.when(dateFormat.format(calendar.getTime())).thenCallRealMethod();
+            String dayOfTheWeek = dateFormat.format(calendar.getTime());
+            int day = calendar.get(Calendar.DAY_OF_WEEK);
+            List<String> openHourList = placeMarker.getWeekdayHous();
+            int count = 0;
+            for (String today : openHourList) {
+                count++;
+                if (count == day) {
+                    if (calendar.get(Calendar.AM_PM) == Calendar.AM) {
+                        try {
+                            String[] openHours = today.split(",");
+                            String[] openedUntil = openHours[0].split("–");
+                            openUntil = openedUntil[1];
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            String[] openHours = today.split("–");
+                            String[] openHourWithoutDay = openHours[0].split(dayOfTheWeek + ":");
+
+                            openUntil = openHourWithoutDay[1];
+                        }
+                    }
+                }
+            }
+        }
+
+        assertEquals(openUntil, " 14:30");
 
     }
+
+    @Test
+    public void getPmClosingHoursHours() {
+        String openUntil = "";
+
+        PlaceMarker placeMarker = new PlaceMarker();
+        placeMarker.setName("new place marker");
+        placeMarker.setId("1");
+        placeMarker.addWeekToList("Sunday: 18:00 – 00:30");
+
+        if (placeMarker.getWeekdayHous() != null) {
+            Calendar calendar = Mockito.mock(Calendar.class);
+            calendar.set(2019, Calendar.JULY, 22, 15, 0);
+            Mockito.when(Calendar.getInstance()).thenCallRealMethod();
+            Mockito.when(calendar.get(Calendar.DAY_OF_WEEK)).thenReturn(1);
+            Mockito.when(calendar.get(Calendar.AM_PM)).thenReturn(Calendar.PM);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEEEE");
+            Mockito.when(dateFormat.format(calendar.getTime())).thenCallRealMethod();
+            int day = calendar.get(Calendar.DAY_OF_WEEK);
+            List<String> openHourList = placeMarker.getWeekdayHous();
+            int count = 0;
+            for (String today : openHourList) {
+                count++;
+                if (count == day) {
+                    if (calendar.get(Calendar.AM_PM) == Calendar.PM) {
+                        try {
+                            String[] openHours = today.split(",");
+                            String[] openedUntil = openHours[1].split("–");
+                            openUntil = openedUntil[1];
+                        } catch (ArrayIndexOutOfBoundsException e) {
+                            String[] openHours = today.split("–");
+                            openUntil = openHours[1];
+                        }
+                    }
+                }
+            }
+        }
+        assertEquals(" 00:30", openUntil);
+    }
+    @Test
+    public void getAmOpeningHour(){
+        String openUntil = "";
+
+        PlaceMarker placeMarker = new PlaceMarker();
+        placeMarker.setName("new place marker");
+        placeMarker.setId("1");
+        placeMarker.addWeekToList("Sunday: 09:00 – 14:30");
+
+        if (placeMarker.getWeekdayHous() != null) {
+            Calendar calendar = Mockito.mock(Calendar.class);
+            calendar.set(2019, Calendar.JULY, 22, 8, 0);
+            Mockito.when(Calendar.getInstance()).thenCallRealMethod();
+            Mockito.when(calendar.get(Calendar.DAY_OF_WEEK)).thenReturn(1);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEEEE");
+            Mockito.when(dateFormat.format(calendar.getTime())).thenCallRealMethod();
+            String dayOfTheWeek = "Sunday";
+            int day = 1;
+            List<String> openHourList = placeMarker.getWeekdayHous();
+            int count = 0;
+            for (String today : openHourList) {
+                count++;
+                if (count == day) {
+                    if (calendar.get(Calendar.AM_PM) == Calendar.AM) {
+                        try {
+                            String[] openHours = today.split(",");
+                            String[] openedUntil = openHours[0].split("–");
+                            String [] openHourWithoutDay = openedUntil[0].split(dayOfTheWeek + ":");
+                            openUntil = openHourWithoutDay[1];
+                        } catch (ArrayIndexOutOfBoundsException e){
+                            String[] openHours = today.split("–");
+                            String[] openedUntil = openHours[0].split(dayOfTheWeek + ":");
+                            openUntil = openedUntil[0];
+                        }
+                    }
+                }
+            }
+        }
+        assertEquals(" 09:00 ", openUntil);
+    }
+    @Test
+    public void getPmOpeningHour(){
+        String openUntil = "";
+
+        PlaceMarker placeMarker = new PlaceMarker();
+        placeMarker.setName("new place marker");
+        placeMarker.setId("1");
+        placeMarker.addWeekToList("Sunday: 18:30 – 00:30");
+
+        if (placeMarker.getWeekdayHous() != null) {
+            Calendar calendar = Mockito.mock(Calendar.class);
+            calendar.set(2019, Calendar.JULY, 22, 8, 0);
+            Mockito.when(Calendar.getInstance()).thenCallRealMethod();
+            Mockito.when(calendar.get(Calendar.AM_PM)).thenReturn(Calendar.PM);
+            Mockito.when(calendar.get(Calendar.DAY_OF_WEEK)).thenReturn(1);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEEEE");
+            Mockito.when(dateFormat.format(calendar.getTime())).thenCallRealMethod();
+            String dayOfTheWeek = "Sunday";
+            int day = calendar.get(Calendar.DAY_OF_WEEK);
+            List<String> openHourList = placeMarker.getWeekdayHous();
+            int count = 0;
+            for (String today : openHourList) {
+                count++;
+                if (count == day) {
+                    if (calendar.get(Calendar.AM_PM) == Calendar.PM) {
+                        try {
+                            String[] openHours = today.split(",");
+                            String[] openedUntil = openHours[0].split("–");
+                            String [] openHourWithoutDay = openedUntil[0].split(dayOfTheWeek + ":");
+                            openUntil = openHourWithoutDay[1];
+                        } catch (ArrayIndexOutOfBoundsException e){
+                            String[] openHours = today.split("–");
+                            String[] openedUntil = openHours[0].split(dayOfTheWeek + ":");
+                            openUntil = openedUntil[1];
+                        }
+                    }
+                }
+            }
+        }
+        assertEquals(" 18:30 ", openUntil);
+    }
+
 }
