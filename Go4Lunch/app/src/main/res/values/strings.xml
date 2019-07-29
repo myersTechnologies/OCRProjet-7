@@ -120,4 +120,6 @@
 
     <string name="main_text">Find a nice restaurant and invite your co-workers for lunch !</string>
 
+    <string name="notification_toast">You will be notificated at 12 o\'clock</string>
+
 </resources>

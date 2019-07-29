@@ -37,6 +37,7 @@
     <string name="bon_appetit"> Bom apetite !</string>
     <string name="main_text">Procure un restaurante e convide os seu colegas a almoçar !</string>
     <string name="nobody_joining">Ninguém</string>
+    <string name="notification_toast">Serà notificado ao meio dia</string>
 
 
 </resources>

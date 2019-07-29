@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.IBinder;
+import android.widget.Toast;
 
 
 import java.util.Calendar;
@@ -45,6 +46,7 @@ public class NotificationService extends Service {
         choice = preferences.getString(getString(R.string.choice), null);
         choiceAdress = preferences.getString(getString(R.string.choice_adress), null);
         joiningUsers = preferences.getString(getString(R.string.joining_users), null);
+        Toast.makeText(this, getString(R.string.notification_toast), Toast.LENGTH_SHORT).show();
         runTimer();
         return START_STICKY;
     }
