@@ -20,7 +20,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.facebook.login.LoginManager;
-import com.google.android.gms.dynamic.IFragmentWrapper;
 import com.google.firebase.auth.FirebaseAuth;
 
 import dasilva.marco.go4lunch.R;
@@ -29,7 +28,6 @@ import dasilva.marco.go4lunch.dialog.SettingsDialog;
 import dasilva.marco.go4lunch.firebase.DataBaseService;
 import dasilva.marco.go4lunch.model.PlaceMarker;
 import dasilva.marco.go4lunch.model.SelectedPlace;
-import dasilva.marco.go4lunch.model.User;
 import dasilva.marco.go4lunch.notification.NotificationService;
 import dasilva.marco.go4lunch.service.Go4LunchService;
 import dasilva.marco.go4lunch.ui.main.Main;
@@ -83,7 +81,9 @@ public class MapView extends AppCompatActivity
         mapsBottomNav.setOnNavigationItemSelectedListener(this);
 
         initView();
+
         setUserChoiceToList();
+
         if (service.getListMarkers() == null) {
             if (choice != null) {
                 startAlarmToSendANotification(choice);
@@ -98,7 +98,6 @@ public class MapView extends AppCompatActivity
             service.countPlaceSelectedByUsers();
             service.countPlacesLikes();
         } catch (NullPointerException e){
-
         }
 
     }
@@ -142,7 +141,7 @@ public class MapView extends AppCompatActivity
         switch (id) {
             case R.id.your_lunch:
                for (SelectedPlace selectedPlace : dataBaseService.getListOfSelectedPlaces()){
-                   for (String userId : selectedPlace.getUserId().split(",")){
+                   for (String userId : selectedPlace.getUserId()){
                        if (userId.equals(service.getUser().getId())) {
                            for (PlaceMarker place : service.getListMarkers()) {
                                if (place.getId().equals(selectedPlace.getId())) {
@@ -206,6 +205,7 @@ public class MapView extends AppCompatActivity
             placeMarker.setLatLng(service.getRealLatLng(selectedPlace));
             placeMarker.setName(selectedPlace.getName());
             service.setUserLunchChoice(placeMarker, this);
+            break;
         }
     }
 

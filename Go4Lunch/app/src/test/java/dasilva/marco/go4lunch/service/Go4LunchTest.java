@@ -1,11 +1,6 @@
 package dasilva.marco.go4lunch.service;
 
-
-import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
-import android.support.annotation.NonNull;
 
 import com.google.android.gms.maps.model.LatLng;
 

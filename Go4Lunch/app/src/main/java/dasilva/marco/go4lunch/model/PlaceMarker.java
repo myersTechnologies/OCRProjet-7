@@ -132,7 +132,7 @@ public class PlaceMarker {
 
     public void addWeekToList(String day){
         if (weekdayList == null) {
-            weekdayList = new ArrayList<String>();
+            weekdayList = new ArrayList<>();
         }
         weekdayList.add(day);
 

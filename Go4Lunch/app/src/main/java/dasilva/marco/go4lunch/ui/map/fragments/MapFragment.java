@@ -14,7 +14,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -123,7 +122,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                         public void onSuccess(Location location) {
                             currentLocation = location;
                             current = new LatLng(location.getLatitude(), location.getLongitude());
-                            Log.d("LOCATION", current.toString());
                             if (service.getListMarkers() == null) {
                                 getMapMarker();
                             } else {
@@ -309,7 +307,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
 
         PlaceMarker placeMarker = new PlaceMarker();
         for (SelectedPlace selectedPlace : dataBaseService.getListOfSelectedPlaces()) {
-            for (String userId : selectedPlace.getUserId().split(",")) {
+            for (String userId : selectedPlace.getUserId()) {
                 if (userId.equals(service.getUser().getId())) {
                     placeMarker.setName(selectedPlace.getName());
                     placeMarker.setId(selectedPlace.getId());

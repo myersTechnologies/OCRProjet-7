@@ -92,7 +92,7 @@ public class ApiService implements Go4LunchService {
     }
 
     @Override
-    public void setUserLikedPlaces(String userLikedPlaces) {
+    public void setUserLikedPlaces(List<String> userLikedPlaces) {
         dataBaseService.setUserLikedPlaces(userLikedPlaces);
     }
 
@@ -104,7 +104,7 @@ public class ApiService implements Go4LunchService {
             int count = 0;
             for (User user : users) {
                 for (SelectedPlace selectedPlace : selectedPlaces) {
-                    for (String userId : selectedPlace.getUserId().split(",")) {
+                    for (String userId : selectedPlace.getUserId()) {
                         if (user.getId().equals(userId)) {
                             if (marker.getId().contains(selectedPlace.getId())) {
                                 count++;
@@ -136,7 +136,7 @@ public class ApiService implements Go4LunchService {
             int count = 0;
             for (User user : users){
                 if (user.getLikedPlacesId() != null) {
-                    for (String likedPlaces : user.getLikedPlacesId().split(",")) {
+                    for (String likedPlaces : user.getLikedPlacesId()){
                         if (marker.getId().contains(likedPlaces)) {
                             count++;
                             marker.setLikes(count);
@@ -281,32 +281,33 @@ public class ApiService implements Go4LunchService {
 
     @Override
     public void setUserLunchChoice(PlaceMarker placeMarker, Context context) {
-        if (places == null){
+        if (places == null) {
             places = new ArrayList<>();
-        }
-        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-        List<Address> addresses  = null;
-        try {
-            addresses = geocoder.getFromLocation(placeMarker.getLatLng().latitude, placeMarker.getLatLng().longitude, 1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String address = null;
-        if (addresses != null) {
-            address = addresses.get(0).getAddressLine(0);
-        }
-        String city = null;
-        if (addresses != null) {
-            city = addresses.get(0).getLocality();
-        }
-        String country = null;
-        if (addresses != null) {
-            country = addresses.get(0).getCountryName();
-        }
-        placeMarker.setAdress(address + ", " + city + ", " + country);
+            if (!places.contains(placeMarker)) {
 
-        if (!places.contains(placeMarker)) {
-            places.add(placeMarker);
+            Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+            List<Address> addresses = null;
+            try {
+                addresses = geocoder.getFromLocation(placeMarker.getLatLng().latitude, placeMarker.getLatLng().longitude, 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String address = null;
+            if (addresses != null) {
+                address = addresses.get(0).getAddressLine(0);
+            }
+            String city = null;
+            if (addresses != null) {
+                city = addresses.get(0).getLocality();
+            }
+            String country = null;
+            if (addresses != null) {
+                country = addresses.get(0).getCountryName();
+            }
+            placeMarker.setAdress(address + ", " + city + ", " + country);
+
+                places.add(placeMarker);
+            }
         }
         Log.d("LISTSIZE", String.valueOf(places.size()));
 

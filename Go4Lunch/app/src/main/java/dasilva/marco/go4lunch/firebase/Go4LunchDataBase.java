@@ -1,7 +1,6 @@
 package dasilva.marco.go4lunch.firebase;
 
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,8 +41,10 @@ public class Go4LunchDataBase implements DataBaseService {
             databaseRef.orderByChild("id").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    List<String> likesPlaces = new ArrayList<>();
                     users.clear();
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+
                         String id = postSnapshot.child("id").getValue().toString();
                         String name = postSnapshot.child("userName").getValue().toString();
                         String email = postSnapshot.child("userEmail").getValue().toString();
@@ -55,11 +56,12 @@ public class Go4LunchDataBase implements DataBaseService {
                         } catch (Exception e) {
 
                         }
-                        try {
-                            String likedPlaces = postSnapshot.child("likedPlacesId").getValue().toString();
-                            user.setLikedPlacesId(likedPlaces);
-                        } catch (Exception e) {
 
+                        if (user.getLikedPlacesId() == null) {
+                            for (DataSnapshot childSnapshot : postSnapshot.child("likedPlacesId").getChildren()) {
+                                String placeLikedId = childSnapshot.getValue(String.class);
+                                user.setLikedPlacesId(placeLikedId);
+                            }
                         }
                         users.add(user);
                     }
@@ -85,27 +87,13 @@ public class Go4LunchDataBase implements DataBaseService {
         DatabaseReference databaseReference = firebaseDatabase.getReference("selection");
         if (selectedPlaces.size() > 0) {
             for (int i = 0; i < selectedPlaces.size(); i++) {
-                for (String userId : selectedPlaces.get(i).getUserId().split(",")) {
-                    if (user.getId().contains(userId)) {
-                        selectedPlace = selectedPlaces.get(i);
-                    }
-                }
-            }
-        }
-            if (selectedPlace.getUserId() != null) {
-                String[] places = selectedPlace.getUserId().split(",");
-                if (places.length > 1) {
-                    if (places[0].contains(user.getId())) {
-                        String usersId = selectedPlace.getUserId().replace(user.getId() + ",", "");
-                        selectedPlace.setUserId(usersId);
-                        databaseReference.child(selectedPlace.getId()).setValue(selectedPlace);
-
-
-                    } else {
-                        String usersId = selectedPlace.getUserId().replace("," + user.getId(), "");
-                        selectedPlace.setUserId(usersId);
-                        databaseReference.child(selectedPlace.getId()).setValue(selectedPlace);
-
+                if (selectedPlaces.get(i).getUserId().size() > 1){
+                    for (String userId : selectedPlaces.get(i).getUserId()) {
+                        if (user.getId().contains(userId)) {
+                            selectedPlaces.get(i).getUserId().remove(user.getId());
+                            databaseReference.child(selectedPlace.getId()).setValue(selectedPlace);
+                            break;
+                        }
                     }
                 } else {
                     selectedPlaces.remove(selectedPlace);
@@ -113,6 +101,8 @@ public class Go4LunchDataBase implements DataBaseService {
                 }
 
             }
+        }
+
         }catch (NullPointerException e){}
 
 
@@ -148,14 +138,23 @@ public class Go4LunchDataBase implements DataBaseService {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     selectedPlaces.clear();
+                    SelectedPlace selectedPlace;
+                    String id;
+                    String name;
+                    String latLng;
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        String id = postSnapshot.child("id").getValue().toString();
-                        String name = postSnapshot.child("name").getValue().toString();
-                        String latLng = postSnapshot.child("latLng").getValue().toString();
-                        String userId = postSnapshot.child("userId").getValue().toString();
-                        SelectedPlace selectedPlace = new SelectedPlace(id, name, latLng, userId);
+                        id = postSnapshot.child("id").getValue().toString();
+                        name = postSnapshot.child("name").getValue().toString();
+                        latLng = postSnapshot.child("latLng").getValue().toString();
+                        selectedPlace = new SelectedPlace(id, name, latLng);
+
+                        for (DataSnapshot childSnapshot : postSnapshot.child("userId").getChildren()) {
+                            String userId = childSnapshot.getValue(String.class);
+                            selectedPlace.setUserId(userId);
+                        }
                         selectedPlaces.add(selectedPlace);
                     }
+
                 }
 
                 @Override
@@ -173,39 +172,25 @@ public class Go4LunchDataBase implements DataBaseService {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("selection");
         DatabaseReference userReference = firebaseDatabase.getReference("users");
-        if (selectedPlaces.size() > 0) {
             for (int i = 0; i < selectedPlaces.size(); i++) {
-                for (String userId : selectedPlaces.get(i).getUserId().split(",")) {
-                    if (user.getId().equals(userId)) {
-                        selectedPlace = selectedPlaces.get(i);
+                if (selectedPlaces.get(i).getUserId().size() > 1){
+                    for (String userId : selectedPlaces.get(i).getUserId()) {
+                        if (user.getId().contains(userId)) {
+                            selectedPlace = selectedPlaces.get(i);
+                            selectedPlaces.get(i).getUserId().remove(user.getId());
+                            databaseReference.child(selectedPlace.getId()).setValue(selectedPlace);
+                            user.setChoice(null);
+                            userReference.child(user.getId()).child("choice").removeValue();
+                            break;
+                        }
                     }
-                }
-            }
-        }
-        String[] places = selectedPlace.getUserId().split(",");
-        List<String> usersId = new ArrayList<>();
-        for (String userId : places){
-            usersId.add(userId);
-        }
-        if (usersId.size() >= 2){
-            for (String id : usersId){
-                if (id.equals(user.getId())){
-                    usersId.remove(id);
-                    String joiningUsers = TextUtils.join(",", usersId);
-                    selectedPlace.setUserId(joiningUsers);
-                    databaseReference.child(selectedPlace.getId()).setValue(selectedPlace);
+                } else {
+                    selectedPlaces.remove(selectedPlace);
+                    databaseReference.child(selectedPlace.getId()).removeValue();
                     user.setChoice(null);
                     userReference.child(user.getId()).child("choice").removeValue();
                 }
             }
-        } else {
-            usersId.remove(usersId);
-            selectedPlaces.remove(selectedPlace);
-            databaseReference.child(selectedPlace.getId()).removeValue();
-            user.setChoice(null);
-            userReference.child(user.getId()).child("choice").removeValue();
-        }
-
     }
 
     @Override
@@ -216,7 +201,7 @@ public class Go4LunchDataBase implements DataBaseService {
     }
 
     @Override
-    public void setUserLikedPlaces(String userLikedPlaces) {
+    public void setUserLikedPlaces(List<String> userLikedPlaces) {
         User user = service.getUser();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference.child("users").child(user.getId()).child("likedPlacesId").setValue(userLikedPlaces);

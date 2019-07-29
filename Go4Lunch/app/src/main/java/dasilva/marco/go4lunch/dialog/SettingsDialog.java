@@ -5,7 +5,6 @@ import dasilva.marco.go4lunch.di.DI;
 import dasilva.marco.go4lunch.firebase.DataBaseService;
 import dasilva.marco.go4lunch.service.Go4LunchService;
 import dasilva.marco.go4lunch.ui.main.Main;
-import dasilva.marco.go4lunch.ui.map.utils.GetNearbyPlacesData;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -143,19 +142,5 @@ public class SettingsDialog implements View.OnClickListener {
         });
         confirmDialog.show();
     }
-
-    public void getPlaces(){
-        String url = context.getString(R.string.first_part_url) + service.getCurrentLocation().getLatitude()
-                + "," + service.getCurrentLocation().getLatitude() +
-                context.getString(R.string.radius_search_url) + service.getUser().getRadius() +
-                context.getString(R.string.restaurant_type_url) + context.getString(R.string.google_api_key);
-        Object dataTransfer[] = new Object[3];
-        dataTransfer[0] = service.getGoogleMap();
-        dataTransfer[1] = url;
-        dataTransfer[2] = context;
-        GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
-        getNearbyPlacesData.execute(dataTransfer);
-    }
-
 
 }

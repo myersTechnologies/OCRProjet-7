@@ -124,22 +124,17 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
     }
 
     public void setUserChoice(){
-        if (dataBaseService.getListOfSelectedPlaces().size() > 0) {
+        if (dataBaseService.getListOfSelectedPlaces() != null) {
             for (SelectedPlace place : dataBaseService.getListOfSelectedPlaces()) {
                 if (place.getId().equals(service.getPlaceMarker().getId())) {
-                    place.setUserId(place.getUserId() + "," + service.getUser().getId());
+                    place.setUserId(service.getUser().getId());
                     databaseReference.child(getString(R.string.selection)).child(service.getPlaceMarker().getId()).setValue(place);
-                } else {
-                    SelectedPlace selectedPlace = new SelectedPlace(service.getPlaceMarker().getId(), service.getPlaceMarker().getName(),
-                            String.valueOf(service.getPlaceMarker().getLatLng()), service.getUser().getId());
-
-                    databaseReference.child(getString(R.string.selection)).child(service.getPlaceMarker().getId()).setValue(selectedPlace);
                 }
             }
         } else {
             SelectedPlace selectedPlace = new SelectedPlace(service.getPlaceMarker().getId(), service.getPlaceMarker().getName(),
-                    String.valueOf(service.getPlaceMarker().getLatLng()), service.getUser().getId());
-
+                    String.valueOf(service.getPlaceMarker().getLatLng()));
+            selectedPlace.setUserId(service.getUser().getId());
             databaseReference.child(getString(R.string.selection)).child(service.getPlaceMarker().getId()).setValue(selectedPlace);
         }
         service.getUser().setChoice(service.getPlaceMarker().getName());
@@ -179,25 +174,24 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
                 break;
             case R.id.details_like_item:
                 if (service.getUser().getLikedPlacesId() != null){
-                    for (String likedPLacesId : service.getUser().getLikedPlacesId().split(",")) {
-                        if (!likedPLacesId.equals(service.getPlaceMarker().getId())) {
-                            service.getUser().setLikedPlacesId(service.getUser().getLikedPlacesId() + "," + service.getPlaceMarker().getId());
-                            service.setUserLikedPlaces(service.getUser().getLikedPlacesId() + "," + service.getPlaceMarker().getId());
-                            int likes = service.getPlaceMarker().getLikes();
-                            service.getPlaceMarker().setLikes(likes++);
-                            service.countPlacesLikes();
+                    if (!service.getUser().getLikedPlacesId().contains(service.getPlaceMarker().getId())) {
+                        service.getUser().setLikedPlacesId(service.getPlaceMarker().getId());
+                        service.setUserLikedPlaces(service.getUser().getLikedPlacesId());
+                        int likes = service.getPlaceMarker().getLikes();
+                        service.getPlaceMarker().setLikes(likes++);
+                        service.countPlacesLikes();
 
                         } else {
                             Toast.makeText(this, R.string.already_liked, Toast.LENGTH_SHORT).show();
                         }
-                    }
+
                 } else {
                     service.getUser().setLikedPlacesId(service.getPlaceMarker().getId());
-                    service.setUserLikedPlaces(service.getPlaceMarker().getId());
+                    service.setUserLikedPlaces(service.getUser().getLikedPlacesId());
                     int likes = service.getPlaceMarker().getLikes();
                     service.getPlaceMarker().setLikes(likes++);
+                    service.countPlacesLikes();
                 }
-
                 break;
         }
         return true;

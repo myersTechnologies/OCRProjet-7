@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
@@ -106,7 +107,7 @@ public class ListViewFragment extends Fragment {
 
                 // Start the autocomplete intent.
                 Intent intent = new Autocomplete.IntentBuilder(
-                        AutocompleteActivityMode.OVERLAY, fieldList)
+                        AutocompleteActivityMode.OVERLAY, fieldList).setCountry("fr").setTypeFilter(TypeFilter.ESTABLISHMENT)
                         .build(getContext());
                 startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
                 break;

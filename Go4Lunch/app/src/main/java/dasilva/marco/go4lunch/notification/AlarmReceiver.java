@@ -23,7 +23,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         String [] usersLenght = joiningUsers.split(", ");
 
 
-        if (lunchAdress == " "){
+        if (lunchAdress.equals(" ")){
             message = lunchAdress + "\n" + context.getString(R.string.nobody_joining) + " " + context.getString(R.string.bon_appetit);
         } else {
             if (usersLenght.length == 1){

@@ -1,17 +1,19 @@
 package dasilva.marco.go4lunch.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SelectedPlace {
 
     private String id;
     private String name;
     private String latLng;
-    private String userId;
+    private List<String> userId;
 
-    public SelectedPlace(String id, String name, String latLng, String userId) {
+    public SelectedPlace(String id, String name, String latLng) {
         this.id = id;
         this.name = name;
         this.latLng = latLng;
-        this.userId = userId;
     }
 
     public String getId() {
@@ -39,12 +41,15 @@ public class SelectedPlace {
         this.latLng = latLng;
     }
 
-    public String getUserId() {
+    public List<String> getUserId() {
         return userId;
     }
 
     public void setUserId(String userId) {
-        this.userId = userId;
+        if (this.userId == null){
+            this.userId = new ArrayList<String>();
+        }
+        this.userId.add(userId);
     }
 
 

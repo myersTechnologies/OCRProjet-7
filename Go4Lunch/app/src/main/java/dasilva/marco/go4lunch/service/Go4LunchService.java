@@ -28,7 +28,7 @@ public interface Go4LunchService {
     void setCurrentLocation(Location location);
     double getDistance(Location target, Location current);
     void setUserRadius(String radius);
-    void setUserLikedPlaces(String userLikedPlaces);
+    void setUserLikedPlaces(List<String> userLikedPlaces);
     void countPlaceSelectedByUsers();
     LatLng getRealLatLng(SelectedPlace place);
     void countPlacesLikes();

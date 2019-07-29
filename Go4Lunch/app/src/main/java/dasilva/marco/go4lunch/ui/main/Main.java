@@ -59,7 +59,6 @@ public class Main extends AppCompatActivity {
     private SignInButton googleSignIn;
     private DataBaseService dataBaseService;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -282,31 +281,37 @@ public class Main extends AppCompatActivity {
         databaseRef.child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 if (dataSnapshot.exists()) {
                     if (dataSnapshot.child("id").getValue().toString().equals(service.getUser().getId())) {
 
                         if (dataSnapshot.child("choice").getValue() != null) {
-                                String choice = dataSnapshot.child("choice").getValue().toString();
-                                service.getUser().setChoice(choice);
+                            String choice = dataSnapshot.child("choice").getValue().toString();
+                            service.getUser().setChoice(choice);
                         }
 
-                        if (dataSnapshot.child("likedPlacesId").getValue() != null) {
-                            String likedPlaces = dataSnapshot.child("likedPlacesId").getValue().toString();
-                            service.getUser().setLikedPlacesId(likedPlaces);
-                        }
                         if (dataSnapshot.child("radius").getValue() != null) {
                             String radius = dataSnapshot.child("radius").getValue().toString();
                             service.getUser().setRadius(radius);
                         } else {
                             service.getUser().setRadius("0");
                         }
+
+                        if (service.getUser().getLikedPlacesId() == null) {
+                            for (DataSnapshot childSnapshot : dataSnapshot.child("likedPlacesId").getChildren()) {
+                                String placeLikedId = childSnapshot.getValue(String.class);
+                                service.getUser().setLikedPlacesId(placeLikedId);
+                            }
+                        }
+
+
                     }
                 }
                 if (service.getUser() != null) {
                     databaseRef.child(service.getUser().getId()).setValue(service.getUser());
                 }
-                }
+
+
+            }
 
 
             @Override

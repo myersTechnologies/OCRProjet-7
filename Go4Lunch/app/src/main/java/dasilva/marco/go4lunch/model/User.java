@@ -2,6 +2,9 @@ package dasilva.marco.go4lunch.model;
 
 import android.support.annotation.NonNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
 
     private String id;
@@ -10,7 +13,7 @@ public class User {
     private String imageUrl;
     private String choice;
     private String radius;
-    private String likedPlacesId;
+    private List<String> likedPlacesId;
 
     public User(@NonNull String userId, @NonNull String userName, @NonNull String userEmail, @NonNull String imageUrl) {
         this.userName = userName;
@@ -68,12 +71,16 @@ public class User {
         this.radius = radius;
     }
 
-    public String getLikedPlacesId() {
+    public List<String> getLikedPlacesId() {
         return likedPlacesId;
     }
 
     public void setLikedPlacesId(String likedPlacesId) {
-        this.likedPlacesId = likedPlacesId;
+        if (this.likedPlacesId == null){
+            this.likedPlacesId = new ArrayList<>();
+        }
+            this.likedPlacesId.add(likedPlacesId);
+
     }
 
     public String getFirtName(){
