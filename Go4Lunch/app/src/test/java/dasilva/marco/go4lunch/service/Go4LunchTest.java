@@ -54,7 +54,8 @@ public class Go4LunchTest {
 
     @Test
     public void checkIfSelectedPlaceIsAddedWithSucess() {
-        SelectedPlace selectedPlace = new SelectedPlace("1", "new selected place", "12.30, 1420", "5");
+        SelectedPlace selectedPlace = new SelectedPlace("1", "new selected place", "12.30, 1420");
+        selectedPlace.setUserId("5");
         List<SelectedPlace> selectedPlaces = new ArrayList<>();
         selectedPlaces.add(selectedPlace);
         assertEquals(selectedPlaces.get(0).getId(), selectedPlace.getId());
@@ -74,14 +75,15 @@ public class Go4LunchTest {
         placeMarker.setId("1");
         places.add(placeMarker);
 
-        SelectedPlace selected = new SelectedPlace("1", "new place marker", "12.30, 1420", "5");
+        SelectedPlace selected = new SelectedPlace("1", "new place marker", "12.30, 1420");
+        selected.setUserId("5");
         selectedPlaces.add(selected);
 
         for (PlaceMarker marker : places) {
             int count = 0;
             for (User user : users) {
                 for (SelectedPlace selectedPlace : selectedPlaces) {
-                    for (String userId : selectedPlace.getUserId().split(","))
+                    for (String userId : selectedPlace.getUserId())
                         if (user.getId().compareTo(userId) == 0) {
                             if (marker.getId().contains(selectedPlace.getId())) {
                                 count++;
@@ -101,7 +103,8 @@ public class Go4LunchTest {
         List<User> users = new ArrayList<>();
         List<SelectedPlace> selectedPlaces = new ArrayList<>();
 
-        SelectedPlace selected = new SelectedPlace("1", "new place marker", "12.30, 1420", "5");
+        SelectedPlace selected = new SelectedPlace("1", "new place marker", "12.30, 1420");
+        selected.setUserId("5");
         selectedPlaces.add(selected);
 
         PlaceMarker placeMarker = new PlaceMarker();
@@ -118,7 +121,7 @@ public class Go4LunchTest {
             int count = 0;
             for (User user : users) {
                 if (user.getLikedPlacesId() != null) {
-                    for (String likedPlaces : user.getLikedPlacesId().split(",")) {
+                    for (String likedPlaces : user.getLikedPlacesId()) {
                         if (marker.getId().equals(likedPlaces)) {
                             count++;
                             marker.setLikes(count);
@@ -133,7 +136,8 @@ public class Go4LunchTest {
 
     @Test
     public void getSplittedRealLatLng() {
-        SelectedPlace place = new SelectedPlace("1", "Etablishment", "lat/lng: (46.794237, 4.848902)", "5");
+        SelectedPlace place = new SelectedPlace("1", "Etablishment", "lat/lng: (46.794237, 4.848902)");
+        place.setUserId("5");
         String[] coordinates = place.getLatLng().split(",");
         String[] coordinatesLat = coordinates[0].split(Pattern.quote("("));
         String[] coordinatesLng = coordinates[1].split(Pattern.quote(")"));
@@ -154,11 +158,11 @@ public class Go4LunchTest {
         users.add(currentUser);
         currentUser.setChoice("Etablishment");
 
-        SelectedPlace place = new SelectedPlace("1", "Etablishment", "lat/lng: (46.794237, 4.848902)", "5");
-        selectedPlaces.add(place);
+        SelectedPlace place = new SelectedPlace("1", "Etablishment", "lat/lng: (46.794237, 4.848902)");
         place.setUserId("5");
+        selectedPlaces.add(place);
 
-        assertEquals(selectedPlaces.get(0).getUserId(), "5");
+        assertEquals(selectedPlaces.get(0).getUserId().get(0), "5");
     }
 
     @Test
@@ -169,9 +173,9 @@ public class Go4LunchTest {
         User currentUser = new User("5", "Marco", "marco@gmail.com", "https://jhjhjhd.png");
         users.add(currentUser);
         currentUser.setChoice("Etablishment");
-        SelectedPlace place = new SelectedPlace("1", "Etablishment", "lat/lng: (46.794237, 4.848902)", "5");
-        selectedPlaces.add(place);
+        SelectedPlace place = new SelectedPlace("1", "Etablishment", "lat/lng: (46.794237, 4.848902)");
         place.setUserId("5");
+        selectedPlaces.add(place);
 
         selectedPlaces.remove(place);
         currentUser.setChoice(null);
@@ -193,32 +197,23 @@ public class Go4LunchTest {
         user.setChoice("Etablishment");
         currentUser.setChoice("Etablishment");
 
-        SelectedPlace place = new SelectedPlace("1", "Etablishment", "lat/lng: (46.794237, 4.848902)", "5");
+        SelectedPlace place = new SelectedPlace("1", "Etablishment", "lat/lng: (46.794237, 4.848902)");
+        place.setUserId("3");
+        place.setUserId("5");
         selectedPlaces.add(place);
-        place.setUserId("3,5");
 
-        if (selectedPlaces.size() > 0) {
-            for (int i = 0; i < selectedPlaces.size(); i++) {
-                for (String userId : selectedPlaces.get(i).getUserId().split(",")) {
-                    if (currentUser.getId().contains(userId)) {
-                        place = selectedPlaces.get(i);
-                    }
-                }
+        for (int i = 0; i < selectedPlaces.size(); i++) {
+            if (selectedPlaces.get(i).getUserId().size() > 1){
+                selectedPlaces.get(i).getUserId().remove(user.getId());
+                user.setChoice(null);
+                break;
+            } else {
+                selectedPlaces.remove(selectedPlaces.get(i));
+                user.setChoice(null);
             }
         }
 
-        String[] places = place.getUserId().split(",");
-        if (places[0].contains(user.getId())) {
-            String usersId = place.getUserId().replace(user.getId() + ",", "");
-            place.setUserId(usersId);
-            user.setChoice(null);
-        } else {
-            String usersId = place.getUserId().replace("," + user.getId(), "");
-            place.setUserId(usersId);
-            user.setChoice(null);
-        }
-
-        assertEquals(selectedPlaces.get(0).getUserId(), "5");
+        assertEquals(selectedPlaces.get(0).getUserId().get(0), "5");
         assertEquals(user.getChoice(), null);
     }
 
