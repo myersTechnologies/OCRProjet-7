@@ -34,7 +34,7 @@ import dasilva.marco.go4lunch.events.DetailsEvent;
 import dasilva.marco.go4lunch.model.PlaceMarker;
 import dasilva.marco.go4lunch.service.Go4LunchService;
 import dasilva.marco.go4lunch.ui.map.adapters.RviewListAdapter;
-import dasilva.marco.go4lunch.ui.map.utils.PlaceDetailsTask;
+import dasilva.marco.go4lunch.ui.map.utils.details.PlaceDetailsTask;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;

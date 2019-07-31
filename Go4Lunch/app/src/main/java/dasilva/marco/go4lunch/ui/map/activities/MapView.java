@@ -35,7 +35,7 @@ import dasilva.marco.go4lunch.ui.details.DetailsActivity;
 import dasilva.marco.go4lunch.ui.map.fragments.ListViewFragment;
 import dasilva.marco.go4lunch.ui.map.fragments.MapFragment;
 import dasilva.marco.go4lunch.ui.map.fragments.WorkmatesFragment;
-import dasilva.marco.go4lunch.ui.map.utils.PlaceDetailsTask;
+import dasilva.marco.go4lunch.ui.map.utils.details.PlaceDetailsTask;
 
 
 public class MapView extends AppCompatActivity
@@ -82,18 +82,18 @@ public class MapView extends AppCompatActivity
 
         initView();
 
+
         setUserChoiceToList();
 
-        if (service.getListMarkers() == null) {
-            if (choice != null) {
-                startAlarmToSendANotification(choice);
+            if (service.getUser().getChoice() != null) {
+                startAlarmToSendANotification(service.getUser().getChoice());
             } else {
                 try {
                     checkChoiceStringToRemoveSelectedPlace();
                 } catch (Exception e) {
                 }
             }
-        }
+
         try {
             service.countPlaceSelectedByUsers();
             service.countPlacesLikes();
@@ -222,7 +222,7 @@ public class MapView extends AppCompatActivity
     @Override
     public void onDestroy(){
         super.onDestroy();
-        FirebaseAuth.getInstance().signOut();
+
     }
 
 }

@@ -50,15 +50,15 @@ import dasilva.marco.go4lunch.model.SelectedPlace;
 import dasilva.marco.go4lunch.model.User;
 import dasilva.marco.go4lunch.service.Go4LunchService;
 import dasilva.marco.go4lunch.ui.details.DetailsActivity;
-import dasilva.marco.go4lunch.ui.map.utils.GetNearbyPlacesData;
-import dasilva.marco.go4lunch.ui.map.utils.PlaceDetailsTask;
+import dasilva.marco.go4lunch.ui.map.utils.nearby.GetNearbyPlacesData;
+import dasilva.marco.go4lunch.ui.map.utils.details.PlaceDetailsTask;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener,  GoogleMap.OnMarkerClickListener {
+public class MapFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener,  GoogleMap.OnMarkerClickListener{
 
     private SupportMapFragment mapFragment;
     private GoogleMap mapView;
@@ -69,6 +69,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
     private DataBaseService dataBaseService;
     private static MapFragment maps;
     private SharedPreferences sharedPreferences;
+
+
 
     public MapFragment() {
         // Required empty public constructor
@@ -85,6 +87,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
+
         service = DI.getService();
         fab = view.findViewById(R.id.my_location_fab);
         fab.setOnClickListener(this);
@@ -99,11 +102,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
 
         setHasOptionsMenu(true);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.title_activity_map_view);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle( R.string.title_activity_map_view);
 
         sharedPreferences = getActivity().getSharedPreferences(getString(R.string.app_name), MODE_PRIVATE);
-
-
 
         return view;
     }
@@ -236,6 +237,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         int id = item.getItemId();
         switch (id) {
             case R.id.search:
+
                 int AUTOCOMPLETE_REQUEST_CODE = 6;
 
                 if (!Places.isInitialized()) {
@@ -345,7 +347,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
 
         sharedPreferences.edit().putString(getString(R.string.joining_users), joiningUsers).apply();
     }
-
 
 
 

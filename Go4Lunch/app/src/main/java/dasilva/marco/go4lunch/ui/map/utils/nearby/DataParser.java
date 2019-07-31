@@ -1,4 +1,4 @@
-package dasilva.marco.go4lunch.ui.map.utils;
+package dasilva.marco.go4lunch.ui.map.utils.nearby;
 
 
 import com.google.gson.JsonIOException;

@@ -1,4 +1,4 @@
-package dasilva.marco.go4lunch.ui.map.utils;
+package dasilva.marco.go4lunch.ui.map.utils.nearby;
 
 
 import android.content.Context;
@@ -20,6 +20,8 @@ import dasilva.marco.go4lunch.firebase.DataBaseService;
 import dasilva.marco.go4lunch.model.PlaceMarker;
 import dasilva.marco.go4lunch.model.SelectedPlace;
 import dasilva.marco.go4lunch.service.Go4LunchService;
+import dasilva.marco.go4lunch.ui.map.utils.DownloadUrl;
+import dasilva.marco.go4lunch.ui.map.utils.details.PlaceDetailsTask;
 
 
 public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {

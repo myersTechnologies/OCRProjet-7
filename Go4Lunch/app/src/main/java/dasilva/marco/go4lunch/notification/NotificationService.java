@@ -10,11 +10,17 @@ import android.os.IBinder;
 import android.widget.Toast;
 
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import dasilva.marco.go4lunch.R;
+import dasilva.marco.go4lunch.di.DI;
+import dasilva.marco.go4lunch.firebase.DataBaseService;
+import dasilva.marco.go4lunch.model.User;
+import dasilva.marco.go4lunch.service.Go4LunchService;
 
 public class NotificationService extends Service {
 
@@ -26,6 +32,9 @@ public class NotificationService extends Service {
     private String joiningUsers;
     private SharedPreferences preferences;
     private boolean timesOn = false;
+    private FirebaseUser user;
+    private DataBaseService dataBaseService;
+    private Go4LunchService service;
 
     public NotificationService() {
     }
@@ -42,9 +51,22 @@ public class NotificationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        user = FirebaseAuth.getInstance().getCurrentUser();
         preferences = getSharedPreferences(getString(R.string.app_name), MODE_PRIVATE);
         choice = preferences.getString(getString(R.string.choice), null);
         choiceAdress = preferences.getString(getString(R.string.choice_adress), null);
+        dataBaseService = DI.getDatabaseService();
+        service = DI.getService();
+        if (service.getUser() == null){
+            User currentUser = new User(user.getUid(), user.getDisplayName(),
+                    user.getEmail(), user.toString());
+            currentUser.setChoice(choice);
+            service.setUser(currentUser);
+        }
+        if (dataBaseService.getListOfSelectedPlaces() == null) {
+            dataBaseService.setListOfSelectedPlaces();
+        }
+
         joiningUsers = preferences.getString(getString(R.string.joining_users), null);
         Toast.makeText(this, getString(R.string.notification_toast), Toast.LENGTH_SHORT).show();
         runTimer();
@@ -70,6 +92,7 @@ public class NotificationService extends Service {
         choiceAdress = null;
         joiningUsers = null;
         timesOn = true;
+        dataBaseService.removeCompleteSelectionDatabase();
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, timeToCheck, AlarmManager.INTERVAL_DAY , pendingIntent);
     }

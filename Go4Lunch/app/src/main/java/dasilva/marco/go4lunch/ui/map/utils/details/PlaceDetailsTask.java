@@ -1,4 +1,4 @@
-package dasilva.marco.go4lunch.ui.map.utils;
+package dasilva.marco.go4lunch.ui.map.utils.details;
 
 
 import android.os.AsyncTask;
@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import dasilva.marco.go4lunch.model.PlaceMarker;
+import dasilva.marco.go4lunch.ui.map.utils.DownloadUrl;
 
 public class PlaceDetailsTask extends AsyncTask<Object, String, String> {
 

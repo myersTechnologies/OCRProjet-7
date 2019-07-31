@@ -206,4 +206,52 @@ public class Go4LunchDataBase implements DataBaseService {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         databaseReference.child("users").child(user.getId()).child("likedPlacesId").setValue(userLikedPlaces);
     }
+
+    @Override
+    public void getAdditionalUserData(String userId){
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        final DatabaseReference databaseRef = firebaseDatabase.getReference("users");
+        databaseRef.child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    if (dataSnapshot.child("id").getValue().toString().equals(service.getUser().getId())) {
+
+                        if (dataSnapshot.child("choice").getValue() != null) {
+                            String choice = dataSnapshot.child("choice").getValue().toString();
+                            service.getUser().setChoice(choice);
+                        }
+
+                        if (dataSnapshot.child("radius").getValue() != null) {
+                            String radius = dataSnapshot.child("radius").getValue().toString();
+                            service.getUser().setRadius(radius);
+                        } else {
+                            service.getUser().setRadius("0");
+                        }
+
+                        if (service.getUser().getLikedPlacesId() == null) {
+                            for (DataSnapshot childSnapshot : dataSnapshot.child("likedPlacesId").getChildren()) {
+                                String placeLikedId = childSnapshot.getValue(String.class);
+                                service.getUser().setLikedPlacesId(placeLikedId);
+                            }
+                        }
+
+
+                    }
+                }
+                if (service.getUser() != null) {
+                    databaseRef.child(service.getUser().getId()).setValue(service.getUser());
+                }
+
+
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 }

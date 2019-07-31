@@ -1,4 +1,4 @@
-package dasilva.marco.go4lunch.ui.map.utils;
+package dasilva.marco.go4lunch.ui.map.utils.details;
 
 
 import android.util.Log;

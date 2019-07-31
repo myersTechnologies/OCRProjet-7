@@ -15,6 +15,7 @@ public interface DataBaseService {
     void removeCompleteSelectionDatabase();
     void setUserRadius(String radius);
     void setUserLikedPlaces(List<String> userLikedPlaces);
+    void getAdditionalUserData(String userId);
 
 
 }
