@@ -37,7 +37,7 @@
                 android:imeOptions="actionSearch"
                 android:inputType="textAutoComplete|textAutoCorrect"
                 android:text=""
-                android:hint="Search restaurants"
+                android:hint="@string/search_restaurant_text"
                 android:textAlignment="center"
                 android:textColorHint="@color/quantum_grey"
                 />

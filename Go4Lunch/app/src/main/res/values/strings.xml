@@ -128,4 +128,7 @@
     <string name="chat_hint">Write a message</string>
     <string name="chat_toolbar_title" translatable="false">Go4Lunch Chat</string>
 
+    <!--auto complete text view -->
+    <string name="search_restaurant_text">Search restaurants</string>
+
 </resources>

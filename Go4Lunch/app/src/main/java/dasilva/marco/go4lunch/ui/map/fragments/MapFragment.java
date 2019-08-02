@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import dasilva.marco.go4lunch.BuildConfig;
 import dasilva.marco.go4lunch.R;
 import dasilva.marco.go4lunch.di.DI;
 import dasilva.marco.go4lunch.firebase.DataBaseService;
@@ -75,8 +76,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
     private DataBaseService dataBaseService;
     private static MapFragment maps;
     private SharedPreferences sharedPreferences;
-    Toolbar toolbar = null;
-
+    private Toolbar toolbar = null;
+    private static final String API_KEY = BuildConfig.GOOGLEAPIKEY;
 
 
     public MapFragment() {
@@ -206,7 +207,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
     public void getMapMarker(){
             String url = getString(R.string.first_part_url) + currentLocation.getLatitude()
                     + "," + currentLocation.getLongitude() +
-                    getString(R.string.radius_search_url) + service.getUser().getRadius() + getString(R.string.restaurant_type_url) + getString(R.string.google_api_key);
+                    getString(R.string.radius_search_url) + service.getUser().getRadius() + getString(R.string.restaurant_type_url) + API_KEY;
             Object dataTransfer[] = new Object[3];
             dataTransfer[0] = mapView;
             dataTransfer[1] = url;
@@ -253,7 +254,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
             case R.id.search:
                 toolbar = ((AppCompatActivity) getActivity()).findViewById(R.id.toolbar_chat);
                 toolbar.setVisibility(View.VISIBLE);
-                AutoCompleteTextView autoCompleteTextView = toolbar.findViewById(R.id.auto_complete_text);
+                final AutoCompleteTextView autoCompleteTextView = toolbar.findViewById(R.id.auto_complete_text);
+                String [] cities = new String[]{"London", "Lisbon", "Barcelona", "Madrid", "Paris", "Berlin", "Amsterdam"};
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,  cities );
+                autoCompleteTextView.setAdapter(adapter);
+                autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Toast.makeText(getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+                        toolbar.setVisibility(View.GONE);
+                        autoCompleteTextView.setText("");
+                    }
+                });
 
                 ImageView searchImage = (ImageView) toolbar.findViewById(R.id.search_image);
                 searchImage.setOnClickListener(this);
@@ -303,7 +315,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
 
     public void getMarkerDetails(PlaceMarker marker){
         String uri = getContext().getString(R.string.url_begin) + marker.getId() +
-                getContext().getString(R.string.and_key) + getContext().getString(R.string.google_maps_key);
+                getContext().getString(R.string.and_key) + API_KEY;
         Object dataTransfer[] = new Object[2];
         dataTransfer[0] = uri;
         dataTransfer[1] = marker;

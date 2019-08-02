@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import dasilva.marco.go4lunch.BuildConfig;
 import dasilva.marco.go4lunch.R;
 import dasilva.marco.go4lunch.di.DI;
 import dasilva.marco.go4lunch.firebase.DataBaseService;
@@ -33,6 +34,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
     private Go4LunchService service = DI.getService();
     private DataBaseService dataBaseService = DI.getDatabaseService();
     private Context context;
+    private static final String API_KEY = BuildConfig.GOOGLEAPIKEY;
 
     @Override
     protected String doInBackground(Object... objects) {
@@ -121,7 +123,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             service.getPlaceMarker().setLatLng(latLng);
 
             String uri = context.getString(R.string.url_begin) + placeMarker.getId() +
-                    context.getString(R.string.and_key) + context.getString(R.string.google_maps_key);
+                    context.getString(R.string.and_key) + API_KEY;
             Object dataTransfer[] = new Object[2];
             dataTransfer[0] = uri;
             dataTransfer[1] = placeMarker;

@@ -33,6 +33,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.Arrays;
 import java.util.List;
 
+import dasilva.marco.go4lunch.BuildConfig;
 import dasilva.marco.go4lunch.R;
 import dasilva.marco.go4lunch.di.DI;
 import dasilva.marco.go4lunch.events.DetailsEvent;
@@ -49,6 +50,7 @@ public class ListViewFragment extends Fragment {
     private Go4LunchService service = DI.getService();
     private RviewListAdapter adapter;
     private RecyclerView listRecyclerView;
+    private static final String API_KEY = BuildConfig.GOOGLEAPIKEY;
 
     public ListViewFragment() {
         // Required empty public constructor
@@ -101,9 +103,20 @@ public class ListViewFragment extends Fragment {
 
         switch (id) {
             case R.id.search:
-                Toolbar toolbar = ((AppCompatActivity) getActivity()).findViewById(R.id.toolbar_chat);
+                final Toolbar toolbar = ((AppCompatActivity) getActivity()).findViewById(R.id.toolbar_chat);
                 toolbar.setVisibility(View.VISIBLE);
-                AutoCompleteTextView autoCompleteTextView = toolbar.findViewById(R.id.auto_complete_text);
+                final AutoCompleteTextView autoCompleteTextView = toolbar.findViewById(R.id.auto_complete_text);
+                String [] cities = new String[]{"London", "Lisbon", "Barcelona", "Madrid", "Paris", "Berlin", "Amsterdam"};
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,  cities );
+                autoCompleteTextView.setAdapter(adapter);
+                autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Toast.makeText(getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+                        toolbar.setVisibility(View.GONE);
+                        autoCompleteTextView.setText("");
+                    }
+                });
 
                 break;
 
@@ -139,7 +152,7 @@ public class ListViewFragment extends Fragment {
 
 
         String uri = getContext().getString(R.string.url_begin) + marker.getId() +
-                getContext().getString(R.string.and_key) + getContext().getString(R.string.google_maps_key);
+                getContext().getString(R.string.and_key) + API_KEY;
         Object dataTransfer[] = new Object[2];
         dataTransfer[0] = uri;
         dataTransfer[1] = marker;
@@ -148,8 +161,6 @@ public class ListViewFragment extends Fragment {
 
 
     }
-
-
 
 
 

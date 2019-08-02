@@ -10,6 +10,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "GOOGLEAPIKEY", API_KEY)
+
     }
     buildTypes {
         release {
@@ -23,9 +26,6 @@ android {
         googlePlayServicesVersion = "15.0.1"
     }
 
-    testOptions {
-        unitTests.returnDefaultValues = true
-    }
 
 
 }
