@@ -106,9 +106,7 @@
 
     <!-- onBind -->
     <string name="on_bind_string" translatable="false">Not yet implemented</string>
-
-    <string name="google_places_api_key" translatable="false">AIzaSyB8UrOG_Axpme4PiJ0Z_HPBwDcI-m9xnFA</string>
-
+    
     //for notification
     <string name="choice_adress" translatable="false">choiceAdress</string>
     <string name="joining_users" translatable="false">joiningUsers</string>
