@@ -23,10 +23,10 @@ import dasilva.marco.go4lunch.service.Go4LunchService;
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
 
 
-    Go4LunchService service = DI.getService();
-    DataBaseService dataBaseService;
-    List<ChatMessage> chatMessages;
-    ChatMessage message;
+    private Go4LunchService service = DI.getService();
+    private DataBaseService dataBaseService;
+    private List<ChatMessage> chatMessages;
+    private ChatMessage message;
 
 
     public ChatAdapter(List<ChatMessage> messages) {

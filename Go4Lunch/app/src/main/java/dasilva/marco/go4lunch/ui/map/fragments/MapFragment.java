@@ -13,11 +13,17 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -69,6 +75,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
     private DataBaseService dataBaseService;
     private static MapFragment maps;
     private SharedPreferences sharedPreferences;
+    Toolbar toolbar = null;
 
 
 
@@ -135,6 +142,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                     });
                 }
                 break;
+
+            case R.id.search_image:
+                toolbar.setVisibility(View.GONE);
+                break;
+            case R.id.voice_image:
+                break;
+
         }
     }
 
@@ -237,22 +251,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         int id = item.getItemId();
         switch (id) {
             case R.id.search:
+                toolbar = ((AppCompatActivity) getActivity()).findViewById(R.id.toolbar_chat);
+                toolbar.setVisibility(View.VISIBLE);
+                AutoCompleteTextView autoCompleteTextView = toolbar.findViewById(R.id.auto_complete_text);
 
-                int AUTOCOMPLETE_REQUEST_CODE = 6;
+                ImageView searchImage = (ImageView) toolbar.findViewById(R.id.search_image);
+                searchImage.setOnClickListener(this);
 
-                if (!Places.isInitialized()) {
-                    Places.initialize(getContext(), getString(R.string.google_places_api_key));
-                    PlacesClient placesClient = Places.createClient(getContext());
-                }
+                ImageView voiceImage = (ImageView) toolbar.findViewById(R.id.voice_image);
+                voiceImage.setOnClickListener(this);
 
-                List<Place.Field> fieldList = Arrays.asList(Place.Field.NAME, Place.Field.ID,Place.Field.LAT_LNG, Place.Field.ADDRESS,
-                        Place.Field.WEBSITE_URI, Place.Field.PHONE_NUMBER, Place.Field.TYPES);
-
-                // Start the autocomplete intent.
-                Intent intent = new Autocomplete.IntentBuilder(
-                        AutocompleteActivityMode.OVERLAY, fieldList)
-                        .build(getContext());
-                startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
                 break;
         }
         return super.onOptionsItemSelected(item);

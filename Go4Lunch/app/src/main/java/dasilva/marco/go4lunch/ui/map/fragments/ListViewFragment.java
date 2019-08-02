@@ -8,10 +8,15 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
@@ -96,20 +101,10 @@ public class ListViewFragment extends Fragment {
 
         switch (id) {
             case R.id.search:
-                int AUTOCOMPLETE_REQUEST_CODE = 7;
+                Toolbar toolbar = ((AppCompatActivity) getActivity()).findViewById(R.id.toolbar_chat);
+                toolbar.setVisibility(View.VISIBLE);
+                AutoCompleteTextView autoCompleteTextView = toolbar.findViewById(R.id.auto_complete_text);
 
-                if (!Places.isInitialized()) {
-                    Places.initialize(getContext(), getString(R.string.google_places_api_key));
-                    PlacesClient placesClient = Places.createClient(getContext());
-                }
-
-                List<Place.Field> fieldList = Arrays.asList(Place.Field.NAME, Place.Field.ID,Place.Field.LAT_LNG, Place.Field.ADDRESS);
-
-                // Start the autocomplete intent.
-                Intent intent = new Autocomplete.IntentBuilder(
-                        AutocompleteActivityMode.OVERLAY, fieldList).setCountry("fr").setTypeFilter(TypeFilter.ESTABLISHMENT)
-                        .build(getContext());
-                startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
                 break;
 
         }

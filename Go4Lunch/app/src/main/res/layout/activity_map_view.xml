@@ -13,6 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <include
+        layout="@layout/toolbar_auto_complete"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -23,6 +30,23 @@
         app:menu="@menu/activity_map_view_drawer"
         app:itemIconTint="@color/quantum_white_100"
         app:itemTextColor="@color/quantum_white_100"
-        android:background="@color/colorPrimary"/>
+        android:background="@color/colorPrimary">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/go_lunch_24dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                />
+        </RelativeLayout>
+
+
+    </android.support.design.widget.NavigationView>
+
+
 
 </android.support.v4.widget.DrawerLayout>

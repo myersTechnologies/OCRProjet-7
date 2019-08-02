@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -44,6 +45,13 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        Toolbar chatToolbar = findViewById(R.id.toolbar_chat);
+        setSupportActionBar(chatToolbar);
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(getString(R.string.chat_toolbar_title));
+
         chatRecyclerView = findViewById(R.id.list_of_messages);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         chatRecyclerView.setLayoutManager(mLayoutManager);
@@ -77,10 +85,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
     private void displayChatMessages() {
-
         chatMessages = new ArrayList<>();
-
-
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("chat");
@@ -101,10 +106,6 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
 
     }
 }

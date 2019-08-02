@@ -126,5 +126,6 @@
     <string name="chat_maj" translatable="false">CHAT</string>
     <string name="chat" translatable="false">chat</string>
     <string name="chat_hint">Write a message</string>
+    <string name="chat_toolbar_title" translatable="false">Go4Lunch Chat</string>
 
 </resources>

@@ -83,7 +83,6 @@ public class MapView extends AppCompatActivity
 
         initView();
 
-
         setUserChoiceToList();
 
             if (service.getUser().getChoice() != null) {
