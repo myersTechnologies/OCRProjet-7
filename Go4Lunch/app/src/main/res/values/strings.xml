@@ -112,7 +112,7 @@
     //for notification
     <string name="choice_adress" translatable="false">choiceAdress</string>
     <string name="joining_users" translatable="false">joiningUsers</string>
-    <string name="notification_text_1" >You choosed to lunch at </string>
+    <string name="notification_text_1">You choosed to lunch at </string>
     <string name="single_join"> is joining you</string>
     <string name="multiple_join"> are joining you</string>
     <string name="bon_appetit"> Have a nice meal !</string>
@@ -121,5 +121,10 @@
     <string name="main_text">Find a nice restaurant and invite your co-workers for lunch !</string>
 
     <string name="notification_toast">You will be notificated at 12 o\'clock</string>
+
+    <!--Chat-->
+    <string name="chat_maj" translatable="false">CHAT</string>
+    <string name="chat" translatable="false">chat</string>
+    <string name="chat_hint">Write a message</string>
 
 </resources>

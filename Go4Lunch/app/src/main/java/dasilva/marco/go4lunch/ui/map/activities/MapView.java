@@ -23,6 +23,7 @@ import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
 import dasilva.marco.go4lunch.R;
+import dasilva.marco.go4lunch.chat.ChatActivity;
 import dasilva.marco.go4lunch.di.DI;
 import dasilva.marco.go4lunch.dialog.SettingsDialog;
 import dasilva.marco.go4lunch.firebase.DataBaseService;
@@ -154,6 +155,10 @@ public class MapView extends AppCompatActivity
                    }
                }
             break;
+            case R.id.chat:
+                Intent chatIntent = new Intent(this, ChatActivity.class);
+                startActivity(chatIntent);
+                break;
             case R.id.settings:
                 SettingsDialog settingsDialog = new SettingsDialog(this);
                 settingsDialog.createSettingsDialog();

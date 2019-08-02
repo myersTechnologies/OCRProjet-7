@@ -38,5 +38,6 @@
     <string name="main_text">Trouvez un restaurant et invitez vos collègues à déjeuner !</string>
     <string name="nobody_joining">Personne</string>
     <string name="notification_toast">Vous serez notifié a midi</string>
+    <string name="chat_hint">Écrivez un message</string>
 
 </resources>
