@@ -40,6 +40,7 @@
     <string name="notification_toast">Serà notificado ao meio dia</string>
     <string name="chat_hint">Escreva uma mensagem</string>
     <string name="search_restaurant_text">Procurar restaurantes</string>
+    <string name="search_workmates_text">Procurar colegas</string>
 
 
 </resources>

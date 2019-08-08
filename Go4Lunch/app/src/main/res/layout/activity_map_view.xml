@@ -28,9 +28,9 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_map_view"
         app:menu="@menu/activity_map_view_drawer"
-        app:itemIconTint="@color/quantum_white_100"
-        app:itemTextColor="@color/quantum_white_100"
-        android:background="@color/colorPrimary">
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
+        style="@style/NavigationViewTheme">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">

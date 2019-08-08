@@ -22,10 +22,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/message_user"
-        android:textStyle="normal|bold"
         app:layout_constraintStart_toEndOf="@id/item_chat_avatar"
         app:layout_constraintTop_toTopOf="@id/item_chat_avatar"
         android:layout_marginStart="10dp"
+        style="@style/MessageTextChatStyleBold"
         />
 
     <TextView
@@ -34,17 +34,18 @@
         android:layout_alignBottom="@+id/message_user"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/item_chat_avatar"
-        android:id="@+id/message_time" />
+        android:id="@+id/message_time"
+        style="@style/MessageTextChatStyle"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:id="@+id/message_text"
-        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@id/item_chat_avatar"
         app:layout_constraintTop_toBottomOf="@id/message_user"
         android:layout_marginStart="10dp"
+        style="@style/MessageTextChatStyleText18sp"
         />
 
     <ImageView
@@ -63,10 +64,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/user_message"
-        android:textStyle="normal|bold"
         app:layout_constraintEnd_toStartOf="@id/user_chat_avatar"
         app:layout_constraintTop_toTopOf="@id/user_chat_avatar"
         android:layout_marginEnd="10dp"
+        style="@style/MessageTextChatStyleBold"
         />
 
     <TextView
@@ -75,16 +76,18 @@
         android:layout_alignBottom="@+id/user_message"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/item_chat_avatar"
-        android:id="@+id/user_message_time" />
+        android:id="@+id/user_message_time"
+        style="@style/MessageTextChatStyle"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:id="@+id/user_message_text"
-        android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@id/user_chat_avatar"
         app:layout_constraintTop_toBottomOf="@id/user_message"
         android:layout_marginEnd="10dp"
+        style="@style/MessageTextChatStyleText18sp"
         />
 </android.support.constraint.ConstraintLayout>

@@ -53,7 +53,25 @@ public class DetailsDataParser {
         String phoneNumber;
         String website;
         String photo = "-NA-";
+        String vicinity = "-NA-";
+        String latitude;
+        String longitude;
+        boolean opened = false;
         try {
+
+            if (!googleDetailsJson.isNull("vicinity")){
+                vicinity = googleDetailsJson.getString("vicinity");
+            }
+
+            latitude = googleDetailsJson.getJSONObject("geometry").getJSONObject("location").getString("lat");
+            longitude = googleDetailsJson.getJSONObject("geometry").getJSONObject("location").getString("lng");
+
+
+            if (!googleDetailsJson.isNull("opening_hours")) {
+                JSONObject openingHours = googleDetailsJson.getJSONObject("opening_hours");
+                opened = openingHours.getBoolean("open_now");
+            }
+
 
             try {
                 phoneNumber = googleDetailsJson.getString("formatted_phone_number");
@@ -85,6 +103,12 @@ public class DetailsDataParser {
             googleDetailsMap.put("website", website);
             googleDetailsMap.put("weekday_text", weekDayText);
             googleDetailsMap.put("photo_reference", photo);
+            googleDetailsMap.put("vicinity", vicinity);
+            googleDetailsMap.put("lat", latitude);
+            googleDetailsMap.put("lng", longitude);
+            googleDetailsMap.put("open_now", String.valueOf(opened));
+
+
         } catch (JsonIOException e){
             e.printStackTrace();
         } catch (JSONException e) {

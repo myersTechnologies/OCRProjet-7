@@ -9,15 +9,12 @@
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="wrap_content">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_chat"
+        android:id="@+id/toolbar_search"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:popupTheme="@style/AppTheme.PopupOverlay">
+        android:layout_height="?attr/actionBarSize">
 
     </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
@@ -25,13 +22,15 @@
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
         android:src="@drawable/ic_send_black_24dp"
         android:id="@+id/fab"
+        app:fabCustomSize="45dp"
         android:backgroundTint="@color/white"
-        android:layout_alignParentBottom="true"
+        android:layout_alignBottom="@id/input"
         android:layout_alignParentEnd="true"
-        app:fabSize="mini" />
+        android:layout_marginEnd="10dp"
+        app:maxImageSize="30dp"
+         />
 
 
     <EditText
@@ -42,6 +41,9 @@
         android:layout_toLeftOf="@id/fab"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
         />
 
 
@@ -54,6 +56,8 @@
         android:dividerHeight="16dp"
         android:divider="@android:color/transparent"
         android:id="@+id/list_of_messages"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="?attr/actionBarSize"/>
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"/>
 </RelativeLayout>

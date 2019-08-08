@@ -104,13 +104,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             }
 
         }
-        if (service.getListMarkers() == null) {
-            service.setListMarkers(places);
-        } else {
-            for (PlaceMarker placeMarker : places){
-                service.getListMarkers().add(placeMarker);
-            }
-        }
+
     }
 
     private void setPlaceMarkerInfo(HashMap<String, String> googlePlace, LatLng latLng){

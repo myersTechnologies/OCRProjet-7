@@ -39,7 +39,6 @@ public class ApiService implements Go4LunchService {
     private DataBaseService dataBaseService;
     private RviewListAdapter adapter;
 
-
     @Override
     public void setUser(User user) {
         this.user = user;
@@ -208,11 +207,11 @@ public class ApiService implements Go4LunchService {
                         String[] openHours = today.split(",");
                         String[] openedUntil = openHours[0].split("–");
                         String [] openHourWithoutDay = openedUntil[0].split(dayOfTheWeek + ":");
-                        openUntil = openHourWithoutDay[1];
+                        openUntil = openHourWithoutDay[1] + "PM";
                         } catch (ArrayIndexOutOfBoundsException e){
                             String[] openHours = today.split("–");
                             String[] openedUntil = openHours[0].split(dayOfTheWeek + ":");
-                            openUntil = openedUntil[1];
+                            openUntil = openedUntil[1] + "PM";
                         }
                     } else {
                         try {
@@ -283,7 +282,14 @@ public class ApiService implements Go4LunchService {
     public void setUserLunchChoice(PlaceMarker placeMarker, Context context) {
         if (places == null) {
             places = new ArrayList<>();
-            if (!places.contains(placeMarker)) {
+            getAdress(placeMarker, context);
+        } else {
+            getAdress(placeMarker, context);
+        }
+    }
+
+    private void getAdress(PlaceMarker placeMarker, Context context){
+        if (!places.contains(placeMarker)) {
 
             Geocoder geocoder = new Geocoder(context, Locale.getDefault());
             List<Address> addresses = null;
@@ -306,12 +312,8 @@ public class ApiService implements Go4LunchService {
             }
             placeMarker.setAdress(address + ", " + city + ", " + country);
 
-                places.add(placeMarker);
-            }
+            places.add(placeMarker);
         }
-        Log.d("LISTSIZE", String.valueOf(places.size()));
-
-
     }
 
 }

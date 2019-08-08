@@ -106,7 +106,7 @@
 
     <!-- onBind -->
     <string name="on_bind_string" translatable="false">Not yet implemented</string>
-    
+
     //for notification
     <string name="choice_adress" translatable="false">choiceAdress</string>
     <string name="joining_users" translatable="false">joiningUsers</string>
@@ -128,5 +128,6 @@
 
     <!--auto complete text view -->
     <string name="search_restaurant_text">Search restaurants</string>
+    <string name="search_workmates_text">Search workmates</string>
 
 </resources>

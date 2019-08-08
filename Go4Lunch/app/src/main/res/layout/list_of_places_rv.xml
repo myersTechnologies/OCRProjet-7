@@ -65,7 +65,6 @@
         android:layout_height="wrap_content"
         style="?attr/ratingBarStyleSmall"
         android:layout_marginTop="5dp"
-        android:src="@drawable/ic_person_outline_black_24dp"
         app:layout_constraintRight_toLeftOf="@id/place_image"
         app:layout_constraintTop_toBottomOf="@+id/show_people_ic"
         android:layout_marginRight="5dp"

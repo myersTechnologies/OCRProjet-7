@@ -124,7 +124,7 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
     }
 
     public void setUserChoice(){
-        if (dataBaseService.getListOfSelectedPlaces() != null) {
+        if (dataBaseService.getListOfSelectedPlaces().size() > 0) {
             for (SelectedPlace place : dataBaseService.getListOfSelectedPlaces()) {
                 if (place.getId().equals(service.getPlaceMarker().getId())) {
                     place.setUserId(service.getUser().getId());

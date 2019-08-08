@@ -22,19 +22,15 @@ import dasilva.marco.go4lunch.service.Go4LunchService;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
 
-
     private Go4LunchService service = DI.getService();
     private DataBaseService dataBaseService;
     private List<ChatMessage> chatMessages;
-    private ChatMessage message;
-
+    private static  String format = "dd-MM-yyyy (HH:mm:ss)";
 
     public ChatAdapter(List<ChatMessage> messages) {
         this.chatMessages = messages;
         dataBaseService = DI.getDatabaseService();
     }
-
-
 
     @NonNull
     @Override
@@ -45,29 +41,32 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        message = chatMessages.get(i);
-        // Set their text
-
+        ChatMessage message = chatMessages.get(i);
         for (User users : dataBaseService.getUsersList()){
-            if (message.getMessageUser().equals(users.getId())){
-                if (message.getMessageUser().equals(service.getUser().getId())){
+            if (message.getMessageUser().equals(service.getUser().getId())){
+                Glide.with(viewHolder.itemView.getContext()).load(service.getUser().getImageUrl())
+                        .apply(RequestOptions.circleCropTransform()).into(viewHolder.currentUserAvatar);
+                viewHolder.userMessage.setText(service.getUser().getUserName());
+                viewHolder.userMessageText.setText(message.getMessageText());
+                viewHolder.userMessageTime.setText(DateFormat.format(format,
+                        message.getMessageTime()));
+                viewHolder.senderMessageUser.setVisibility(View.INVISIBLE);
+                viewHolder.senderMessageText.setVisibility(View.INVISIBLE);
+                viewHolder.senderMessageTime.setVisibility(View.INVISIBLE);
+            } else {
+                if (users.getId().contains(message.getMessageUser())) {
                     Glide.with(viewHolder.itemView.getContext()).load(users.getImageUrl())
-                            .apply(RequestOptions.circleCropTransform()).into(viewHolder.currentUserAvatar);
-                    viewHolder.userMessage.setText(users.getUserName());
-                    viewHolder.userMessageText.setText(message.getMessageText());
-                    viewHolder.userMessageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
+                            .apply(RequestOptions.circleCropTransform()).into(viewHolder.senderAvatar);
+                    viewHolder.senderMessageUser.setText(users.getUserName());
+                    viewHolder.senderMessageText.setText(message.getMessageText());
+                    viewHolder.senderMessageTime.setText(DateFormat.format(format,
                             message.getMessageTime()));
-                } else {
-                Glide.with(viewHolder.itemView.getContext()).load(users.getImageUrl())
-                        .apply(RequestOptions.circleCropTransform()).into(viewHolder.userAvatar);
-                viewHolder.messageUser.setText(users.getUserName());
-                    viewHolder.messageText.setText(message.getMessageText());
-                    viewHolder.messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
-                            message.getMessageTime()));
+                    viewHolder.userMessageText.setVisibility(View.INVISIBLE);
+                    viewHolder.userMessage.setVisibility(View.INVISIBLE);
+                    viewHolder.userMessageTime.setVisibility(View.INVISIBLE);
                 }
             }
         }
-
     }
 
     @Override
@@ -77,10 +76,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView messageText;
-        private TextView messageUser;
-        private TextView messageTime;
-        private ImageView userAvatar;
+        private TextView senderMessageText;
+        private TextView senderMessageUser;
+        private TextView senderMessageTime;
+        private ImageView senderAvatar;
         private TextView userMessageText;
         private TextView userMessage;
         private TextView userMessageTime;
@@ -90,15 +89,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
             super(itemView);
 
             // Get references to the views of message.xml
-           messageText = (TextView)itemView.findViewById(R.id.message_text);
-           messageUser = (TextView)itemView.findViewById(R.id.message_user);
-           messageTime = (TextView)itemView.findViewById(R.id.message_time);
-           userAvatar = (ImageView) itemView.findViewById(R.id.item_chat_avatar);
+           senderMessageText = itemView.findViewById(R.id.message_text);
+           senderMessageUser = itemView.findViewById(R.id.message_user);
+           senderMessageTime = itemView.findViewById(R.id.message_time);
+           senderAvatar = itemView.findViewById(R.id.item_chat_avatar);
 
-           userMessageText = (TextView)itemView.findViewById(R.id.user_message_text);
-           userMessage = (TextView)itemView.findViewById(R.id.user_message);
-           userMessageTime = (TextView)itemView.findViewById(R.id.user_message_time);
-           currentUserAvatar = (ImageView) itemView.findViewById(R.id.user_chat_avatar);
+           userMessageText = itemView.findViewById(R.id.user_message_text);
+           userMessage = itemView.findViewById(R.id.user_message);
+           userMessageTime = itemView.findViewById(R.id.user_message_time);
+           currentUserAvatar = itemView.findViewById(R.id.user_chat_avatar);
 
         }
     }

@@ -6,5 +6,6 @@
     <color name="green">#78C34A</color>
     <color name="red">#D83636</color>
     <color name="gold">#FFC107</color>
-    <color name="white">#fff</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#0C0C0C</color>
 </resources>

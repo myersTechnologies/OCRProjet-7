@@ -22,6 +22,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
+import dasilva.marco.go4lunch.BuildConfig;
 import dasilva.marco.go4lunch.R;
 import dasilva.marco.go4lunch.chat.ChatActivity;
 import dasilva.marco.go4lunch.di.DI;
@@ -48,7 +49,7 @@ public class MapView extends AppCompatActivity
     private Toolbar toolbar;
     private DataBaseService dataBaseService;
     private SharedPreferences preferences;
-    private String choice;
+    private Fragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,14 +61,13 @@ public class MapView extends AppCompatActivity
         service = DI.getService();
         dataBaseService = DI.getDatabaseService();
         preferences = this.getSharedPreferences(getString(R.string.app_name), MODE_PRIVATE);
-        choice = preferences.getString(getString(R.string.choice), null);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        changeFragment(MapFragment.newInstance(), R.string.map_fragment);
+        changeFragment(new MapFragment(), R.string.map_fragment);
 
 
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -83,21 +83,13 @@ public class MapView extends AppCompatActivity
 
         initView();
 
-        setUserChoiceToList();
-
-            if (service.getUser().getChoice() != null) {
-                startAlarmToSendANotification(service.getUser().getChoice());
-            } else {
-                try {
-                    checkChoiceStringToRemoveSelectedPlace();
-                } catch (Exception e) {
-                }
+        if (service.getUser().getChoice() != null) {
+            startAlarmToSendANotification(service.getUser().getChoice());
+        } else {
+            try {
+                checkChoiceStringToRemoveSelectedPlace();
+            } catch (Exception e) {
             }
-
-        try {
-            service.countPlaceSelectedByUsers();
-            service.countPlacesLikes();
-        } catch (NullPointerException e){
         }
 
     }
@@ -169,14 +161,17 @@ public class MapView extends AppCompatActivity
                 startActivity(new Intent(getApplicationContext(), Main.class));
                 break;
             case R.id.mapViewItem:
-                changeFragment(new MapFragment(), R.string.map_fragment);
+                fragment = new MapFragment();
+                changeFragment(fragment, R.string.map_fragment);
                 break;
             case R.id.listViewItem:
-                changeFragment(new ListViewFragment(), R.string.list_fragment);
+                fragment = new ListViewFragment();
+                changeFragment(fragment, R.string.list_fragment);
 
                 break;
             case R.id.workMatesItem:
-                changeFragment(new WorkmatesFragment(), R.string.workmates_fragment);
+                fragment = new WorkmatesFragment();
+                changeFragment(fragment, R.string.workmates_fragment);
                break;
         }
 
@@ -192,13 +187,22 @@ public class MapView extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                String fragmentName = getSupportFragmentManager().getBackStackEntryAt(
+                        getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+                changeFragment(fragment,
+                        Integer.parseInt(fragmentName));
+            } else {
+                fragment = new MapFragment();
+                changeFragment(fragment, R.string.map_fragment);
+            }
         }
     }
 
     private void changeFragment(Fragment fragment, int value){
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, fragment, String.valueOf(value)).addToBackStack(null)
+                .replace(R.id.container, fragment, String.valueOf(value)).addToBackStack(String.valueOf(value))
                 .commit();
     }
 
@@ -208,6 +212,7 @@ public class MapView extends AppCompatActivity
             placeMarker.setId(selectedPlace.getId());
             placeMarker.setLatLng(service.getRealLatLng(selectedPlace));
             placeMarker.setName(selectedPlace.getName());
+            getMarkerDetails(placeMarker);
             service.setUserLunchChoice(placeMarker, this);
             break;
         }
@@ -215,18 +220,12 @@ public class MapView extends AppCompatActivity
 
     public void getMarkerDetails(PlaceMarker placeMarker){
             String uri = getString(R.string.url_begin) + placeMarker.getId() +
-                    getString(R.string.and_key) + getString(R.string.google_maps_key);
+                    getString(R.string.and_key) + BuildConfig.GOOGLEAPIKEY;
             Object dataTransfer[] = new Object[2];
             dataTransfer[0] = uri;
             dataTransfer[1] = placeMarker;
             PlaceDetailsTask getNearbyPlacesData = new PlaceDetailsTask();
             getNearbyPlacesData.execute(dataTransfer);
-    }
-
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
-
     }
 
 }

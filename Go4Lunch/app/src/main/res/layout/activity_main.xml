@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.Main"
     android:orientation="vertical"
-    android:theme="@style/MainTheme"
     >
 
     <ImageView
@@ -33,16 +32,13 @@
         android:id="@+id/goLunchText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textSize="75sp"
-        app:layout_constraintTop_toBottomOf="@+id/goLunchImage"
-        android:textColor="@android:color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
-        android:gravity="center"
-        />
+        android:layout_marginEnd="20dp"
+        android:text="@string/app_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/goLunchImage"
+        style="@style/MainTextStyle75sp"/>
 
     <TextView
         android:id="@+id/description_not_used_textview"
@@ -51,12 +47,12 @@
         android:text="@string/main_text"
         app:layout_constraintTop_toBottomOf="@id/goLunchText"
         android:textSize="12sp"
-        android:textColor="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
         android:gravity="center"
+        style="@style/MainTextStyle12sp"
         />
 
     <com.facebook.login.widget.LoginButton

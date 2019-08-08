@@ -8,13 +8,14 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,10 +23,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,16 +35,18 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.libraries.places.widget.Autocomplete;
-import com.google.android.libraries.places.widget.AutocompleteActivity;
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import dasilva.marco.go4lunch.BuildConfig;
@@ -60,8 +61,6 @@ import dasilva.marco.go4lunch.ui.details.DetailsActivity;
 import dasilva.marco.go4lunch.ui.map.utils.nearby.GetNearbyPlacesData;
 import dasilva.marco.go4lunch.ui.map.utils.details.PlaceDetailsTask;
 
-import static android.app.Activity.RESULT_CANCELED;
-import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
 
@@ -74,21 +73,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
     private Location currentLocation;
     private Go4LunchService service;
     private DataBaseService dataBaseService;
-    private static MapFragment maps;
     private SharedPreferences sharedPreferences;
     private Toolbar toolbar = null;
     private static final String API_KEY = BuildConfig.GOOGLEAPIKEY;
+    private PlacesClient client;
+    private AutoCompleteTextView autoCompleteTextView;
 
 
     public MapFragment() {
         // Required empty public constructor
-    }
-
-    public static MapFragment newInstance(){
-        if (maps == null){
-            maps = new MapFragment();
-        }
-        return maps;
     }
 
     @Override
@@ -131,25 +124,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                         public void onSuccess(Location location) {
                             currentLocation = location;
                             current = new LatLng(location.getLatitude(), location.getLongitude());
-                            if (service.getListMarkers() == null) {
-                                getMapMarker();
-                            } else {
+                            if (service.getListMarkers() != null) {
                                 getMarkersFromList();
+                            } else {
+                                getMapMarker();
                             }
                             mapView.addMarker(new MarkerOptions().position(current));
                             mapView.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 15));
+                            getJoiningUsers();
 
                         }
                     });
                 }
                 break;
-
-            case R.id.search_image:
-                toolbar.setVisibility(View.GONE);
-                break;
-            case R.id.voice_image:
-                break;
-
         }
     }
 
@@ -174,9 +161,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         service.setCallback(this);
         service.setGoogleMap(mapView);
         mapView.setOnMarkerClickListener(this);
+        Places.initialize(getContext(), BuildConfig.GOOGLEAPIKEY);
+        client = Places.createClient(getContext());
 
 
-        FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+        final FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -187,17 +176,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                     // GPS location can be null if GPS is switched off
                     currentLocation = location;
                     current = new LatLng(location.getLatitude(), location.getLongitude());
-                    if (service.getListMarkers() == null) {
-                        getMapMarker();
+                    if (service.getListMarkers() != null) {
+                       getMarkersFromList();
                     } else {
-                        getMarkersFromList();
+                        getMapMarker();
                     }
                     mapView.addMarker(new MarkerOptions().position(current));
                     mapView.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 15));
                     service.setCurrentLocation(location);
                     getJoiningUsers();
-
-
                 }
             });
         }
@@ -229,7 +216,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                         mapView.addMarker(markerOptions);
                     }
                 }
-
             }
 
         } else {
@@ -246,72 +232,96 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         }
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
             case R.id.search:
-                toolbar = ((AppCompatActivity) getActivity()).findViewById(R.id.toolbar_chat);
+                toolbar = ((AppCompatActivity) getActivity()).findViewById(R.id.toolbar_search);
                 toolbar.setVisibility(View.VISIBLE);
-                final AutoCompleteTextView autoCompleteTextView = toolbar.findViewById(R.id.auto_complete_text);
-                String [] cities = new String[]{"London", "Lisbon", "Barcelona", "Madrid", "Paris", "Berlin", "Amsterdam"};
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,  cities );
-                autoCompleteTextView.setAdapter(adapter);
-                autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                autoCompleteTextView = toolbar.findViewById(R.id.auto_complete_text);
+                autoCompleteTextView.addTextChangedListener(new TextWatcher() {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Toast.makeText(getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
-                        toolbar.setVisibility(View.GONE);
-                        autoCompleteTextView.setText("");
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        googlePredictions(s.toString());
                     }
                 });
-
-                ImageView searchImage = (ImageView) toolbar.findViewById(R.id.search_image);
-                searchImage.setOnClickListener(this);
-
-                ImageView voiceImage = (ImageView) toolbar.findViewById(R.id.voice_image);
-                voiceImage.setOnClickListener(this);
 
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 6) {
-            if (resultCode == RESULT_OK) {
-                Place place = Autocomplete.getPlaceFromIntent(data);
-                PlaceMarker marker = new PlaceMarker();
-                marker.setId(place.getId());
-                marker.setName(place.getName());
-                marker.setAdress(place.getAddress());
-                marker.setLatLng(place.getLatLng());
-                getMarkerDetails(marker);
-                if (!service.getListMarkers().contains(marker)) {
-                    service.getListMarkers().add(marker);
+    public void googlePredictions(String query){
+        // Create a new token for the autocomplete session. Pass this to FindAutocompletePredictionsRequest,
+        // and once again when the user makes a selection (for example when calling fetchPlace()).
+        AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
+
+        // Create a RectangularBounds object.
+        RectangularBounds bounds = RectangularBounds.newInstance(
+                new LatLng(service.getCurrentLocation().getLatitude(), service.getCurrentLocation().getLongitude()),
+                new LatLng(service.getCurrentLocation().getLatitude(), service.getCurrentLocation().getLongitude()));
+        // Use the builder to create a FindAutocompletePredictionsRequest.
+        FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
+                // Call either setLocationBias() OR setLocationRestriction().
+                .setLocationBias(bounds)
+                //.setLocationRestriction(bounds)
+                .setCountry("fr")
+                .setTypeFilter(TypeFilter.ESTABLISHMENT)
+                .setSessionToken(token)
+                .setQuery(query)
+                .build();
+
+        client.findAutocompletePredictions(request).addOnSuccessListener(new OnSuccessListener<FindAutocompletePredictionsResponse>() {
+            @Override
+            public void onSuccess(FindAutocompletePredictionsResponse response) {
+                final List<String> idList = new ArrayList<>();
+                List<String> places = new ArrayList<>();
+                for (AutocompletePrediction result : response.getAutocompletePredictions()){
+                    if (result.getPlaceTypes().toString().toLowerCase().contains("restaurant")) {
+                        idList.add(result.getPlaceId());
+                        places.add(result.getPrimaryText(null) + "\n" + result.getSecondaryText(null));
+                    }
                 }
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, places);
+                autoCompleteTextView.setAdapter(adapter);
+                autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Toast.makeText(getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+                        String [] predictions = parent.getItemAtPosition(position).toString().split("\n");
+                        String predictionId = idList.get(position);
+                        String predictionName = predictions[0];
+                        PlaceMarker placeMarker = new PlaceMarker();
+                        placeMarker.setId(predictionId);
+                        placeMarker.setName(predictionName);
+                        getMarkerDetails(placeMarker);
+                        toolbar.setVisibility(View.GONE);
+                        autoCompleteTextView.setText("");
+                    }
+                });
 
-                MarkerOptions markerOptions = new MarkerOptions().position(place.getLatLng());
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-                mapView.addMarker(markerOptions);
-                mapView.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 15));
-            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                // TODO: Handle the error.
-                Status status = Autocomplete.getStatusFromIntent(data);
-            } else if (resultCode == RESULT_CANCELED) {
-                // The user canceled the operation.
             }
-        }
+        });
+
+        client.findAutocompletePredictions(request).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-    }
-
 
     public void getMarkerDetails(PlaceMarker marker){
         String uri = getContext().getString(R.string.url_begin) + marker.getId() +
@@ -368,6 +378,24 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         sharedPreferences.edit().putString(getString(R.string.joining_users), joiningUsers).apply();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (toolbar != null) {
+            if (toolbar.getVisibility() == View.VISIBLE) {
+                toolbar.setVisibility(View.GONE);
+            }
+        }
+    }
 
+    @Override
+    public void onDetach(){
+        super.onDetach();
+        if (toolbar != null) {
+            if (toolbar.getVisibility() == View.VISIBLE) {
+                toolbar.setVisibility(View.GONE);
+            }
+        }
+    }
 
 }

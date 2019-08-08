@@ -10,24 +10,24 @@
         android:id="@+id/restaurant_details_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:maxLength="19"
+        android:textColor="@color/white"
         />
 
     <TextView
         android:id="@+id/restaurant_details_adress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/restaurant_details_info"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
+        android:textColor="@color/white"
         />
 
     <RatingBar
