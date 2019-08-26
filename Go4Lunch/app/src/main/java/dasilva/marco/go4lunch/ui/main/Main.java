@@ -40,6 +40,7 @@ import dasilva.marco.go4lunch.R;
 import dasilva.marco.go4lunch.di.DI;
 import dasilva.marco.go4lunch.firebase.DataBaseService;
 import dasilva.marco.go4lunch.model.User;
+import dasilva.marco.go4lunch.notification.NotificationService;
 import dasilva.marco.go4lunch.service.Go4LunchService;
 import dasilva.marco.go4lunch.ui.map.activities.MapView;
 
@@ -53,12 +54,16 @@ public class Main extends AppCompatActivity {
     private Go4LunchService service;
     private SignInButton googleSignIn;
     private DataBaseService dataBaseService;
+    private static String  EMAIL = "email";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        Intent notificationService = new Intent(this, NotificationService.class);
+        stopService(notificationService);
 
         service = DI.getService();
         dataBaseService = DI.getDatabaseService();
@@ -68,14 +73,11 @@ public class Main extends AppCompatActivity {
 
         mapViewActivity = new Intent(this, MapView.class);
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
-
         mAuth = FirebaseAuth.getInstance();
 
         requestPermissions();
         callbackManager = CallbackManager.Factory.create();
-        signInFb.setReadPermissions("email");
+        signInFb.setReadPermissions(EMAIL);
 
         service.setDataBase(dataBaseService);
         dataBaseService.setUsersList();
@@ -98,7 +100,7 @@ public class Main extends AppCompatActivity {
 
     //if user id connected get to map activity directly
     public void checkIfUserIsConnected(){
-        if (mAuth.getCurrentUser() != null) {
+        if (service.getUser() != null) {
             startMapActivity();
             startActivity(mapViewActivity);
         } else {
@@ -145,7 +147,6 @@ public class Main extends AppCompatActivity {
                                 FirebaseUser fbUser = task.getResult().getUser();
                                 onAuthSuccess(fbUser);
                                 startActivity(mapViewActivity);
-
                             } catch (NullPointerException e){
                                 Toast.makeText(getApplicationContext(), R.string.create_user_failed,
                                         Toast.LENGTH_SHORT).show();
@@ -268,8 +269,5 @@ public class Main extends AppCompatActivity {
             dataBaseService.getAdditionalUserData(user.getId());
         }
     }
-
-
-
 
 }

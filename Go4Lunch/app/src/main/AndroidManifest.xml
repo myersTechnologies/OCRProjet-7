@@ -38,7 +38,7 @@
         <activity
             android:name=".ui.map.activities.MapView"
             android:screenOrientation="portrait" />
-        <activity android:name=".chat.ChatActivity"
+        <activity android:name=".ui.chat.ChatActivity"
             android:parentActivityName=".ui.map.activities.MapView"
             android:screenOrientation="portrait">
             <meta-data
@@ -48,7 +48,7 @@
         </activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="@string/google_maps_api_key" />
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />

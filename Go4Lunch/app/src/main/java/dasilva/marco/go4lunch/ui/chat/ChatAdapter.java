@@ -1,4 +1,4 @@
-package dasilva.marco.go4lunch.chat;
+package dasilva.marco.go4lunch.ui.chat;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

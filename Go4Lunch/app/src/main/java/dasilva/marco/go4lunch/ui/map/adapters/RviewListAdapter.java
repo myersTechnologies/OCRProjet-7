@@ -62,21 +62,40 @@ public class RviewListAdapter extends RecyclerView.Adapter<RviewListAdapter.View
             if (placeMarker.getOpeninHours()) {
                 String opened = viewHolder.itemView.getContext().getString(R.string.open_true);
                 String until = viewHolder.itemView.getContext().getString(R.string.until);
-                if (service.getTodayClosingHour(placeMarker).equals(viewHolder.itemView.getContext().getString(R.string.open_24))) {
-                    openInfo = opened + " " + service.getTodayClosingHour(placeMarker);
+                if (service.getTodayClosingHour(placeMarker).equals("Closing soon")){
+                    openInfo = service.getTodayClosingHour(placeMarker);
                     viewHolder.placeHoraires.setText(openInfo);
-                    viewHolder.placeHoraires.setTextColor(viewHolder.placeHoraires.getContext().getResources().getColor(R.color.green));
+                    viewHolder.placeHoraires.setTextColor(viewHolder.placeAdress.getContext().getResources().getColor(R.color.red));
                 } else {
-                    openInfo = opened + " " + until + service.getTodayClosingHour(placeMarker);
-                    viewHolder.placeHoraires.setText(openInfo);
-                    viewHolder.placeHoraires.setTextColor(viewHolder.placeHoraires.getContext().getResources().getColor(R.color.green));
+                    if (service.getTodayClosingHour(placeMarker).equals(viewHolder.itemView.getContext().getString(R.string.open_24))) {
+                        openInfo = opened + " " + service.getTodayClosingHour(placeMarker);
+                        viewHolder.placeHoraires.setText(openInfo);
+                        viewHolder.placeHoraires.setTextColor(viewHolder.placeHoraires.getContext().getResources().getColor(R.color.green));
+                    } else {
+                        openInfo = opened + " " + until + service.getTodayClosingHour(placeMarker);
+                        viewHolder.placeHoraires.setText(openInfo);
+                        viewHolder.placeHoraires.setTextColor(viewHolder.placeHoraires.getContext().getResources().getColor(R.color.green));
+                    }
                 }
             } else {
                 String closed = viewHolder.itemView.getContext().getString(R.string.open_false);
                 String until = viewHolder.itemView.getContext().getString(R.string.until);
-                openInfo = closed + " " + until + service.getTodayOpenHour(placeMarker);
-                viewHolder.placeHoraires.setText(openInfo);
-                viewHolder.placeHoraires.setTextColor(viewHolder.placeAdress.getContext().getResources().getColor(R.color.red));
+                if (service.getTodayOpenHour(placeMarker).equals("Opening soon")) {
+                    openInfo = service.getTodayOpenHour(placeMarker);
+                    viewHolder.placeHoraires.setText(openInfo);
+                    viewHolder.placeHoraires.setTextColor(viewHolder.placeAdress.getContext().getResources().getColor(R.color.green));
+                } else {
+                    if (service.getTodayOpenHour(placeMarker).equals("Closed today")) {
+                        openInfo = service.getTodayOpenHour(placeMarker);
+                        viewHolder.placeHoraires.setText(openInfo);
+                        viewHolder.placeHoraires.setTextColor(viewHolder.placeAdress.getContext().getResources().getColor(R.color.red));
+                    } else {
+                        openInfo = closed + " " + until + service.getTodayOpenHour(placeMarker);
+                        viewHolder.placeHoraires.setText(openInfo);
+                        viewHolder.placeHoraires.setTextColor(viewHolder.placeAdress.getContext().getResources().getColor(R.color.red));
+
+                    }
+                }
             }
             Glide.with(viewHolder.itemView.getContext()).load(placeMarker.getPhotoUrl()).into(viewHolder.placeImage);
 
@@ -86,7 +105,6 @@ public class RviewListAdapter extends RecyclerView.Adapter<RviewListAdapter.View
                 EventBus.getDefault().post(new DetailsEvent(placeMarker));
                 Intent intent = new Intent(viewHolder.itemView.getContext(), DetailsActivity.class);
                 viewHolder.itemView.getContext().startActivity(intent);
-                service.setPlaceMarker(placeMarker);
             }
         });
     }

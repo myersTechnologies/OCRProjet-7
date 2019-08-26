@@ -36,18 +36,13 @@ public class SelectedPlace {
         return latLng;
     }
 
-
-    public void setLatLng(String latLng) {
-        this.latLng = latLng;
-    }
-
     public List<String> getUserId() {
         return userId;
     }
 
     public void setUserId(String userId) {
         if (this.userId == null){
-            this.userId = new ArrayList<String>();
+            this.userId = new ArrayList<>();
         }
         this.userId.add(userId);
     }

@@ -1,4 +1,4 @@
-package dasilva.marco.go4lunch.chat;
+package dasilva.marco.go4lunch.ui.chat;
 
 import java.util.Date;
 
@@ -11,7 +11,6 @@ public class ChatMessage {
     public ChatMessage(String messageText, String messageUser) {
         this.messageText = messageText;
         this.messageUser = messageUser;
-
         // Initialize to current time
         messageTime = new Date().getTime();
     }

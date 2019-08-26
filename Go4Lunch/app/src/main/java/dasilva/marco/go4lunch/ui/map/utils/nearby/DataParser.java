@@ -16,40 +16,16 @@ public class DataParser {
 
     public HashMap<String, String> getPlace(JSONObject googlePlaceJson){
         HashMap<String, String > googlePlaceMap = new HashMap<>();
-        String placeName = "-NA-";
-        String vicinity = "-NA-";
-        String latitude;
-        String longitude;
+
         String placeId = "-NA-";
-        boolean opened = false;
 
         try {
-            if (!googlePlaceJson.isNull("name")) {
-                placeName = googlePlaceJson.getString("name");
-            }
-            if (!googlePlaceJson.isNull("vicinity")){
-                vicinity = googlePlaceJson.getString("vicinity");
-            }
+
             if (!googlePlaceJson.isNull("place_id")){
                 placeId = googlePlaceJson.getString("place_id");
             }
 
-            latitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getString("lat");
-            longitude = googlePlaceJson.getJSONObject("geometry").getJSONObject("location").getString("lng");
-
-
-            if (!googlePlaceJson.isNull("opening_hours")) {
-                JSONObject openingHours = googlePlaceJson.getJSONObject("opening_hours");
-                opened = openingHours.getBoolean("open_now");
-            }
-
-
-            googlePlaceMap.put("place_name", placeName);
-            googlePlaceMap.put("vicinity", vicinity);
-            googlePlaceMap.put("lat", latitude);
-            googlePlaceMap.put("lng", longitude);
             googlePlaceMap.put("place_id", placeId);
-            googlePlaceMap.put("open_now", String.valueOf(opened));
 
         } catch (JsonIOException e){
             e.printStackTrace();

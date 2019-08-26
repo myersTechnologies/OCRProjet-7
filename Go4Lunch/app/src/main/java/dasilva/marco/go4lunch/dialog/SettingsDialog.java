@@ -78,11 +78,13 @@ public class SettingsDialog implements View.OnClickListener {
                         service.getAdapter().notifyDataSetChanged();
                     }
                 } else{
-                    dataBaseService.deleteUserFromFireBase();
-                    Intent intent = new Intent(context, Main.class);
-                    context.startActivity(intent);
-                    LoginManager.getInstance().logOut();
-                    FirebaseAuth.getInstance().signOut();
+                    if (deleteString.equals(context.getString(R.string.user_string))) {
+                        dataBaseService.deleteUserFromFireBase();
+                        LoginManager.getInstance().logOut();
+                        FirebaseAuth.getInstance().signOut();
+                        Intent intent = new Intent(context, Main.class);
+                        context.startActivity(intent);
+                    }
                 }
                     dialog.dismiss();
 

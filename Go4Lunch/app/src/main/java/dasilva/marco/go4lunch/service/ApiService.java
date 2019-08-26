@@ -5,7 +5,6 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -13,9 +12,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -38,6 +34,12 @@ public class ApiService implements Go4LunchService {
     private GoogleMap map;
     private DataBaseService dataBaseService;
     private RviewListAdapter adapter;
+    private String AM = "AM";
+    private String PM ="PM";
+    private String CLOSED = "Closed";
+    private String CLOSED_TODAY = "Closed today";
+    private String OPEN24 = "Open 24 hours";
+    private String ALWAYS_OPEN = "24/7";
 
     @Override
     public void setUser(User user) {
@@ -136,100 +138,189 @@ public class ApiService implements Go4LunchService {
             for (User user : users){
                 if (user.getLikedPlacesId() != null) {
                     for (String likedPlaces : user.getLikedPlacesId()){
-                        if (marker.getId().contains(likedPlaces)) {
+                        if (marker.getId().equals(likedPlaces)) {
                             count++;
                             marker.setLikes(count);
                         }
                     }
                 }
             }
-
         }
     }
+
+
 
     @Override
     public String getTodayClosingHour(PlaceMarker placeMarker) {
             String openUntil = "";
-        if (placeMarker.getWeekdayHous() != null) {
+        if (placeMarker.getWeekdayHours() != null) {
             Calendar calendar = Calendar.getInstance();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("EEEEE");
-            String dayOfTheWeek = dateFormat.format(calendar.getTime());
-            int day = calendar.get(Calendar.DAY_OF_WEEK);
-            List<String> openHourList = placeMarker.getWeekdayHous();
-            int count = 1;
-            for (String today : openHourList) {
-                count++;
-                if (count == day) {
-                    if (calendar.get(Calendar.AM_PM) == Calendar.AM) {
-                        try {
-                            String[] openHours = today.split(",");
-                            String[] openedUntil = openHours[0].split("–");
-                            openUntil = openedUntil[1];
-                        } catch (ArrayIndexOutOfBoundsException e){
-                            String[] openHours = today.split("–");
-                            String[] openHourWithoutDay = openHours[0].split(dayOfTheWeek + ":");
-                            if (Arrays.toString(openHours).contains("Open 24 hours")){
-                                openUntil = "24/7";
+            String dayOfTheWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH);
+            List<String> openHourList = placeMarker.getWeekdayHours();
+            for (String todays : openHourList) {
+                if (todays.contains(dayOfTheWeek)) {
+                    if (!todays.contains(OPEN24)) {
+                        if (!todays.contains(CLOSED)) {
+                            if (calendar.get(Calendar.AM_PM) == Calendar.AM) {
+                                try {
+                                    String[] openHours = todays.split(",");
+                                    String[] openedUntil = openHours[0].split("–");
+                                    openUntil = checkClosingHours(openedUntil[1]);
+                                } catch (ArrayIndexOutOfBoundsException e) {
+                                    String[] openHours = todays.split("–");
+                                    String[] openHourWithoutDay = openHours[0].split(dayOfTheWeek + ":");
+                                    openUntil = checkClosingHours(openHourWithoutDay[1]);
+                                }
                             } else {
-                                openUntil = openHourWithoutDay[1];
+                                try {
+                                    String[] openHours = todays.split(",");
+                                    String[] openedUntil = openHours[1].split("–");
+                                    openUntil = openedUntil[1];
+                                } catch (ArrayIndexOutOfBoundsException e) {
+                                    String[] openHours = todays.split("–");
+                                    if (openHours.length == 1) {
+                                        String[] openHourWithoutDay = openHours[0].split(dayOfTheWeek + ":");
+                                        openUntil = checkClosingHours(openHourWithoutDay[0]);
+                                    } else {
+                                        openUntil = checkClosingHours(openHours[1]);
+
+                                    }
+                                }
                             }
+                        } else {
+                            openUntil = CLOSED_TODAY;
                         }
                     } else {
-                        try {
-                            String[] openHours = today.split(",");
-                            String[] openedUntil = openHours[1].split("–");
-                            openUntil = openedUntil[1];
-                        } catch (ArrayIndexOutOfBoundsException e){
-                            String[] openHours = today.split("–");
-                            openUntil = openHours[1];
-                        }
+                        openUntil = ALWAYS_OPEN;
                     }
+
+                    break;
                 }
+
             }
+
+
         }
+
         return openUntil;
+    }
+
+    private String checkClosingHours(String openUntil){
+        String open;
+        int closeHour = Integer.parseInt(openUntil.split(":")[0].trim());
+        int closeMinutes;
+        if (openUntil.split(":")[1].trim().contains(AM)) {
+            closeMinutes = Integer.parseInt(openUntil.split(":")[1].split(AM)[0].trim());
+        } else {
+            closeMinutes = Integer.parseInt(openUntil.split(":")[1].split(PM)[0].trim());
+        }
+        Calendar time = Calendar.getInstance();
+        int hourNow = time.get(Calendar.HOUR_OF_DAY);
+        int minutesNow = time.get(Calendar.MINUTE);
+        int timeClose = closeHour * 60 + closeMinutes;
+        int currentTime = hourNow * 60 + minutesNow;
+        int closing = Math.abs(timeClose - currentTime);
+        if (closing <= 60) {
+            open = "Closing soon";
+        } else {
+            open = openUntil;
+        }
+        return open;
     }
 
     @Override
     public String getTodayOpenHour(PlaceMarker placeMarker) {
         String openUntil = "";
-        if (placeMarker.getWeekdayHous() != null) {
+        if (placeMarker.getWeekdayHours() != null) {
             Calendar calendar = Calendar.getInstance();
-            int day = calendar.get(Calendar.DAY_OF_WEEK);
             String dayOfTheWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH);
-            List<String> openHourList = placeMarker.getWeekdayHous();
-            int count = 1;
-            for (String today : openHourList) {
-                count++;
-                if (count == day) {
-                    if (calendar.get(Calendar.AM_PM) == Calendar.AM) {
-                        try {
-                        String[] openHours = today.split(",");
-                        String[] openedUntil = openHours[0].split("–");
-                        String [] openHourWithoutDay = openedUntil[0].split(dayOfTheWeek + ":");
-                        openUntil = openHourWithoutDay[1] + "PM";
-                        } catch (ArrayIndexOutOfBoundsException e){
-                            String[] openHours = today.split("–");
-                            String[] openedUntil = openHours[0].split(dayOfTheWeek + ":");
-                            openUntil = openedUntil[1] + "PM";
-                        }
-                    } else {
-                        try {
-                            String[] openHours = today.split(",");
-                            String[] openedUntil = openHours[0].split("–");
-                            String[] openHourWithoutDay = openedUntil[0].split(dayOfTheWeek + ":");
-                            openUntil = openHourWithoutDay[1];
-                        } catch (ArrayIndexOutOfBoundsException e){
-                            String[] openHours = today.split("–");
-                            String [] openHourWithoutDay = openHours[0].split(dayOfTheWeek + ":");
-                            openUntil = openHourWithoutDay[0];
-                        }
+            List<String> openHourList = placeMarker.getWeekdayHours();
+            for (String days : openHourList){
+                    if (days.contains(dayOfTheWeek)) {
+                        if (!days.contains(OPEN24)) {
+                            if (!days.contains(CLOSED)) {
+                                if (calendar.get(Calendar.AM_PM) == Calendar.AM) {
+                                    try {
+                                        String[] openHours = days.split(",");
+                                        String[] openedUntil = openHours[0].split("–");
+                                        String[] openHourWithoutDay = openedUntil[0].split(dayOfTheWeek + ":");
+                                        if (!openHourWithoutDay[1].contains(AM)) {
+                                            if (!openHourWithoutDay[1].contains(PM)) {
+                                                openUntil = checkOpenHours(openHourWithoutDay[1] + PM);
+                                            } else {
+                                                openUntil = checkOpenHours(openHourWithoutDay[1]);
+                                            }
+                                        } else {
+                                            openUntil = checkOpenHours(openHourWithoutDay[1]);
+                                        }
+                                    } catch (ArrayIndexOutOfBoundsException e) {
+                                        String[] openHours = days.split("–");
+                                        String[] openedUntil = openHours[0].split(dayOfTheWeek + ":");
+                                        openUntil = checkOpenHours(openedUntil[1]);
+                                    }
+                                } else {
+                                    try {
+                                        String[] openHours = days.split(",");
+                                        String[] openedUntil = openHours[0].split("–");
+                                        String[] openHourWithoutDay = openedUntil[0].split(dayOfTheWeek + ":");
+                                        if (!openHourWithoutDay[1].contains(AM)) {
+                                            if (!openHourWithoutDay[1].contains(PM)) {
+                                                openUntil = checkOpenHours(openHourWithoutDay[1] + PM);
+                                            } else {
+                                                openUntil = checkOpenHours(openHourWithoutDay[1]);
+                                            }
+                                        }
 
+                                    } catch (ArrayIndexOutOfBoundsException e) {
+                                        String[] openHours = days.split("–");
+                                        String[] openHourWithoutDay = openHours[0].split(dayOfTheWeek + ":");
+                                        if (!openHourWithoutDay[0].contains(AM)) {
+                                            if (!openHourWithoutDay[0].contains(PM)) {
+                                                openUntil = checkOpenHours(openHourWithoutDay[0] + PM);
+                                            } else {
+                                                openUntil = checkOpenHours(openHourWithoutDay[0]);
+                                            }
+                                        }
+
+
+                                    }
+                                }
+                            } else {
+                                openUntil = CLOSED_TODAY;
+                            }
+                        } else {
+                            openUntil = ALWAYS_OPEN;
+                        }
+                        break;
                     }
-                }
             }
         }
+
         return openUntil;
+    }
+
+    private String checkOpenHours(String openUntil){
+        String open;
+        int closeHour = Integer.parseInt(openUntil.split(":")[0].trim());
+        int closeMinutes;
+        if (openUntil.split(":")[1].trim().contains(AM)) {
+            closeMinutes = Integer.parseInt(openUntil.split(":")[1].split(AM)[0].trim());
+        } else {
+            closeMinutes = Integer.parseInt(openUntil.split(":")[1].split(PM)[0].trim());
+        }
+        Calendar time = Calendar.getInstance();
+        int hourNow = time.get(Calendar.HOUR_OF_DAY);
+        int minutesNow = time.get(Calendar.MINUTE);
+        int timeOpen = closeHour * 60 + closeMinutes;
+        int currentTime = hourNow * 60 + minutesNow;
+        int closing = Math.abs(currentTime - timeOpen);
+        if (closing <= 60) {
+            open = "Opening soon";
+        } else {
+            open = openUntil;
+        }
+        return open;
+
     }
 
     @Override
@@ -280,40 +371,32 @@ public class ApiService implements Go4LunchService {
 
     @Override
     public void setUserLunchChoice(PlaceMarker placeMarker, Context context) {
-        if (places == null) {
-            places = new ArrayList<>();
-            getAdress(placeMarker, context);
-        } else {
-            getAdress(placeMarker, context);
-        }
+
+        getAdress(placeMarker, context);
+
     }
 
     private void getAdress(PlaceMarker placeMarker, Context context){
-        if (!places.contains(placeMarker)) {
-
-            Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-            List<Address> addresses = null;
-            try {
-                addresses = geocoder.getFromLocation(placeMarker.getLatLng().latitude, placeMarker.getLatLng().longitude, 1);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            String address = null;
-            if (addresses != null) {
-                address = addresses.get(0).getAddressLine(0);
-            }
-            String city = null;
-            if (addresses != null) {
-                city = addresses.get(0).getLocality();
-            }
-            String country = null;
-            if (addresses != null) {
-                country = addresses.get(0).getCountryName();
-            }
-            placeMarker.setAdress(address + ", " + city + ", " + country);
-
-            places.add(placeMarker);
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        List<Address> addresses = null;
+        try {
+            addresses = geocoder.getFromLocation(placeMarker.getLatLng().latitude, placeMarker.getLatLng().longitude, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        String address = null;
+        if (addresses != null) {
+            address = addresses.get(0).getAddressLine(0);
+        }
+        String city = null;
+        if (addresses != null) {
+            city = addresses.get(0).getLocality();
+        }
+        String country = null;
+        if (addresses != null) {
+            country = addresses.get(0).getCountryName();
+        }
+        placeMarker.setAdress(address + ", " + city + ", " + country);
     }
 
 }

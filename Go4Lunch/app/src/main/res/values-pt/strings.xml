@@ -41,6 +41,9 @@
     <string name="chat_hint">Escreva uma mensagem</string>
     <string name="search_restaurant_text">Procurar restaurantes</string>
     <string name="search_workmates_text">Procurar colegas</string>
-
+    <string name="opening_soon">Abre brevemente</string>
+    <string name="closing_soon">Fecha brevemente</string>
+    <string name="closed_today">Fechado hoje</string>
+    <string name="closed_today_text_toast">Restaurante fechado</string>
 
 </resources>

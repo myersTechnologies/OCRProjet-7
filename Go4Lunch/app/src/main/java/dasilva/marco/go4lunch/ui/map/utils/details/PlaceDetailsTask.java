@@ -1,6 +1,7 @@
 package dasilva.marco.go4lunch.ui.map.utils.details;
 
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import dasilva.marco.go4lunch.BuildConfig;
+import dasilva.marco.go4lunch.R;
 import dasilva.marco.go4lunch.di.DI;
 import dasilva.marco.go4lunch.model.PlaceMarker;
 import dasilva.marco.go4lunch.service.Go4LunchService;
@@ -20,11 +23,14 @@ public class PlaceDetailsTask extends AsyncTask<Object, String, String> {
 
     private PlaceMarker placeMarker;
     private String googleDetailsData;
-    Go4LunchService service = DI.getService();
+    private Go4LunchService service = DI.getService();
+    private Context context;
 
     protected String doInBackground(Object... objects) {
         String jSonUrl = (String) objects[0];
         placeMarker = (PlaceMarker)objects[1];
+        context = (Context) objects[2];
+
 
         DownloadUrl downloadUrl = new DownloadUrl();
         try {
@@ -46,15 +52,11 @@ public class PlaceDetailsTask extends AsyncTask<Object, String, String> {
         }
     }
 
-    private void setPlaceMarkerMoreInfo(List<HashMap<String, String>> detailsPlaceList){
+    private void setPlaceMarkerMoreInfo(List<HashMap<String, String>> detailsPlaceList) {
         for (int i = 0; i < detailsPlaceList.size(); i++) {
             HashMap<String, String> googleDetails = detailsPlaceList.get(i);
 
-            if (placeMarker.getName() == null) {
-                placeMarker.setName(googleDetails.get("name"));
-            }
-
-            placeMarker.setAdress(googleDetails.get("vicinity"));
+            placeMarker.setName(googleDetails.get("place_name"));
 
             double lat;
             double lng;
@@ -64,46 +66,61 @@ public class PlaceDetailsTask extends AsyncTask<Object, String, String> {
                 lng = Double.parseDouble(googleDetails.get("lng"));
 
                 LatLng latLng = new LatLng(lat, lng);
+
                 placeMarker.setLatLng(latLng);
+
             }
+
+            placeMarker.setAdress(googleDetails.get("vicinity"));
 
             placeMarker.setOpeningHours(Boolean.parseBoolean(googleDetails.get("open_now")));
 
-            placeMarker.setTelephone(googleDetails.get("formatted_phone_number"));
+            placeMarker.setTelephone(googleDetails.get("phone_number"));
 
             placeMarker.setWebSite(googleDetails.get("website"));
 
-            String[] openHours = googleDetails.get("weekday_text").split("\"");
-
-            placeMarker.addWeekToList(openHours[1]);
-            placeMarker.addWeekToList(openHours[3]);
-            placeMarker.addWeekToList(openHours[5]);
-            placeMarker.addWeekToList(openHours[7]);
-            placeMarker.addWeekToList(openHours[9]);
-            placeMarker.addWeekToList(openHours[11]);
-            placeMarker.addWeekToList(openHours[13]);
-
-            placeMarker.setPhotoUrl(googleDetails.get("photo_reference"));
-        }
-
-        if (service.getListMarkers() != null) {
-            if (!service.getListMarkers().contains(placeMarker)) {
-                service.getListMarkers().add(placeMarker);
+            if (googleDetails.get("weekday_text") != null) {
+                String[] openHours = googleDetails.get("weekday_text").split("\",\"");
+                for (int j = 0; j < openHours.length; j++) {
+                    for (int k = 0; k < openHours[j].split("\\[\"").length; k++) {
+                        for (int o = 0; o < openHours[j].split("\\[\"")[k].split("\"\\]").length; o++) {
+                            placeMarker.addWeekToList(openHours[j].split("\\[\"")[k].split("\"\\]")[o]);
+                        }
+                    }
+                }
             }
-        } else {
-            service.setListMarkers(new ArrayList<PlaceMarker>());
+
+            placeMarker.setPhotoUrl(getPhotoUrl(googleDetails.get("photo_reference")));
+        }
+
+        if (service.getListMarkers() == null) {
+            List<PlaceMarker> placeMarkers = new ArrayList<>();
+            service.setListMarkers(placeMarkers);
             service.getListMarkers().add(placeMarker);
+        } else{
+            if (service.getListMarkers() != null) {
+                int count = 0;
+                for (int i = 0; i < service.getListMarkers().size(); i++) {
+                    if (!service.getListMarkers().get(i).getId().equals(placeMarker.getId())) {
+                        count++;
+                        if (count == service.getListMarkers().size()){
+                            service.getListMarkers().add(placeMarker);
+                        }
+                    }
+                }
+            }
         }
-        try{
-            service.countPlaceSelectedByUsers();
-            service.countPlacesLikes();
-        } catch (NullPointerException e){
-            Log.d("No Data", e.toString());
-        }
+
+        service.countPlaceSelectedByUsers();
+
+        service.countPlacesLikes();
 
     }
 
-
-
+    private String getPhotoUrl(String reference){
+        String url = context.getString(R.string.google_photo_url) + reference
+                + context.getString(R.string.and_key) + BuildConfig.GOOGLEAPIKEY;
+        return url;
+    }
 }
 

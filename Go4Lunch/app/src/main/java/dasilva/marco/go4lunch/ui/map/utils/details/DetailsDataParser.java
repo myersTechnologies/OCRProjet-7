@@ -1,6 +1,5 @@
 package dasilva.marco.go4lunch.ui.map.utils.details;
 
-
 import android.util.Log;
 
 import com.google.gson.JsonIOException;
@@ -56,8 +55,15 @@ public class DetailsDataParser {
         String vicinity = "-NA-";
         String latitude;
         String longitude;
+        String placeName = "-NA-";
         boolean opened = false;
+        
         try {
+
+            if (!googleDetailsJson.isNull("name")) {
+                placeName = googleDetailsJson.getString("name");
+            }
+
 
             if (!googleDetailsJson.isNull("vicinity")){
                 vicinity = googleDetailsJson.getString("vicinity");
@@ -73,17 +79,16 @@ public class DetailsDataParser {
             }
 
 
-            try {
+            if (!googleDetailsJson.isNull("formatted_phone_number")) {
                 phoneNumber = googleDetailsJson.getString("formatted_phone_number");
-
-            } catch (Exception e){
+            } else {
                 phoneNumber = " ";
             }
 
-            try {
+            if (!googleDetailsJson.isNull("website")) {
                 website = googleDetailsJson.getString("website");
                 googleDetailsMap.put("website", website);
-            } catch (Exception e){
+            } else {
                 website = " ";
             }
 
@@ -92,13 +97,10 @@ public class DetailsDataParser {
 
             if(!googleDetailsJson.isNull("photos")){
                 JSONArray photos = googleDetailsJson.getJSONArray("photos");
-                for(int i=0;i<photos.length();i++){
-                    photo = ((JSONObject)photos.get(i)).getString("photo_reference");
-                }
-            } else{
-                Log.d("PHOTONULL", "no photo");
+                photo = ((JSONObject)photos.get(1)).getString("photo_reference");
             }
 
+            googleDetailsMap.put("place_name", placeName);
             googleDetailsMap.put("phone_number", phoneNumber);
             googleDetailsMap.put("website", website);
             googleDetailsMap.put("weekday_text", weekDayText);

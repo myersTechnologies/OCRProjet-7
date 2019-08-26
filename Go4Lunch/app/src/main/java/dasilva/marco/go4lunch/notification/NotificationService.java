@@ -12,6 +12,9 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -30,11 +33,11 @@ public class NotificationService extends Service {
     private String choice;
     private String choiceAdress;
     private String joiningUsers;
-    private SharedPreferences preferences;
     private boolean timesOn = false;
-    private FirebaseUser user;
     private DataBaseService dataBaseService;
-    private Go4LunchService service;
+    private static String USERS ="users";
+    private static String SELECTION = "selection";
+    private static String CHOICE = "choice";
 
     public NotificationService() {
     }
@@ -51,12 +54,13 @@ public class NotificationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        preferences = getSharedPreferences(getString(R.string.app_name), MODE_PRIVATE);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        SharedPreferences preferences = getSharedPreferences(getString(R.string.app_name), MODE_PRIVATE);
         choice = preferences.getString(getString(R.string.choice), null);
         choiceAdress = preferences.getString(getString(R.string.choice_adress), null);
+        joiningUsers = preferences.getString(getString(R.string.joining_users), null);
         dataBaseService = DI.getDatabaseService();
-        service = DI.getService();
+        Go4LunchService service = DI.getService();
         if (service.getUser() == null){
             User currentUser = new User(user.getUid(), user.getDisplayName(),
                     user.getEmail(), user.toString());
@@ -67,7 +71,8 @@ public class NotificationService extends Service {
             dataBaseService.setListOfSelectedPlaces();
         }
 
-        joiningUsers = preferences.getString(getString(R.string.joining_users), null);
+        dataBaseService.setUsersList();
+
         Toast.makeText(this, getString(R.string.notification_toast), Toast.LENGTH_SHORT).show();
         runTimer();
         return START_STICKY;
@@ -76,7 +81,6 @@ public class NotificationService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        cancelAlarm();
     }
 
     public void alarmToNoticateUser(){
@@ -86,15 +90,20 @@ public class NotificationService extends Service {
         intent.putExtra(getString(R.string.joining_users), joiningUsers);
         sendBroadcast(intent);
         pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-        preferences.edit().remove(getString(R.string.choice)).apply();
-        preferences.edit().remove(getString(R.string.choice_adress)).apply();
-        choice = null;
-        choiceAdress = null;
-        joiningUsers = null;
         timesOn = true;
-        dataBaseService.removeCompleteSelectionDatabase();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference userReference = firebaseDatabase.getReference(USERS);
+        if (firebaseDatabase.getReference(SELECTION) != null) {
+            firebaseDatabase.getReference(SELECTION).removeValue();
+        }
+        for (User users : dataBaseService.getUsersList()) {
+            if (userReference.child(users.getId()).child(CHOICE) != null) {
+                userReference.child(users.getId()).child(CHOICE).removeValue();
+            }
+        }
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, timeToCheck, AlarmManager.INTERVAL_DAY , pendingIntent);
+        cancelAlarm();
     }
     public void cancelAlarm() {
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);

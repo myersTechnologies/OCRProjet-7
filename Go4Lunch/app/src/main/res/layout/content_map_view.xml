@@ -10,6 +10,11 @@
     android:id="@+id/container"
     android:theme="@style/BottomNavigationStyle">
 
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/nav_bottom_maps" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/nav_bottom_maps"
@@ -18,9 +23,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_nav_items"
        />
-
-
-
 
 
 </android.support.constraint.ConstraintLayout>

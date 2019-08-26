@@ -34,11 +34,21 @@ public class Go4LunchTest {
     }
 
     @Test
+    public void checkTimeOpening(){
+        int time1 = 10 * 60 + 30;
+        int time2 = 11 * 60 + 30;
+        assertEquals(Math.abs(time1 - time2), 60 );
+        if (Math.abs(time2 - time1) >= 60 && Math.abs(time2 - time1) <=61) {
+            assertTrue(true);
+        }
+    }
+
+    @Test
     public void checkIfUserIsAddedWithSuccess() {
-        user = new User("lmp25klo", "Marco da Silva", "marco@gmail.com", "imageUrl");
+        user = new User("1", "Marco da Silva", "marco@gmail.com", "https://picture.png");
         List<User> users = new ArrayList<>();
         users.add(user);
-        assertTrue(users.get(0).getId().equals(user.getId()));
+        assertTrue(users.get(0).getId().equals("1"));
 
     }
 
@@ -67,7 +77,7 @@ public class Go4LunchTest {
         List<User> users = new ArrayList<>();
         List<SelectedPlace> selectedPlaces = new ArrayList<>();
 
-        User currentUser = new User("5", "Marco", "marco@gmail.com", "https://jhjhjhd.png");
+        User currentUser = new User("5", "Marco", "marco@gmail.com", "https://picture.png");
         users.add(currentUser);
 
         PlaceMarker placeMarker = new PlaceMarker();
@@ -112,7 +122,7 @@ public class Go4LunchTest {
         placeMarker.setId("1");
         places.add(placeMarker);
 
-        User currentUser = new User("5", "Marco", "marco@gmail.com", "https://jhjhjhd.png");
+        User currentUser = new User("5", "Marco", "marco@gmail.com", "https://picture.png");
         currentUser.setLikedPlacesId("1");
         users.add(currentUser);
 
@@ -154,7 +164,7 @@ public class Go4LunchTest {
         List<SelectedPlace> selectedPlaces = new ArrayList<>();
         List<User> users = new ArrayList<>();
 
-        User currentUser = new User("5", "Marco", "marco@gmail.com", "https://jhjhjhd.png");
+        User currentUser = new User("5", "Marco", "marco@gmail.com", "https://picture.png");
         users.add(currentUser);
         currentUser.setChoice("Etablishment");
 
@@ -170,7 +180,7 @@ public class Go4LunchTest {
         List<SelectedPlace> selectedPlaces = new ArrayList<>();
         List<User> users = new ArrayList<>();
 
-        User currentUser = new User("5", "Marco", "marco@gmail.com", "https://jhjhjhd.png");
+        User currentUser = new User("5", "Marco", "marco@gmail.com", "url.png");
         users.add(currentUser);
         currentUser.setChoice("Etablishment");
         SelectedPlace place = new SelectedPlace("1", "Etablishment", "lat/lng: (46.794237, 4.848902)");
@@ -190,7 +200,7 @@ public class Go4LunchTest {
         List<SelectedPlace> selectedPlaces = new ArrayList<>();
         List<User> users = new ArrayList<>();
 
-        User currentUser = new User("5", "Marco", "marco@gmail.com", "https://jhjhjhd.png");
+        User currentUser = new User("5", "Marco", "marco@gmail.com", "https://picture.png");
         user = new User("3", "André", "andre@gmail.com", "https://picture.png");
         users.add(currentUser);
         users.add(user);
@@ -238,7 +248,7 @@ public class Go4LunchTest {
         placeMarker.setId("1");
         placeMarker.addWeekToList("Sunday: 09:00 – 14:30");
 
-        if (placeMarker.getWeekdayHous() != null) {
+        if (placeMarker.getWeekdayHours() != null) {
             Calendar calendar = Mockito.mock(Calendar.class);
             calendar.set(2019, Calendar.JULY, 22, 8, 0);
             Mockito.when(Calendar.getInstance()).thenCallRealMethod();
@@ -247,7 +257,7 @@ public class Go4LunchTest {
             Mockito.when(dateFormat.format(calendar.getTime())).thenCallRealMethod();
             String dayOfTheWeek = dateFormat.format(calendar.getTime());
             int day = calendar.get(Calendar.DAY_OF_WEEK);
-            List<String> openHourList = placeMarker.getWeekdayHous();
+            List<String> openHourList = placeMarker.getWeekdayHours();
             int count = 0;
             for (String today : openHourList) {
                 count++;
@@ -281,7 +291,7 @@ public class Go4LunchTest {
         placeMarker.setId("1");
         placeMarker.addWeekToList("Sunday: 18:00 – 00:30");
 
-        if (placeMarker.getWeekdayHous() != null) {
+        if (placeMarker.getWeekdayHours() != null) {
             Calendar calendar = Mockito.mock(Calendar.class);
             calendar.set(2019, Calendar.JULY, 22, 15, 0);
             Mockito.when(Calendar.getInstance()).thenCallRealMethod();
@@ -290,7 +300,7 @@ public class Go4LunchTest {
             SimpleDateFormat dateFormat = new SimpleDateFormat("EEEEE");
             Mockito.when(dateFormat.format(calendar.getTime())).thenCallRealMethod();
             int day = calendar.get(Calendar.DAY_OF_WEEK);
-            List<String> openHourList = placeMarker.getWeekdayHous();
+            List<String> openHourList = placeMarker.getWeekdayHours();
             int count = 0;
             for (String today : openHourList) {
                 count++;
@@ -319,7 +329,7 @@ public class Go4LunchTest {
         placeMarker.setId("1");
         placeMarker.addWeekToList("Sunday: 09:00 – 14:30");
 
-        if (placeMarker.getWeekdayHous() != null) {
+        if (placeMarker.getWeekdayHours() != null) {
             Calendar calendar = Mockito.mock(Calendar.class);
             calendar.set(2019, Calendar.JULY, 22, 8, 0);
             Mockito.when(Calendar.getInstance()).thenCallRealMethod();
@@ -328,7 +338,7 @@ public class Go4LunchTest {
             Mockito.when(dateFormat.format(calendar.getTime())).thenCallRealMethod();
             String dayOfTheWeek = "Sunday";
             int day = 1;
-            List<String> openHourList = placeMarker.getWeekdayHous();
+            List<String> openHourList = placeMarker.getWeekdayHours();
             int count = 0;
             for (String today : openHourList) {
                 count++;
@@ -359,7 +369,7 @@ public class Go4LunchTest {
         placeMarker.setId("1");
         placeMarker.addWeekToList("Sunday: 18:30 – 00:30");
 
-        if (placeMarker.getWeekdayHous() != null) {
+        if (placeMarker.getWeekdayHours() != null) {
             Calendar calendar = Mockito.mock(Calendar.class);
             calendar.set(2019, Calendar.JULY, 22, 8, 0);
             Mockito.when(Calendar.getInstance()).thenCallRealMethod();
@@ -369,7 +379,7 @@ public class Go4LunchTest {
             Mockito.when(dateFormat.format(calendar.getTime())).thenCallRealMethod();
             String dayOfTheWeek = "Sunday";
             int day = calendar.get(Calendar.DAY_OF_WEEK);
-            List<String> openHourList = placeMarker.getWeekdayHous();
+            List<String> openHourList = placeMarker.getWeekdayHours();
             int count = 0;
             for (String today : openHourList) {
                 count++;

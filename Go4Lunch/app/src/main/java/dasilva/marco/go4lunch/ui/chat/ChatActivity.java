@@ -1,4 +1,4 @@
-package dasilva.marco.go4lunch.chat;
+package dasilva.marco.go4lunch.ui.chat;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -30,6 +30,7 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView chatRecyclerView;
     private List<ChatMessage>  chatMessages;
     private Go4LunchService service = DI.getService();
+    private static final String CHAT = "chat";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,37 +50,28 @@ public class ChatActivity extends AppCompatActivity {
 
         displayChatMessages();
 
-        FloatingActionButton fab =
-                (FloatingActionButton)findViewById(R.id.fab);
-
+        FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EditText message = (EditText)findViewById(R.id.input);
-
-                // Read the input field and push a new instance
-                // of ChatMessage to the Firebase database
                 FirebaseDatabase.getInstance()
-                        .getReference("chat")
+                        .getReference(CHAT)
                         .push()
                         .setValue(new ChatMessage(message.getText().toString(),
                                 service.getUser().getId())
                         );
-
-                // Clear the input
                 message.setText("");
             }
         });
 
-
     }
-
 
     private void displayChatMessages() {
         chatMessages = new ArrayList<>();
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = firebaseDatabase.getReference("chat");
+        DatabaseReference databaseReference = firebaseDatabase.getReference(CHAT);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -91,12 +83,9 @@ public class ChatActivity extends AppCompatActivity {
                 chatAdapter = new ChatAdapter(chatMessages);
                 chatRecyclerView.setAdapter(chatAdapter);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
-
     }
 }

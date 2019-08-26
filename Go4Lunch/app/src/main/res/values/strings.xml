@@ -130,4 +130,13 @@
     <string name="search_restaurant_text">Search restaurants</string>
     <string name="search_workmates_text">Search workmates</string>
 
+    <string name="restaurant" translatable="false">restaurant</string>
+    <string name="fr" translatable="false">fr</string>
+
+    <string name="opening_soon">Opening soon</string>
+    <string name="closing_soon">Closing soon</string>
+    <string name="closed_today">Closed today</string>
+
+    <string name="closed_today_text_toast">Restaurant closed today</string>
+
 </resources>

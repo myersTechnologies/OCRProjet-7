@@ -10,8 +10,6 @@ public class PlaceMarker {
     private String id;
     private LatLng latLng;
     private String adress;
-    private String city;
-    private String country;
     private String name;
     private String telephone;
     private String webSite;
@@ -38,9 +36,7 @@ public class PlaceMarker {
     }
 
     public String getPhotoUrl() {
-        String url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + photoUrl
-                + "&key=" + "AIzaSyDKZnjJaY7UQxDrXsskimpfMb_vY4s6ltc";
-        return url;
+        return photoUrl;
     }
 
     public void setPhotoUrl(String photoUrl) {
@@ -54,15 +50,6 @@ public class PlaceMarker {
     public void setAdress(String adress) {
         this.adress = adress;
     }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
 
     public void setWebSite(String webSite) {
         this.webSite = webSite;
@@ -94,18 +81,6 @@ public class PlaceMarker {
         return adress;
     }
 
-    public String getCity() {
-        String[] refarctorAdress = adress.split(",");
-        city = refarctorAdress[1];
-        return city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-
-
     public String getTelephone() {
         return telephone;
     }
@@ -134,10 +109,12 @@ public class PlaceMarker {
         if (weekdayList == null) {
             weekdayList = new ArrayList<>();
         }
-        weekdayList.add(day);
+        if (day != "") {
+            weekdayList.add(day);
+        }
 
     }
-    public List<String> getWeekdayHous() {
+    public List<String> getWeekdayHours() {
         return weekdayList;
     }
 

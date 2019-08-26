@@ -129,6 +129,11 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
                 if (place.getId().equals(service.getPlaceMarker().getId())) {
                     place.setUserId(service.getUser().getId());
                     databaseReference.child(getString(R.string.selection)).child(service.getPlaceMarker().getId()).setValue(place);
+                } else {
+                    SelectedPlace selectedPlace = new SelectedPlace(service.getPlaceMarker().getId(), service.getPlaceMarker().getName(),
+                            String.valueOf(service.getPlaceMarker().getLatLng()));
+                    selectedPlace.setUserId(service.getUser().getId());
+                    databaseReference.child(getString(R.string.selection)).child(service.getPlaceMarker().getId()).setValue(selectedPlace);
                 }
             }
         } else {
@@ -138,7 +143,9 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
             databaseReference.child(getString(R.string.selection)).child(service.getPlaceMarker().getId()).setValue(selectedPlace);
         }
         service.getUser().setChoice(service.getPlaceMarker().getName());
+
         sharedPreferences.edit().putString(getString(R.string.choice_adress), service.getPlaceMarker().getAdress()).apply();
+
         sharedPreferences.edit().putString(getString(R.string.joining_users), getJoiningUsers()).apply();
         databaseReference.child(getString(R.string.users)).child(service.getUser().getId()).child(getString(R.string.choice)).setValue(service.getPlaceMarker().getName());
         service.countPlaceSelectedByUsers();
@@ -221,12 +228,16 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.user_choice:
-                if (service.getUser().getChoice() == null){
-                    setUserChoice();
-                    fab.setImageResource(R.drawable.ic_check);
-                    fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.green)));
+                if (!service.getTodayOpenHour(service.getPlaceMarker()).equals("Closed today")) {
+                    if (service.getUser().getChoice() == null) {
+                        setUserChoice();
+                        fab.setImageResource(R.drawable.ic_check);
+                        fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.green)));
+                    } else {
+                        Toast.makeText(this, R.string.already_choosed, Toast.LENGTH_LONG).show();
+                    }
                 } else {
-                    Toast.makeText(this, R.string.already_choosed, Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.closed_today_text_toast), Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

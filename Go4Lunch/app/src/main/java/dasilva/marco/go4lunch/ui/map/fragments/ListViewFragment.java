@@ -1,6 +1,7 @@
 package dasilva.marco.go4lunch.ui.map.fragments;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -49,41 +51,168 @@ import dasilva.marco.go4lunch.ui.map.utils.details.PlaceDetailsTask;
 public class ListViewFragment extends Fragment {
 
     private Go4LunchService service = DI.getService();
+    private static ListViewFragment listViewFragment;
     private RviewListAdapter adapter;
     private RecyclerView listRecyclerView;
     private static final String API_KEY = BuildConfig.GOOGLEAPIKEY;
     private PlacesClient client;
     private AutoCompleteTextView autoCompleteTextView;
     private Toolbar toolbar;
+    private ArrayAdapter<String> predictionsAdapter;
+    private List<PlaceMarker> places;
+    private static String RESTAURANT = "restaurant";
+    private static String FR = "fr";
+    private List<String> idList;
+    private LinearLayoutManager mLayoutManager;
 
     public ListViewFragment() {
         // Required empty public constructor
     }
 
+    public static ListViewFragment getInstance(){
+        if (listViewFragment == null){
+            listViewFragment = new ListViewFragment();
+        }
+        return listViewFragment;
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_view, container, false);
+        toolbar = ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar_search);
         listRecyclerView = view.findViewById(R.id.list_of_places);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
-        listRecyclerView.setLayoutManager(mLayoutManager);
-        initList();
+        mLayoutManager = new LinearLayoutManager(view.getContext());
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle( R.string.title_activity_map_view);
         setHasOptionsMenu(true);
         Places.initialize(getContext(), BuildConfig.GOOGLEAPIKEY);
         client = Places.createClient(getContext());
-
+        initList();
         return view;
     }
 
     public void initList(){
-            if (service.getListMarkers() != null) {
-                List<PlaceMarker> places = service.getListMarkers();
-                adapter = new RviewListAdapter(places);
-                service.addAdapter(adapter);
-                listRecyclerView.setAdapter(adapter);
+        if (service.getListMarkers() != null) {
+            service.countPlacesLikes();
+            service.countPlaceSelectedByUsers();
+            places = service.getListMarkers();
+            listRecyclerView.setLayoutManager(mLayoutManager);
+            adapter = new RviewListAdapter(places);
+            service.addAdapter(adapter);
+            listRecyclerView.setAdapter(adapter);
+        }
+    }
+
+
+    @Subscribe
+    public void getSelectionToDetails(DetailsEvent event){
+        service.setPlaceMarker(event.placeMarker);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.search:
+                autoCompleteTextView = toolbar.findViewById(R.id.auto_complete_text);
+                autoCompleteTextView.setHint(getString(R.string.search_restaurant_text));
+                autoCompleteTextView.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        googlePredictions(s.toString());
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        onItemClick();
+                    }
+                });
+                toolbar.setVisibility(View.VISIBLE);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void googlePredictions(String query){
+        AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
+
+        RectangularBounds bounds = RectangularBounds.newInstance(
+                new LatLng(service.getCurrentLocation().getLatitude(), service.getCurrentLocation().getLongitude()),
+                new LatLng(service.getCurrentLocation().getLatitude(), service.getCurrentLocation().getLongitude()));
+
+        FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
+                .setLocationBias(bounds)
+                .setCountry(FR)
+                .setTypeFilter(TypeFilter.ESTABLISHMENT)
+                .setSessionToken(token)
+                .setQuery(query)
+                .build();
+
+        client.findAutocompletePredictions(request).addOnSuccessListener(new OnSuccessListener<FindAutocompletePredictionsResponse>() {
+            @Override
+            public void onSuccess(FindAutocompletePredictionsResponse response) {
+                idList = new ArrayList<>();
+                List<String> placesName = new ArrayList<>();
+                for (AutocompletePrediction result : response.getAutocompletePredictions()){
+                    if (result.getPlaceTypes().toString().toLowerCase().contains(RESTAURANT)) {
+                        idList.add(result.getPlaceId());
+                        placesName.add(result.getPrimaryText(null) + "\n" + result.getSecondaryText(null));
+                    }
+                }
+                predictionsAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, placesName);
+                autoCompleteTextView.setAdapter(predictionsAdapter);
             }
+        });
+
+        client.findAutocompletePredictions(request).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void onItemClick(){
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String [] predictions = parent.getItemAtPosition(position).toString().split("\n");
+                String predictionId = idList.get(position);
+                String predictionName = predictions[0];
+                final PlaceMarker placeMarker = new PlaceMarker();
+                placeMarker.setId(predictionId);
+                placeMarker.setName(predictionName);
+                getMarkerDetails(placeMarker);
+                autoCompleteTextView.getText().clear();
+                toolbar.setVisibility(View.GONE);
+                hideSoftKeyboard(getActivity());
+                initList();
+
+            }
+        });
+    }
+
+
+    public void getMarkerDetails(PlaceMarker marker){
+        String uri = getContext().getString(R.string.url_begin) + marker.getId() +
+                getContext().getString(R.string.and_key) + API_KEY;
+        Object dataTransfer[] = new Object[3];
+        dataTransfer[0] = uri;
+        dataTransfer[1] = marker;
+        dataTransfer[2] = getContext();
+        PlaceDetailsTask getNearbyPlacesData = new PlaceDetailsTask();
+        getNearbyPlacesData.execute(dataTransfer);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (autoCompleteTextView != null) {
+            autoCompleteTextView.getText().clear();
+        }
     }
 
     @Override
@@ -98,129 +227,12 @@ public class ListViewFragment extends Fragment {
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe
-    public void getSelectionToDetails(DetailsEvent event){
-        service.setPlaceMarker(event.placeMarker);
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.search:
-                toolbar = ((AppCompatActivity) getActivity()).findViewById(R.id.toolbar_search);
-                toolbar.setVisibility(View.VISIBLE);
-                autoCompleteTextView = toolbar.findViewById(R.id.auto_complete_text);
-                autoCompleteTextView.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                        googlePredictions(s.toString());
-                    }
-                });
-
-                break;
-        }
-        return super.onOptionsItemSelected(item);
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                activity.getCurrentFocus().getWindowToken(), 0);
     }
 
-    public void googlePredictions(String query){
-        // Create a new token for the autocomplete session. Pass this to FindAutocompletePredictionsRequest,
-        // and once again when the user makes a selection (for example when calling fetchPlace()).
-        AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
-
-        // Create a RectangularBounds object.
-        RectangularBounds bounds = RectangularBounds.newInstance(
-                new LatLng(service.getCurrentLocation().getLatitude(), service.getCurrentLocation().getLongitude()),
-                new LatLng(service.getCurrentLocation().getLatitude(), service.getCurrentLocation().getLongitude()));
-        // Use the builder to create a FindAutocompletePredictionsRequest.
-        FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
-                // Call either setLocationBias() OR setLocationRestriction().
-                .setLocationBias(bounds)
-                //.setLocationRestriction(bounds)
-                .setCountry("fr")
-                .setTypeFilter(TypeFilter.ESTABLISHMENT)
-                .setSessionToken(token)
-                .setQuery(query)
-                .build();
-
-        client.findAutocompletePredictions(request).addOnSuccessListener(new OnSuccessListener<FindAutocompletePredictionsResponse>() {
-            @Override
-            public void onSuccess(FindAutocompletePredictionsResponse response) {
-                final List<String> idList = new ArrayList<>();
-                List<String> places = new ArrayList<>();
-                for (AutocompletePrediction result : response.getAutocompletePredictions()){
-                    if (result.getPlaceTypes().toString().toLowerCase().contains("restaurant")) {
-                        idList.add(result.getPlaceId());
-                        places.add(result.getPrimaryText(null) + "\n" + result.getSecondaryText(null));
-                    }
-                }
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, places);
-                autoCompleteTextView.setAdapter(adapter);
-                autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Toast.makeText(getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
-                        String [] predictions = parent.getItemAtPosition(position).toString().split("\n");
-                        String predictionId = idList.get(position);
-                        String predictionName = predictions[0];
-                        PlaceMarker placeMarker = new PlaceMarker();
-                        service.setPlaceMarker(placeMarker);
-                        service.getPlaceMarker().setId(predictionId);
-                        service.getPlaceMarker().setName(predictionName);
-                        getMarkerDetails(service.getPlaceMarker());
-                        toolbar.setVisibility(View.GONE);
-                        autoCompleteTextView.setText("");
-
-                    }
-                });
-                initList();
-            }
-        });
-
-        client.findAutocompletePredictions(request).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    public void getMarkerDetails(PlaceMarker marker){
-        String uri = getContext().getString(R.string.url_begin) + marker.getId() +
-                getContext().getString(R.string.and_key) + API_KEY;
-        Object dataTransfer[] = new Object[2];
-        dataTransfer[0] = uri;
-        dataTransfer[1] = marker;
-        PlaceDetailsTask getNearbyPlacesData = new PlaceDetailsTask();
-        getNearbyPlacesData.execute(dataTransfer);
-    }
-
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (toolbar != null) {
-            if (toolbar.getVisibility() == View.VISIBLE) {
-                toolbar.setVisibility(View.GONE);
-            }
-        }
-    }
-
-    @Override
-    public void onDetach(){
-        super.onDetach();
-        if (toolbar != null) {
-            if (toolbar.getVisibility() == View.VISIBLE) {
-                toolbar.setVisibility(View.GONE);
-            }
-        }
-    }
 }

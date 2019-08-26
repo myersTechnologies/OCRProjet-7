@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,7 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import dasilva.marco.go4lunch.BuildConfig;
 import dasilva.marco.go4lunch.R;
-import dasilva.marco.go4lunch.chat.ChatActivity;
+import dasilva.marco.go4lunch.ui.chat.ChatActivity;
 import dasilva.marco.go4lunch.di.DI;
 import dasilva.marco.go4lunch.dialog.SettingsDialog;
 import dasilva.marco.go4lunch.firebase.DataBaseService;
@@ -46,16 +47,19 @@ public class MapView extends AppCompatActivity
     private Go4LunchService service;
     private TextView userNameText, userEmailText;
     private ImageView userImage;
-    private Toolbar toolbar;
+    private Toolbar searchToolbar;
+    private Toolbar workMatesToolbar;
     private DataBaseService dataBaseService;
     private SharedPreferences preferences;
-    private Fragment fragment;
+    private BottomNavigationView mapsBottomNav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_view);
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        searchToolbar = findViewById(R.id.toolbar_search);
+        workMatesToolbar = findViewById(R.id.toolbar_search_user);
         setSupportActionBar(toolbar);
 
         service = DI.getService();
@@ -67,8 +71,8 @@ public class MapView extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        changeFragment(new MapFragment(), R.string.map_fragment);
 
+        changeFragment(new MapFragment(), R.string.map_fragment);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -77,7 +81,7 @@ public class MapView extends AppCompatActivity
         userNameText = navigationView.getHeaderView(0).findViewById(R.id.userName);
         userImage = navigationView.getHeaderView(0).findViewById(R.id.userAvatar);
 
-        BottomNavigationView mapsBottomNav =  findViewById(R.id.nav_bottom_maps);
+        mapsBottomNav =  findViewById(R.id.nav_bottom_maps);
 
         mapsBottomNav.setOnNavigationItemSelectedListener(this);
 
@@ -86,15 +90,13 @@ public class MapView extends AppCompatActivity
         if (service.getUser().getChoice() != null) {
             startAlarmToSendANotification(service.getUser().getChoice());
         } else {
-            try {
-                checkChoiceStringToRemoveSelectedPlace();
-            } catch (Exception e) {
-            }
+            checkChoiceStringToRemoveSelectedPlace();
         }
 
     }
     public void checkChoiceStringToRemoveSelectedPlace() {
-        dataBaseService.removeCompleteSelectionDatabase();
+        preferences.edit().remove(getString(R.string.choice)).apply();
+        preferences.edit().remove(getString(R.string.choice_adress)).apply();
         preferences.edit().remove(getString(R.string.joining_users)).apply();
     }
 
@@ -145,39 +147,66 @@ public class MapView extends AppCompatActivity
                        }
                    }
                }
-            break;
+                break;
             case R.id.chat:
                 Intent chatIntent = new Intent(this, ChatActivity.class);
                 startActivity(chatIntent);
                 break;
-            case R.id.settings:
+                case R.id.settings:
                 SettingsDialog settingsDialog = new SettingsDialog(this);
                 settingsDialog.createSettingsDialog();
                 break;
             case R.id.logout:
                 service.setUser(null);
+                service.setListMarkers(null);
+                resetActivity();
                 LoginManager.getInstance().logOut();
                 FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(getApplicationContext(), Main.class));
+                startActivity(new Intent(this, Main.class));
+                finish();
                 break;
             case R.id.mapViewItem:
-                fragment = new MapFragment();
-                changeFragment(fragment, R.string.map_fragment);
+                if (searchToolbar.getVisibility() == View.VISIBLE){
+                    searchToolbar.setVisibility(View.GONE);
+                }
+                if (workMatesToolbar.getVisibility() == View.VISIBLE){
+                    workMatesToolbar.setVisibility(View.GONE);
+                }
+                changeFragment(new MapFragment(), R.string.map_fragment);
                 break;
             case R.id.listViewItem:
-                fragment = new ListViewFragment();
-                changeFragment(fragment, R.string.list_fragment);
-
+                if (searchToolbar.getVisibility() == View.VISIBLE){
+                    searchToolbar.setVisibility(View.GONE);
+                }
+                if (workMatesToolbar.getVisibility() == View.VISIBLE){
+                    workMatesToolbar.setVisibility(View.GONE);
+                }
+                changeFragment(new ListViewFragment(), R.string.list_fragment);
                 break;
             case R.id.workMatesItem:
-                fragment = new WorkmatesFragment();
-                changeFragment(fragment, R.string.workmates_fragment);
-               break;
+                if (searchToolbar.getVisibility() == View.VISIBLE){
+                    searchToolbar.setVisibility(View.GONE);
+                }
+                changeFragment(new WorkmatesFragment(), R.string.map_fragment);
+                break;
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void changeFragment(Fragment fragment, int value){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment, String.valueOf(value)).addToBackStack(String.valueOf(value))
+                .commit();
+    }
+
+    private void removeFragment(String TAG){
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG);
+        if(fragment != null)
+            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
     }
 
     @Override
@@ -187,45 +216,32 @@ public class MapView extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-                String fragmentName = getSupportFragmentManager().getBackStackEntryAt(
-                        getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-                changeFragment(fragment,
-                        Integer.parseInt(fragmentName));
-            } else {
-                fragment = new MapFragment();
-                changeFragment(fragment, R.string.map_fragment);
+            if (searchToolbar.getVisibility() == View.VISIBLE){
+                searchToolbar.setVisibility(View.GONE);
             }
-        }
-    }
-
-    private void changeFragment(Fragment fragment, int value){
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, fragment, String.valueOf(value)).addToBackStack(String.valueOf(value))
-                .commit();
-    }
-
-    public void setUserChoiceToList(){
-        for (SelectedPlace selectedPlace : dataBaseService.getListOfSelectedPlaces()) {
-            PlaceMarker placeMarker = new PlaceMarker();
-            placeMarker.setId(selectedPlace.getId());
-            placeMarker.setLatLng(service.getRealLatLng(selectedPlace));
-            placeMarker.setName(selectedPlace.getName());
-            getMarkerDetails(placeMarker);
-            service.setUserLunchChoice(placeMarker, this);
-            break;
+            if (workMatesToolbar.getVisibility() == View.VISIBLE){
+                workMatesToolbar.setVisibility(View.GONE);
+            }
+            mapsBottomNav.setSelectedItemId(R.id.mapViewItem);
+            mapsBottomNav.setSelected(true);
         }
     }
 
     public void getMarkerDetails(PlaceMarker placeMarker){
             String uri = getString(R.string.url_begin) + placeMarker.getId() +
                     getString(R.string.and_key) + BuildConfig.GOOGLEAPIKEY;
-            Object dataTransfer[] = new Object[2];
+            Object dataTransfer[] = new Object[3];
             dataTransfer[0] = uri;
             dataTransfer[1] = placeMarker;
+            dataTransfer[2] = this;
             PlaceDetailsTask getNearbyPlacesData = new PlaceDetailsTask();
             getNearbyPlacesData.execute(dataTransfer);
+    }
+
+    private void resetActivity(){
+        removeFragment(getString(R.string.map_fragment));
+        removeFragment(getString(R.string.list_fragment));
+        removeFragment(getString(R.string.workmates_fragment));
     }
 
 }

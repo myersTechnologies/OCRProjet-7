@@ -43,7 +43,6 @@ public class RviewWorkmatesAdapter extends RecyclerView.Adapter<RviewWorkmatesAd
     @Override
     public RviewWorkmatesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_of_workmates, viewGroup, false);
-
         return new ViewHolder(view);
     }
 
