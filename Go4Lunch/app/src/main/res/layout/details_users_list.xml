@@ -8,11 +8,11 @@
 
     <ImageView
         android:id="@+id/item_details_avatar"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_width="@dimen/fifty_dp"
+        android:layout_height="@dimen/fifty_dp"
+        android:layout_marginStart="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/ten_dp"
+        android:layout_marginBottom="@dimen/ten_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,10 +21,10 @@
         android:id="@+id/item_details_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:textStyle="bold"
+        android:layout_marginStart="@dimen/twenty_four_dp"
         app:layout_constraintBottom_toBottomOf="@+id/item_details_avatar"
         app:layout_constraintStart_toEndOf="@+id/item_details_avatar"
-        app:layout_constraintTop_toTopOf="@+id/item_details_avatar" />
+        app:layout_constraintTop_toTopOf="@+id/item_details_avatar"
+        style="@style/UsersDetailsActivityTheme.Bold"/>
 
 </android.support.constraint.ConstraintLayout>

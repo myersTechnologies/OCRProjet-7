@@ -1,10 +1,26 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <item name="ic_menu_camera" type="drawable">@android:drawable/ic_menu_camera</item>
-    <item name="ic_menu_gallery" type="drawable">@android:drawable/ic_menu_gallery</item>
-    <item name="ic_menu_slideshow" type="drawable">@android:drawable/ic_menu_slideshow</item>
-    <item name="ic_menu_manage" type="drawable">@android:drawable/ic_menu_manage</item>
-    <item name="ic_menu_share" type="drawable">@android:drawable/ic_menu_share</item>
-    <item name="ic_menu_send" type="drawable">@android:drawable/ic_menu_send</item>
+    <item name="ic_person" type="drawable">@drawable/ic_person_outline_black_24dp</item>
+    <item name="ic_bar" type="drawable">@drawable/bar</item>
+    <item name="ic_message_user" type="drawable">@drawable/out_message_bg</item>
+    <item name="ic_message_other_user" type="drawable">@drawable/in_message_bg</item>
+    <item name="ic_app_icon" type="drawable">@drawable/go_lunch_24dp</item>
+    <item name="ic_call" type="drawable">@drawable/ic_call_24dp</item>
+    <item name="ic_list" type="drawable">@drawable/ic_list_24dp</item>
+    <item name="ic_location" type="drawable">@drawable/ic_location_24dp</item>
+    <item name="ic_map" type="drawable">@drawable/ic_map_24dp</item>
+    <item name="ic_power" type="drawable">@drawable/ic_power_24dp</item>
+    <item name="ic_restaurant" type="drawable">@drawable/ic_restaurant_24dp</item>
+    <item name="ic_search_grey" type="drawable">@drawable/ic_search_grey_24dp</item>
+    <item name="ic_search_white" type="drawable">@drawable/ic_search_white_24dp</item>
+    <item name="ic_send" type="drawable">@drawable/ic_send_black_24dp</item>
+    <item name="ic_settings" type="drawable">@drawable/ic_settings_24dp</item>
+    <item name="ic_voice" type="drawable">@drawable/ic_settings_voice_grey_24dp</item>
+    <item name="ic_start" type="drawable">@drawable/ic_star_orange_24dp</item>
+    <item name="ic_unchecked" type="drawable">@drawable/ic_uncheck</item>
+    <item name="ic_website" type="drawable">@drawable/ic_website_24dp</item>
+    <item name="ic_workmates" type="drawable">@drawable/ic_workmates_24dp</item>
+    <item name="ic_chat_bubble" type="drawable">@drawable/ic_chat_bubble</item>
+
 
 </resources>
 

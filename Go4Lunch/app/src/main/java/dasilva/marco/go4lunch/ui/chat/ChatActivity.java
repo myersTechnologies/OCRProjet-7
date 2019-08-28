@@ -67,6 +67,7 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
+
     private void displayChatMessages() {
         chatMessages = new ArrayList<>();
 
@@ -82,6 +83,8 @@ public class ChatActivity extends AppCompatActivity {
                 }
                 chatAdapter = new ChatAdapter(chatMessages);
                 chatRecyclerView.setAdapter(chatAdapter);
+                chatRecyclerView.smoothScrollToPosition(chatAdapter.getItemCount());
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

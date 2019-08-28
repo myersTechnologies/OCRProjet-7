@@ -14,8 +14,7 @@
             android:id="@+id/toolbar_search"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:visibility="gone">
+            style="@style/ToolbarStyle">
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -26,12 +25,9 @@
                 android:id="@+id/auto_complete_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="5dp"
-                android:imeOptions="actionSearch"
-                android:text=""
-                android:hint="@string/search_restaurant_text"
+                android:layout_marginTop="@dimen/autocomplete_margin_top"
+                android:layout_marginEnd="@dimen/autocomplete_margin_end"
+                android:layout_marginBottom="@dimen/autocomplete_margin_bottom"
                 style="@style/AutoCompleteTextStyle"
                 />
 
@@ -42,8 +38,8 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_search_grey_24dp"
                     android:layout_alignParentStart="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="13dp"/>
+                    android:layout_marginStart="@dimen/autocomplete_search_icon_margin_start"
+                    android:layout_marginTop="@dimen/autocomplete_search_icon_margin_top"/>
 
                 <ImageView
                     android:id="@+id/voice_image"
@@ -51,8 +47,8 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_settings_voice_grey_24dp"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="13dp"
-                    android:layout_marginEnd="30dp"/>
+                    android:layout_marginTop="@dimen/autocomplete_voice_icon_margin_top"
+                    android:layout_marginEnd="@dimen/autocomplete_voice_icon_margin_end"/>
             </RelativeLayout>
 
         </android.support.v7.widget.Toolbar>

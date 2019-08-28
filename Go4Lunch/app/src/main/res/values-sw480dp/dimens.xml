@@ -1,0 +1,80 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">250dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <integer name="max_length_places_title">28</integer>
+    <dimen name="max_length_places_Restaurant_title">250dp</dimen>
+    <integer name="rating_bar_star_number">3</integer>
+
+    <dimen name="main_text_title_size">80sp</dimen>
+    <dimen name="main_text_size">16sp</dimen>
+    <dimen name="main_facebook_login_text_size">19sp</dimen>
+    <dimen name="autocomplete_text_size">15sp</dimen>
+    <dimen name="user_details_text_size">12sp</dimen>
+    <dimen name="places_list_title">24sp</dimen>
+    <dimen name="places_list_text">18sp</dimen>
+    <dimen name="restaurant_info_title">20sp</dimen>
+    <dimen name="nav_header_title">40sp</dimen>
+
+    <!-- Places List Image View-->
+    <dimen name="list_places_restaurant_width">70dp</dimen>
+    <dimen name="list_places_restaurant_height">70dp</dimen>
+    <!-- Places List Users Text View-->
+    <dimen name="list_places__users_coming_margin_top">3dp</dimen>
+    <!-- Places List Distance Text View-->
+
+    <!-- Card View Margins-->
+    <dimen name="ten_dp">10dp</dimen>
+    <dimen name="card_view_divider">16sp</dimen>
+    <dimen name="edit_text_max_words">200dp</dimen>
+    <integer name="layout_weight">1</integer>
+
+    <!-- Card View 2 Margins-->
+    <dimen name="fab_custom_size">65dp</dimen>
+    <dimen name="five_dp">5dp</dimen>
+    <dimen name="fab_max_image_size">45dp</dimen>
+    <dimen name="dimension_80dp">100dp</dimen>
+    <dimen name="nav_view_150dp">150dp</dimen>
+    <dimen name="dimension_360">420dp</dimen>
+    <dimen name="fifty_dp">50dp</dimen>
+    <dimen name="imageview_dimension">60dp</dimen>
+    <dimen name="fifteen_dp">15dp</dimen>
+    <dimen name="sixteen_dp">16dp</dimen>
+    <dimen name="twenty_four_dp">24dp</dimen>
+
+    <dimen name="maps_fab_custom_size">60dp</dimen>
+    <dimen name="maps_fab_custom_margin_bottom">80dp</dimen>
+    <dimen name="maps_fab_custom_margin_end">10dp</dimen>
+    <dimen name="maps_fab_custom_image_size">30dp</dimen>
+
+    <dimen name="workmates_image_size">70dp</dimen>
+    <dimen name="workmates_image_margin_top">10dp</dimen>
+    <dimen name="workmates_image_margin_start">16dp</dimen>
+    <dimen name="workmates_image_margin_bottom">10dp</dimen>
+    <dimen name="workmates_text_margin_start">24dp</dimen>
+
+    <dimen name="nav_header_title_text_margin_top">10dp</dimen>
+    <dimen name="nav_header_image_size">70dp</dimen>
+    <dimen name="nav_user_text_margin_left">20dp</dimen>
+
+    <dimen name="restaurant_info_layout_dimens">90dp</dimen>
+    <dimen name="restaurant_info_text_info_margin_start">10dp</dimen>
+    <dimen name="restaurant_info_text_info_margin_top">10dp</dimen>
+    <dimen name="restaurant_info_text_adress_margin_start">10dp</dimen>
+    <dimen name="restaurant_info_text_adress_margin_top">5dp</dimen>
+    <dimen name="restaurant_info_rating_bar_margin_top">5dp</dimen>
+    <dimen name="restaurant_info_rating_bar_margin_left">15dp</dimen>
+    <dimen name="restaurant_info_rating_bar_margin_bottom">5dp</dimen>
+
+    <dimen name="autocomplete_margin_top">5dp</dimen>
+    <dimen name="autocomplete_margin_end">20dp</dimen>
+    <dimen name="autocomplete_margin_bottom">5dp</dimen>
+    <dimen name="autocomplete_search_icon_margin_start">10dp</dimen>
+    <dimen name="autocomplete_search_icon_margin_top">13dp</dimen>
+    <dimen name="autocomplete_voice_icon_margin_end">30dp</dimen>
+    <dimen name="autocomplete_voice_icon_margin_top">13dp</dimen>
+</resources>

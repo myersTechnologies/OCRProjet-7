@@ -84,7 +84,7 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
         restaurantAdress =  findViewById(R.id.restaurant_details_adress);
         restaurantImage = findViewById(R.id.restaurant_image);
         BottomNavigationView navigationView = findViewById(R.id.nav_options_details);
-        detailsUsersRecyclerView = findViewById(R.id.joinin_users_list);
+        detailsUsersRecyclerView = findViewById(R.id.joining_users_list);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         detailsUsersRecyclerView.setLayoutManager(mLayoutManager);
         fab = findViewById(R.id.user_choice);

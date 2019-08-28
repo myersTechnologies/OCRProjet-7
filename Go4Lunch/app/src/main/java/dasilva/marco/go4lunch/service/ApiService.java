@@ -5,6 +5,7 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -148,8 +149,6 @@ public class ApiService implements Go4LunchService {
         }
     }
 
-
-
     @Override
     public String getTodayClosingHour(PlaceMarker placeMarker) {
             String openUntil = "";
@@ -165,7 +164,17 @@ public class ApiService implements Go4LunchService {
                                 try {
                                     String[] openHours = todays.split(",");
                                     String[] openedUntil = openHours[0].split("–");
-                                    openUntil = checkClosingHours(openedUntil[1]);
+                                    Calendar time = Calendar.getInstance();
+                                    time.add(Calendar.HOUR, Integer.parseInt(openedUntil[1].split(":")[0].trim()));
+                                    time.add(Calendar.MINUTE, Integer.parseInt(openedUntil[1].split(":")[1].split(PM)[0].trim()));
+                                    if (calendar.getTime().before(time.getTime())){
+                                        openUntil = checkClosingHours(openedUntil[1]);
+                                        Log.d("BEFORECPL1", openedUntil[1]);
+                                    } else {
+                                        openedUntil = openHours[1].split("–");
+                                        openUntil = checkClosingHours(openedUntil[1]);
+                                        Log.d("AfterCOMPL", openHours[1]);
+                                    }
                                 } catch (ArrayIndexOutOfBoundsException e) {
                                     String[] openHours = todays.split("–");
                                     String[] openHourWithoutDay = openHours[0].split(dayOfTheWeek + ":");
@@ -175,7 +184,20 @@ public class ApiService implements Go4LunchService {
                                 try {
                                     String[] openHours = todays.split(",");
                                     String[] openedUntil = openHours[1].split("–");
-                                    openUntil = openedUntil[1];
+                                    Calendar time = Calendar.getInstance();
+                                    time.add(Calendar.HOUR, Integer.parseInt(openedUntil[1].split(":")[0].trim()));
+                                    if (openedUntil[1].split(":")[1].contains(PM)) {
+                                        time.add(Calendar.MINUTE, Integer.parseInt(openedUntil[1].split(":")[1].split(PM)[0].trim()));
+                                    } else {
+                                        time.add(Calendar.MINUTE, Integer.parseInt(openedUntil[1].split(":")[1].split(AM)[0].trim()));
+                                    }
+                                    if (calendar.getTime().before(time.getTime())){
+                                        openUntil = checkClosingHours(openedUntil[1]);
+                                    } else {
+                                        openedUntil = openHours[0].split("–");
+                                        openUntil = checkClosingHours(openedUntil[1]);
+                                    }
+
                                 } catch (ArrayIndexOutOfBoundsException e) {
                                     String[] openHours = todays.split("–");
                                     if (openHours.length == 1) {
@@ -196,12 +218,8 @@ public class ApiService implements Go4LunchService {
 
                     break;
                 }
-
             }
-
-
         }
-
         return openUntil;
     }
 
@@ -220,6 +238,7 @@ public class ApiService implements Go4LunchService {
         int timeClose = closeHour * 60 + closeMinutes;
         int currentTime = hourNow * 60 + minutesNow;
         int closing = Math.abs(timeClose - currentTime);
+        Log.d("OpeningMATH", String.valueOf(closing));
         if (closing <= 60) {
             open = "Closing soon";
         } else {
@@ -261,28 +280,29 @@ public class ApiService implements Go4LunchService {
                                 } else {
                                     try {
                                         String[] openHours = days.split(",");
-                                        String[] openedUntil = openHours[0].split("–");
-                                        String[] openHourWithoutDay = openedUntil[0].split(dayOfTheWeek + ":");
+                                        String[] openedUntil = openHours[1].split("–");
+                                        if (!openedUntil[0].contains(AM)) {
+                                            if (!openedUntil[0].contains(PM)) {
+                                                openUntil = checkOpenHours(openedUntil[0] + PM);
+                                            } else {
+                                                openUntil = checkOpenHours(openedUntil[0]);
+                                            }
+                                        } else {
+                                            openUntil = checkOpenHours(openedUntil[0]);
+                                        }
+
+                                    } catch (ArrayIndexOutOfBoundsException e) {
+                                        String[] openHours = days.split("–");
+                                        String[] openHourWithoutDay = openHours[0].split(dayOfTheWeek + ":");
                                         if (!openHourWithoutDay[1].contains(AM)) {
                                             if (!openHourWithoutDay[1].contains(PM)) {
                                                 openUntil = checkOpenHours(openHourWithoutDay[1] + PM);
                                             } else {
                                                 openUntil = checkOpenHours(openHourWithoutDay[1]);
                                             }
+                                        } else {
+                                            openUntil = checkOpenHours(openHourWithoutDay[1]);
                                         }
-
-                                    } catch (ArrayIndexOutOfBoundsException e) {
-                                        String[] openHours = days.split("–");
-                                        String[] openHourWithoutDay = openHours[0].split(dayOfTheWeek + ":");
-                                        if (!openHourWithoutDay[0].contains(AM)) {
-                                            if (!openHourWithoutDay[0].contains(PM)) {
-                                                openUntil = checkOpenHours(openHourWithoutDay[0] + PM);
-                                            } else {
-                                                openUntil = checkOpenHours(openHourWithoutDay[0]);
-                                            }
-                                        }
-
-
                                     }
                                 }
                             } else {
@@ -301,20 +321,21 @@ public class ApiService implements Go4LunchService {
 
     private String checkOpenHours(String openUntil){
         String open;
-        int closeHour = Integer.parseInt(openUntil.split(":")[0].trim());
-        int closeMinutes;
+        int openHour = Integer.parseInt(openUntil.split(":")[0].trim());
+        int openMinutes;
         if (openUntil.split(":")[1].trim().contains(AM)) {
-            closeMinutes = Integer.parseInt(openUntil.split(":")[1].split(AM)[0].trim());
+            openMinutes = Integer.parseInt(openUntil.split(":")[1].split(AM)[0].trim());
         } else {
-            closeMinutes = Integer.parseInt(openUntil.split(":")[1].split(PM)[0].trim());
+            openMinutes = Integer.parseInt(openUntil.split(":")[1].split(PM)[0].trim());
         }
         Calendar time = Calendar.getInstance();
         int hourNow = time.get(Calendar.HOUR_OF_DAY);
         int minutesNow = time.get(Calendar.MINUTE);
-        int timeOpen = closeHour * 60 + closeMinutes;
+        int timeOpen = openHour * 60 + openMinutes;
         int currentTime = hourNow * 60 + minutesNow;
-        int closing = Math.abs(currentTime - timeOpen);
-        if (closing <= 60) {
+        int opening = Math.abs(currentTime - timeOpen);
+        Log.d("CLOSINGMATH", String.valueOf(opening));
+        if (opening >= 600 && opening <= 700) {
             open = "Opening soon";
         } else {
             open = openUntil;

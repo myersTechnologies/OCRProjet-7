@@ -8,10 +8,10 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/your_lunch"
-            android:icon="@drawable/ic_restaurant_24dp"
+            android:icon="@drawable/ic_restaurant"
             android:title="@string/your_lunch" />
         <item android:id="@+id/chat"
-            android:icon="@drawable/ic_chat_bubble_black_24dp"
+            android:icon="@drawable/ic_chat_bubble_white_24dp"
             android:title="CHAT"/>
         <item
             android:id="@+id/settings"

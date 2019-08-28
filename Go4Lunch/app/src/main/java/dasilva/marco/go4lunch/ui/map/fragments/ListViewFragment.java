@@ -118,6 +118,7 @@ public class ListViewFragment extends Fragment {
                 autoCompleteTextView.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        onItemClick();
                     }
 
                     @Override

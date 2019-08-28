@@ -1,14 +1,19 @@
 package dasilva.marco.go4lunch.ui.main;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -55,11 +60,12 @@ public class Main extends AppCompatActivity {
     private SignInButton googleSignIn;
     private DataBaseService dataBaseService;
     private static String  EMAIL = "email";
+    private static String PUBLIC_PROFILE =  "public_profile";
+    private static int REQUEST_CODE = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
         Intent notificationService = new Intent(this, NotificationService.class);
@@ -71,13 +77,16 @@ public class Main extends AppCompatActivity {
         googleSignIn = findViewById(R.id.signInGoogle);
         signInFb = findViewById(R.id.fb_login_button);
 
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(getApplication());
+
         mapViewActivity = new Intent(this, MapView.class);
 
         mAuth = FirebaseAuth.getInstance();
 
         requestPermissions();
+        signInFb.setReadPermissions(EMAIL, PUBLIC_PROFILE);
         callbackManager = CallbackManager.Factory.create();
-        signInFb.setReadPermissions(EMAIL);
 
         service.setDataBase(dataBaseService);
         dataBaseService.setUsersList();
@@ -94,6 +103,7 @@ public class Main extends AppCompatActivity {
 
     public void connectUser(){
         LoginManager.getInstance().logOut();
+        FirebaseAuth.getInstance().signOut();
         signInWithFacebook();
         signInWithGoogle();
     }
@@ -105,6 +115,7 @@ public class Main extends AppCompatActivity {
             startActivity(mapViewActivity);
         } else {
             LoginManager.getInstance().logOut();
+            FirebaseAuth.getInstance().signOut();
             signInWithFacebook();
             signInWithGoogle();
         }
@@ -115,23 +126,22 @@ public class Main extends AppCompatActivity {
         signInFb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginManager.getInstance().registerCallback(callbackManager,
-                        new FacebookCallback<LoginResult>() {
-                            @Override
-                            public void onSuccess(LoginResult loginResult) {
-                                handleFacebookToken(loginResult.getAccessToken());
-                            }
+                signInFb.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        handleFacebookToken(loginResult.getAccessToken());
+                    }
 
-                            @Override
-                            public void onCancel() {
+                    @Override
+                    public void onCancel() {
 
-                            }
+                    }
 
-                            @Override
-                            public void onError(FacebookException exception) {
-                                Toast.makeText(getApplicationContext(), exception.toString(), Toast.LENGTH_LONG).show();
-                            }
-                        });
+                    @Override
+                    public void onError(FacebookException exception) {
+                        Toast.makeText(getApplicationContext(), exception.toString(), Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
     }
@@ -152,10 +162,8 @@ public class Main extends AppCompatActivity {
                                         Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            // If sign in fails, display a message to the user.
                             Toast.makeText(getApplicationContext(), R.string.authentication_failed,
                                     Toast.LENGTH_SHORT).show();
-
                         }
 
                     }
@@ -174,15 +182,17 @@ public class Main extends AppCompatActivity {
 
                 GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(getApplicationContext(), gso);
                 Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-                startActivityForResult(signInIntent, 5);
+                startActivityForResult(signInIntent, REQUEST_CODE);
             }
         });
     }
 
     public void requestPermissions(){
-        ActivityCompat.requestPermissions(this,
-                new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                1);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    1);
+        }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET,
@@ -193,10 +203,11 @@ public class Main extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 5) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
@@ -204,7 +215,7 @@ public class Main extends AppCompatActivity {
                     firebaseAuthWithGoogle(account);
                 }
             } catch (ApiException e) {
-                Toast.makeText(this, R.string.google_auth_failed, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }

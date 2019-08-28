@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/restaurant_info_layout_dimens"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary">
+
+
+    <TextView
+        android:id="@+id/restaurant_details_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/restaurant_info_text_info_margin_start"
+        android:layout_marginTop="@dimen/restaurant_info_text_info_margin_top"
+        style="@style/RestaurantInfoStyle.Big"
+        />
+
+    <TextView
+        android:id="@+id/restaurant_details_adress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/restaurant_details_info"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/restaurant_info_text_adress_margin_start"
+        android:layout_marginTop="@dimen/restaurant_info_text_info_margin_top"
+        style="@style/RestaurantInfoStyle.Small"
+        />
+
+    <RatingBar
+        android:id="@+id/details_rating_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/restaurant_info_rating_bar_margin_top"
+        app:layout_constraintLeft_toRightOf="@id/restaurant_details_info"
+        app:layout_constraintBottom_toBottomOf="@id/restaurant_details_info"
+        android:layout_marginBottom="@dimen/restaurant_info_rating_bar_margin_bottom"
+        android:layout_marginStart="@dimen/restaurant_info_rating_bar_margin_left"
+        android:progressTint="@color/gold"
+        style="@style/Base.Widget.AppCompat.RatingBar.Small.Go4Lunch"/>
+
+</android.support.constraint.ConstraintLayout>

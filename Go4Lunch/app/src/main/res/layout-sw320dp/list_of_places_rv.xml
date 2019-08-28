@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/place_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/PlacesListStyleTitle"/>
+
+    <TextView
+        android:id="@+id/place_adress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/place_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/horaires_place"
+        style="@style/PlacesListStyleText"/>
+
+    <TextView
+        android:id="@+id/horaires_place"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/place_adress"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/PlacesListStyleText.Italic"
+        />
+
+    <TextView
+        android:id="@+id/place_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/ten_dp"
+        app:layout_constraintRight_toLeftOf="@id/place_image"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/people_coming"
+        style="@style/PlacesListStyleText" />
+
+    <TextView
+        android:id="@+id/people_coming"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/list_places__users_coming_margin_top"
+        android:layout_marginEnd="@dimen/five_dp"
+        app:layout_constraintRight_toLeftOf="@id/place_image"
+        app:layout_constraintTop_toBottomOf="@id/place_distance"
+        style="@style/PlacesListStyleText"/>
+
+    <ImageView
+        android:id="@+id/show_people_ic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_person"
+        app:layout_constraintRight_toLeftOf="@+id/people_coming"
+        app:layout_constraintTop_toBottomOf="@id/place_distance" />
+
+
+    <RatingBar
+        android:id="@+id/rating_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/five_dp"
+        app:layout_constraintRight_toLeftOf="@id/place_image"
+        app:layout_constraintTop_toBottomOf="@+id/show_people_ic"
+        android:layout_marginRight="@dimen/five_dp"
+        android:progressTint="@color/gold"
+        style="@style/Base.Widget.AppCompat.RatingBar.Small.Go4Lunch"
+        />
+
+    <ImageView
+        android:id="@+id/place_image"
+        android:layout_width="@dimen/list_places_restaurant_width"
+        android:layout_height="@dimen/list_places_restaurant_height"
+        android:layout_marginTop="@dimen/five_dp"
+        android:layout_marginEnd="@dimen/ten_dp"
+        android:layout_marginBottom="@dimen/five_dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

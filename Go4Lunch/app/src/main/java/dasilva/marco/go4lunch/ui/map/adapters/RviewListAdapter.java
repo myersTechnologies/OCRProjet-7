@@ -131,7 +131,7 @@ public class RviewListAdapter extends RecyclerView.Adapter<RviewListAdapter.View
             placeAdress = itemView.findViewById(R.id.place_adress);
             placeHoraires = itemView.findViewById(R.id.horaires_place);
             placeDistance = itemView.findViewById(R.id.place_distance);
-            placePartipants = itemView.findViewById(R.id.people_comming);
+            placePartipants = itemView.findViewById(R.id.people_coming);
             placeRate = itemView.findViewById(R.id.rating_img);
             placeImage = itemView.findViewById(R.id.place_image);
         }

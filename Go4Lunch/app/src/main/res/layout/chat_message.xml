@@ -1,93 +1,84 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/item_chat_avatar"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/message_user"
-        app:layout_constraintStart_toEndOf="@id/item_chat_avatar"
-        app:layout_constraintTop_toTopOf="@id/item_chat_avatar"
-        android:layout_marginStart="10dp"
-        style="@style/MessageTextChatStyleBold"
-        />
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/message_user"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/item_chat_avatar"
-        android:id="@+id/message_time"
-        style="@style/MessageTextChatStyle"/>
+        <TextView
+            android:id="@+id/txtInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/five_dp"
+            style="@style/MessageTextChatInfo"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:id="@+id/message_text"
-        app:layout_constraintStart_toEndOf="@id/item_chat_avatar"
-        app:layout_constraintTop_toBottomOf="@id/message_user"
-        android:layout_marginStart="10dp"
-        style="@style/MessageTextChatStyleText18sp"
-        />
+        <TextView
+            android:id="@+id/txtTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginLeft="@dimen/five_dp"
+            style="@style/MessageTextChatInfo"/>
 
-    <ImageView
-        android:id="@+id/user_chat_avatar"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        <LinearLayout
+            android:id="@+id/avatarInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/ten_dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/item_chat_avatar_user"
+                android:layout_width="@dimen/imageview_dimension"
+                android:layout_height="@dimen/imageview_dimension"
+                android:layout_marginTop="@dimen/ten_dp"
+                android:layout_marginBottom="@dimen/ten_dp"
+                android:layout_marginRight="@dimen/five_dp"
+                android:layout_weight="1"
+                />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/user_message"
-        app:layout_constraintEnd_toStartOf="@id/user_chat_avatar"
-        app:layout_constraintTop_toTopOf="@id/user_chat_avatar"
-        android:layout_marginEnd="10dp"
-        style="@style/MessageTextChatStyleBold"
-        />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/user_message"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/item_chat_avatar"
-        android:id="@+id/user_message_time"
-        style="@style/MessageTextChatStyle"
-        />
+            <LinearLayout
+                android:id="@+id/contentWithBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ten_dp"
+                android:layout_gravity="end|center_vertical"
+                android:background="@drawable/in_message_bg"
+                android:paddingLeft="@dimen/ten_dp"
+                android:layout_marginRight="@dimen/ten_dp"
+                android:layout_marginLeft="@dimen/ten_dp"
+                android:paddingBottom="@dimen/ten_dp"
+                android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:id="@+id/user_message_text"
-        app:layout_constraintEnd_toStartOf="@id/user_chat_avatar"
-        app:layout_constraintTop_toBottomOf="@id/user_message"
-        android:layout_marginEnd="10dp"
-        style="@style/MessageTextChatStyleText18sp"
-        />
-</android.support.constraint.ConstraintLayout>
+                <TextView
+                    android:id="@+id/txtMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    style="@style/MessageTextChatStyleText"
+                    android:maxWidth="@dimen/edit_text_max_words" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/item_chat_avatar"
+                android:layout_width="@dimen/imageview_dimension"
+                android:layout_height="@dimen/imageview_dimension"
+                android:layout_marginStart="@dimen/five_dp"
+                android:layout_marginTop="@dimen/ten_dp"
+                android:layout_marginBottom="@dimen/ten_dp"
+                android:layout_marginEnd="@dimen/five_dp"
+                android:layout_weight="@integer/layout_weight"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

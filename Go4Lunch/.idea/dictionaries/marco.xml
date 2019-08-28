@@ -2,8 +2,12 @@
   <dictionary name="marco">
     <words>
       <w>adress</w>
+      <w>choosed</w>
+      <w>dasilva</w>
       <w>horaires</w>
       <w>partipants</w>
+      <w>textview</w>
+      <w>tilte</w>
     </words>
   </dictionary>
 </component>

@@ -19,14 +19,14 @@
         android:id="@+id/my_location_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:fabCustomSize="60dp"
+        app:fabCustomSize="@dimen/maps_fab_custom_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="80dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="@dimen/maps_fab_custom_margin_bottom"
+        android:layout_marginEnd="@dimen/maps_fab_custom_margin_end"
         android:src="@drawable/ic_location_24dp"
         android:backgroundTint="@color/white"
-        app:maxImageSize="30dp"
+        app:maxImageSize="@dimen/maps_fab_custom_image_size"
         />
 
 </android.support.constraint.ConstraintLayout>
