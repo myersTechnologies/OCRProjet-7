@@ -47,23 +47,20 @@ import dasilva.marco.go4lunch.dialog.LoadingDialog;
 import dasilva.marco.go4lunch.events.DetailsEvent;
 import dasilva.marco.go4lunch.model.PlaceMarker;
 import dasilva.marco.go4lunch.service.Go4LunchService;
-import dasilva.marco.go4lunch.ui.map.adapters.RviewListAdapter;
+import dasilva.marco.go4lunch.ui.map.adapters.RestaurantListAdapter;
 import dasilva.marco.go4lunch.ui.map.utils.details.PlaceDetailsTask;
 
 public class ListViewFragment extends Fragment {
 
     private Go4LunchService service = DI.getService();
     private static ListViewFragment listViewFragment;
-    private RviewListAdapter adapter;
     private RecyclerView listRecyclerView;
     private static final String API_KEY = BuildConfig.GOOGLEAPIKEY;
     private PlacesClient client;
     private AutoCompleteTextView autoCompleteTextView;
     private Toolbar toolbar;
     private ArrayAdapter<String> predictionsAdapter;
-    private List<PlaceMarker> places;
     private static String RESTAURANT = "restaurant";
-    private static String FR = "fr";
     private List<String> idList;
     private LinearLayoutManager mLayoutManager;
     private LoadingDialog loadingDialog;
@@ -99,10 +96,9 @@ public class ListViewFragment extends Fragment {
         if (service.getListMarkers() != null) {
             service.countPlacesLikes();
             service.countPlaceSelectedByUsers();
-            places = service.getListMarkers();
+            List<PlaceMarker> places = service.getListMarkers();
             listRecyclerView.setLayoutManager(mLayoutManager);
-            adapter = new RviewListAdapter(places);
-            service.addAdapter(adapter);
+            RestaurantListAdapter adapter = new RestaurantListAdapter(places);
             listRecyclerView.setAdapter(adapter);
         }
     }
@@ -148,6 +144,7 @@ public class ListViewFragment extends Fragment {
                 new LatLng(service.getCurrentLocation().getLatitude(), service.getCurrentLocation().getLongitude()),
                 new LatLng(service.getCurrentLocation().getLatitude(), service.getCurrentLocation().getLongitude()));
 
+        String FR = "fr";
         FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
                 .setLocationBias(bounds)
                 .setCountry(FR)

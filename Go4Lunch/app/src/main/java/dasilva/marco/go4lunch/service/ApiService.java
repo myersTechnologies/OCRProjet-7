@@ -5,11 +5,7 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.util.Log;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
@@ -22,7 +18,6 @@ import dasilva.marco.go4lunch.firebase.DataBaseService;
 import dasilva.marco.go4lunch.model.PlaceMarker;
 import dasilva.marco.go4lunch.model.SelectedPlace;
 import dasilva.marco.go4lunch.model.User;
-import dasilva.marco.go4lunch.ui.map.adapters.RviewListAdapter;
 
 public class ApiService implements Go4LunchService {
 
@@ -30,11 +25,7 @@ public class ApiService implements Go4LunchService {
     private User user;
     private List<PlaceMarker> places;
     private Location location;
-    private SupportMapFragment googleMap;
-    private OnMapReadyCallback callback;
-    private GoogleMap map;
     private DataBaseService dataBaseService;
-    private RviewListAdapter adapter;
     private String AM = "AM";
     private String PM ="PM";
     private String CLOSED = "Closed";
@@ -169,11 +160,9 @@ public class ApiService implements Go4LunchService {
                                     time.add(Calendar.MINUTE, Integer.parseInt(openedUntil[1].split(":")[1].split(PM)[0].trim()));
                                     if (calendar.getTime().before(time.getTime())){
                                         openUntil = checkClosingHours(openedUntil[1]);
-                                        Log.d("BEFORECPL1", openedUntil[1]);
                                     } else {
                                         openedUntil = openHours[1].split("–");
                                         openUntil = checkClosingHours(openedUntil[1]);
-                                        Log.d("AfterCOMPL", openHours[1]);
                                     }
                                 } catch (ArrayIndexOutOfBoundsException e) {
                                     String[] openHours = todays.split("–");
@@ -238,7 +227,6 @@ public class ApiService implements Go4LunchService {
         int timeClose = closeHour * 60 + closeMinutes;
         int currentTime = hourNow * 60 + minutesNow;
         int closing = Math.abs(timeClose - currentTime);
-        Log.d("OpeningMATH", String.valueOf(closing));
         if (closing <= 60) {
             open = "Closing soon";
         } else {
@@ -334,8 +322,7 @@ public class ApiService implements Go4LunchService {
         int timeOpen = openHour * 60 + openMinutes;
         int currentTime = hourNow * 60 + minutesNow;
         int opening = Math.abs(currentTime - timeOpen);
-        Log.d("CLOSINGMATH", String.valueOf(opening));
-        if (opening >= 600 && opening <= 700) {
+        if (opening >= 660 && opening <= 720) {
             open = "Opening soon";
         } else {
             open = openUntil;
@@ -345,49 +332,8 @@ public class ApiService implements Go4LunchService {
     }
 
     @Override
-    public SupportMapFragment getMapView() {
-        return googleMap;
-    }
-
-    @Override
-    public void setMapView(SupportMapFragment mapView) {
-        this.googleMap = mapView;
-    }
-
-    @Override
-    public OnMapReadyCallback getCallback() {
-        return callback;
-    }
-
-    @Override
-    public void setCallback(OnMapReadyCallback callback) {
-        this.callback = callback;
-    }
-
-
-    @Override
-    public GoogleMap getGoogleMap() {
-        return map;
-    }
-
-    @Override
-    public void setGoogleMap(GoogleMap map) {
-        this.map = map;
-    }
-
-    @Override
     public void setDataBase(DataBaseService dataBase) {
         this.dataBaseService = dataBase;
-    }
-
-    @Override
-    public void addAdapter(RviewListAdapter adapter) {
-        this.adapter = adapter;
-    }
-
-    @Override
-    public RviewListAdapter getAdapter() {
-        return adapter;
     }
 
     @Override

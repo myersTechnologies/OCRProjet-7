@@ -15,8 +15,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 import dasilva.marco.go4lunch.R;
@@ -30,7 +28,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
     private Go4LunchService service = DI.getService();
     private DataBaseService dataBaseService;
     private List<ChatMessage> chatMessages;
-    private static  String format = "dd-MM-yyyy (HH:mm:ss)";
 
     public ChatAdapter(List<ChatMessage> messages) {
         this.chatMessages = messages;
@@ -48,6 +45,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         ChatMessage message = chatMessages.get(i);
         viewHolder.txtMessage.setText(message.getMessageText());
+        String format = "dd-MM-yyyy (HH:mm:ss)";
         viewHolder.txtTime.setText(DateFormat.format(format,
                 message.getMessageTime()));
         for (User users : dataBaseService.getUsersList()){
@@ -60,12 +58,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
 
                 LinearLayout.LayoutParams layout =
                         (LinearLayout.LayoutParams) viewHolder.avatarInfo.getLayoutParams();
-                layout.gravity = Gravity.RIGHT;
+                layout.gravity = Gravity.END;
                 viewHolder.avatarInfo.setLayoutParams(layout);
 
                 LinearLayout.LayoutParams layoutParams =
                         (LinearLayout.LayoutParams) viewHolder.contentWithBG.getLayoutParams();
-                layoutParams.gravity = Gravity.RIGHT;
+                layoutParams.gravity = Gravity.END;
                 viewHolder.contentWithBG.setLayoutParams(layoutParams);
 
                 RelativeLayout.LayoutParams lp =
@@ -75,20 +73,20 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
                 viewHolder.content.setLayoutParams(lp);
 
                 layoutParams = (LinearLayout.LayoutParams) viewHolder.txtTime.getLayoutParams();
-                layoutParams.gravity = Gravity.LEFT;
+                layoutParams.gravity = Gravity.START;
                 viewHolder.txtTime.setLayoutParams(layoutParams);
 
 
                 layoutParams = (LinearLayout.LayoutParams) viewHolder.userImg.getLayoutParams();
-                layoutParams.gravity = Gravity.RIGHT;
+                layoutParams.gravity = Gravity.END;
                 viewHolder.userImg.setLayoutParams(layoutParams);
 
                 layoutParams = (LinearLayout.LayoutParams) viewHolder.txtMessage.getLayoutParams();
-                layoutParams.gravity = Gravity.RIGHT;
+                layoutParams.gravity = Gravity.END;
                 viewHolder.txtMessage.setLayoutParams(layoutParams);
 
                 layoutParams = (LinearLayout.LayoutParams) viewHolder.txtInfo.getLayoutParams();
-                layoutParams.gravity = Gravity.RIGHT;
+                layoutParams.gravity = Gravity.END;
                 viewHolder.txtInfo.setLayoutParams(layoutParams);
             } else {
                 if (users.getId().contains(message.getMessageUser())) {
@@ -99,12 +97,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
 
                     LinearLayout.LayoutParams layout =
                             (LinearLayout.LayoutParams) viewHolder.avatarInfo.getLayoutParams();
-                    layout.gravity = Gravity.LEFT;
+                    layout.gravity = Gravity.START;
                     viewHolder.avatarInfo.setLayoutParams(layout);
 
                     LinearLayout.LayoutParams layoutParams =
                             (LinearLayout.LayoutParams) viewHolder.contentWithBG.getLayoutParams();
-                    layoutParams.gravity = Gravity.LEFT;
+                    layoutParams.gravity = Gravity.START;
                     viewHolder.contentWithBG.setLayoutParams(layoutParams);
 
                     RelativeLayout.LayoutParams lp =
@@ -114,19 +112,19 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
                     viewHolder.content.setLayoutParams(lp);
 
                     layoutParams = (LinearLayout.LayoutParams) viewHolder.userImg.getLayoutParams();
-                    layoutParams.gravity = Gravity.LEFT;
+                    layoutParams.gravity = Gravity.START;
                     viewHolder.userImg.setLayoutParams(layoutParams);
 
                     layoutParams = (LinearLayout.LayoutParams) viewHolder.txtMessage.getLayoutParams();
-                    layoutParams.gravity = Gravity.LEFT;
+                    layoutParams.gravity = Gravity.START;
                     viewHolder.txtMessage.setLayoutParams(layoutParams);
 
                     layoutParams = (LinearLayout.LayoutParams) viewHolder.txtTime.getLayoutParams();
-                    layoutParams.gravity = Gravity.RIGHT;
+                    layoutParams.gravity = Gravity.END;
                     viewHolder.txtTime.setLayoutParams(layoutParams);
 
                     layoutParams = (LinearLayout.LayoutParams) viewHolder.txtInfo.getLayoutParams();
-                    layoutParams.gravity = Gravity.LEFT;
+                    layoutParams.gravity = Gravity.START;
                     viewHolder.txtInfo.setLayoutParams(layoutParams);
                 }
             }
@@ -140,25 +138,25 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView txtMessage;
-        public TextView txtInfo;
-        public TextView txtTime;
-        public ImageView userImg;
-        public ImageView usersImg;
-        public LinearLayout content;
-        public LinearLayout contentWithBG;
-        public LinearLayout avatarInfo;
+        private TextView txtMessage;
+        private TextView txtInfo;
+        private TextView txtTime;
+        private ImageView userImg;
+        private ImageView usersImg;
+        private LinearLayout content;
+        private LinearLayout contentWithBG;
+        private LinearLayout avatarInfo;
 
         private ViewHolder(View itemView) {
             super(itemView);
-            txtMessage = (TextView) itemView.findViewById(R.id.txtMessage);
-            content = (LinearLayout) itemView.findViewById(R.id.content);
-            contentWithBG = (LinearLayout) itemView.findViewById(R.id.contentWithBackground);
-            txtInfo = (TextView) itemView.findViewById(R.id.txtInfo);
-            txtTime = (TextView) itemView.findViewById(R.id.txtTime);
-            userImg = (ImageView) itemView.findViewById(R.id.item_chat_avatar);
-            usersImg = (ImageView) itemView.findViewById(R.id.item_chat_avatar_user);
-            avatarInfo = (LinearLayout) itemView.findViewById(R.id.avatarInfo);
+            txtMessage = itemView.findViewById(R.id.txtMessage);
+            content =  itemView.findViewById(R.id.content);
+            contentWithBG = itemView.findViewById(R.id.contentWithBackground);
+            txtInfo = itemView.findViewById(R.id.txtInfo);
+            txtTime =  itemView.findViewById(R.id.txtTime);
+            userImg =  itemView.findViewById(R.id.item_chat_avatar);
+            usersImg =  itemView.findViewById(R.id.item_chat_avatar_user);
+            avatarInfo =  itemView.findViewById(R.id.avatarInfo);
 
 
         }

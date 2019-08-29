@@ -12,6 +12,19 @@
 
     <dimen name="main_text_title_size">55sp</dimen>
     <dimen name="main_text_size">11sp</dimen>
+
+    <dimen name="main_go4lunch_image_margin_start_margin_end">40dp</dimen>
+    <dimen name="main_go4lunch_image_margin_top">50dp</dimen>
+    <dimen name="main_go4lunch_text_title_margin_end">20dp</dimen>
+    <dimen name="main_go4lunch_text_title_margin_start">20dp</dimen>
+    <dimen name="main_go4lunch_text_subtitle_margin_end">10dp</dimen>
+    <dimen name="main_go4lunch_text_subtitle_margin_start">10dp</dimen>
+    <dimen name="main_login_fb_button_height">250dp</dimen>
+    <dimen name="main_login_google_button_height">250dp</dimen>
+    <dimen name="main_login_google_button_margin_top">30dp</dimen>
+    <dimen name="main_login_google_button_margin_start">20dp</dimen>
+    <dimen name="main_login_google_button_margin_end">20dp</dimen>
+
     <dimen name="main_facebook_login_text_size">16sp</dimen>
     <dimen name="autocomplete_text_size">13sp</dimen>
     <dimen name="user_details_text_size">12sp</dimen>
@@ -77,4 +90,21 @@
     <dimen name="autocomplete_search_icon_margin_top">13dp</dimen>
     <dimen name="autocomplete_voice_icon_margin_end">30dp</dimen>
     <dimen name="autocomplete_voice_icon_margin_top">13dp</dimen>
+
+    <dimen name="settings_user_image">80dp</dimen>
+    <dimen name="settings_user_name_margin_top">10dp</dimen>
+    <dimen name="settings_layout_margin_top">10dp</dimen>
+    <dimen name="settings_restaurant_name_margin_top">5dp</dimen>
+    <dimen name="settings_restaurant_image_margin_height">60dp</dimen>
+    <dimen name="settings_restaurant_image_margin_width">60dp</dimen>
+    <dimen name="settings_restaurant_image_margin_top">10dp</dimen>
+    <dimen name="settings_card_view_options_margin_start">20dp</dimen>
+    <dimen name="settings_card_view_options_margin_end">20dp</dimen>
+    <dimen name="settings_card_view_options_margin_top">30dp</dimen>
+    <dimen name="settings_card_view_options_corners">10dp</dimen>
+    <dimen name="settings_edit_text_margin_top">10dp</dimen>
+    <dimen name="settings_card_view_confirm_margin_start">20dp</dimen>
+    <dimen name="settings_card_view_confirm_margin_end">20dp</dimen>
+    <dimen name="settings_card_view_confirm_margin_top">40dp</dimen>
+    <dimen name="settings_card_view_confirm_corners">15dp</dimen>
 </resources>

@@ -38,6 +38,7 @@ public class Settings extends AppCompatActivity implements View.OnClickListener,
     private ImageView userAvatar;
     private TextView userName;
     private TextView restaurantName;
+    private TextView restaurantChoice;
     private ImageView restaurantPhoto;
     private Toolbar toolbar;
 
@@ -51,12 +52,13 @@ public class Settings extends AppCompatActivity implements View.OnClickListener,
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Settings");
+        getSupportActionBar().setTitle(getString(R.string.setting_tittle));
 
         sharedPreferences = getSharedPreferences(getString(R.string.app_name), MODE_PRIVATE);
         userAvatar = findViewById(R.id.user_avatar_settings);
         userName = findViewById(R.id.user_name_settings);
         restaurantName = findViewById(R.id.restaurant_name);
+        restaurantChoice = findViewById(R.id.restaurant_choice);
         restaurantPhoto = findViewById(R.id.restaurant_photo);
         editTextRadius = findViewById(R.id.radius_editText);
         editTextRadius.setOnEditorActionListener(this);
@@ -72,7 +74,8 @@ public class Settings extends AppCompatActivity implements View.OnClickListener,
         userName.setText(service.getUser().getUserName());
 
         if (service.getUser().getChoice() != null){
-            restaurantName.setText("Choosed restaurant : " + "\n" + service.getUser().getChoice());
+            restaurantChoice.setText(getString(R.string.lunch_text_settings));
+            restaurantName.setText(service.getUser().getChoice());
             for (int i = 0; i < dataBaseService.getListOfSelectedPlaces().size(); i++){
                 if (dataBaseService.getListOfSelectedPlaces().get(i).getUserId().contains(service.getUser().getId())){
                     for (int j = 0; j < service.getListMarkers().size(); j++){
@@ -84,7 +87,7 @@ public class Settings extends AppCompatActivity implements View.OnClickListener,
                 }
             }
         } else {
-            restaurantName.setText("No restaurant choosed");
+            restaurantChoice.setText(getString(R.string.lunch_text_nothing_selected));
         }
 
         if (service.getUser().getRadius() != null){
@@ -129,7 +132,8 @@ public class Settings extends AppCompatActivity implements View.OnClickListener,
                     sharedPreferences.edit().remove(getString(R.string.choice_adress)).apply();
                     sharedPreferences.edit().remove(getString(R.string.joining_users)).apply();
                     dataBaseService.setListOfSelectedPlaces();
-                    restaurantName.setText("No restaurant choosed");
+                    restaurantChoice.setText(getString(R.string.lunch_text_nothing_selected));
+                    restaurantName.setText("");
                     restaurantPhoto.setImageResource(0);
                 } else {
                     if (deleteString.equals(getString(R.string.user_string))) {

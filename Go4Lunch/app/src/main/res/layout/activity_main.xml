@@ -22,10 +22,10 @@
         android:background="@drawable/go_lunch_24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="50dp"
-        android:layout_marginStart="50dp"
+        android:layout_marginEnd="@dimen/main_go4lunch_image_margin_start_margin_end"
+        android:layout_marginStart="@dimen/main_go4lunch_image_margin_start_margin_end"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="@dimen/main_go4lunch_image_margin_top"
         />
 
     <TextView
@@ -48,15 +48,14 @@
         app:layout_constraintTop_toBottomOf="@id/goLunchText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:gravity="center"
+        android:layout_marginEnd="@dimen/main_go4lunch_text_subtitle_margin_end"
+        android:layout_marginStart="@dimen/main_go4lunch_text_subtitle_margin_start"
         style="@style/MainTextStyle"
         />
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/fb_login_button"
-        android:layout_width="250dp"
+        android:layout_width="@dimen/main_login_fb_button_height"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,14 +66,14 @@
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/signInGoogle"
-        android:layout_width="250dp"
+        android:layout_width="@dimen/main_login_google_button_height"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/fb_login_button"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="@dimen/main_login_google_button_margin_top"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp" />
+        android:layout_marginStart="@dimen/main_login_google_button_margin_start"
+        android:layout_marginEnd="@dimen/main_login_google_button_margin_end" />
 
 
 

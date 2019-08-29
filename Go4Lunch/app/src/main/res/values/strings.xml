@@ -135,7 +135,14 @@
     <string name="opening_soon">Opening soon</string>
     <string name="closing_soon">Closing soon</string>
     <string name="closed_today">Closed today</string>
-
     <string name="closed_today_text_toast">Restaurant closed today</string>
+    <string name="loading_title">Loading...</string>
+
+    <string name="loading_message">Searching restaurants, please wait...</string>
+    <string name="setting_tittle">Settings</string>
+    <string name="lunch_text_settings">Your lunch : </string>
+    <string name="lunch_text_nothing_selected">No restaurant choosed</string>
+    <string name="error_dialog_title">No connection found</string>
+    <string name="error_dialog_message">Check if your internet connection and GPS position are enabled and restart the App !</string>
 
 </resources>

@@ -24,12 +24,12 @@ import dasilva.marco.go4lunch.model.PlaceMarker;
 import dasilva.marco.go4lunch.service.Go4LunchService;
 import dasilva.marco.go4lunch.ui.details.DetailsActivity;
 
-public class RviewListAdapter extends RecyclerView.Adapter<RviewListAdapter.ViewHolder> {
+public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAdapter.ViewHolder> {
 
     private List<PlaceMarker> placeMarkerList;
     private Go4LunchService service;
 
-    public RviewListAdapter(List<PlaceMarker> placeList){
+    public RestaurantListAdapter(List<PlaceMarker> placeList){
         this.placeMarkerList = placeList;
         service = DI.getService();
 

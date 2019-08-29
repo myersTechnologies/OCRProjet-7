@@ -45,5 +45,14 @@
     <string name="closing_soon">Fecha brevemente</string>
     <string name="closed_today">Fechado hoje</string>
     <string name="closed_today_text_toast">Restaurante fechado</string>
+    <string name="loading_title">Carregando...</string>
+    <string name="loading_message">Procurando restaurantes...</string>
+    <string name="setting_tittle">Preferencias</string>
+    <string name="lunch_text_settings">A sua escolha : </string>
+    <string name="lunch_text_nothing_selected">Ainda não escolheu um restaurante</string>
+    <string name="error_dialog_title">Nenhuma conexão encontrada</string>
+    <string name="error_dialog_message">Verifique se a internet et a position GPS estão activadas !</string>
+
+
 
 </resources>

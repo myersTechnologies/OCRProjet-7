@@ -129,7 +129,7 @@
   </component>
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/app/src/main/res/menu/activity_map_view_drawer.xml" line="10" />
-    <bookmark url="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/service/ApiService.java" line="267" />
+    <bookmark url="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/service/ApiService.java" line="255" />
   </component>
   <component name="CMakeSettings">
     <configurations>
@@ -138,7 +138,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2af9253e-70fb-49af-90c9-99c17d77f0ac" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/dialog/LoadingDialog.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/javaCompile/classAnalysis.bin" afterDir="false" />
@@ -147,19 +146,31 @@
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/google-services.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/google-services.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/dialog/SettingsDialog.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/activities/MapView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/activities/MapView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/dialog/LoadingDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/dialog/LoadingDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/service/ApiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/service/ApiService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/service/Go4LunchService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/service/Go4LunchService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/chat/ChatAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/chat/ChatAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/main/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/adapters/RviewListAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/adapters/RestaurantListAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/fragments/ListViewFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/fragments/ListViewFragment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/fragments/MapFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/fragments/MapFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout-sw320dp/chat_message.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout-sw320dp/chat_message.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values-sw320dp/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values-sw320dp/styles.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values-sw380dp/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values-sw380dp/styles.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values-sw480dp/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values-sw480dp/styles.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/settings/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/settings/Settings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout-sw320dp/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout-sw320dp/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout-sw320dp/activity_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout-sw320dp/activity_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout-sw380dp/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout-sw380dp/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout-sw380dp/activity_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout-sw380dp/activity_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout-sw480dp/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout-sw480dp/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout-sw480dp/activity_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout-sw480dp/activity_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values-fr/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values-fr/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values-pt/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values-pt/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values-sw320dp/dimens.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values-sw320dp/dimens.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values-sw380dp/dimens.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values-sw380dp/dimens.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values-sw480dp/dimens.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values-sw480dp/dimens.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -171,7 +182,7 @@
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="9PUK7LDAZLMRNBMB" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="1801L11801" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -238,32 +249,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/values-sw480dp/dimens.xml">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/main/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="39" column="35" selection-start-line="39" selection-start-column="35" selection-end-line="39" selection-end-column="35" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/values-sw480dp/styles.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="292">
-              <caret line="134" column="57" selection-start-line="134" selection-start-column="57" selection-end-line="134" selection-end-column="57" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/dialog/LoadingDialog.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="36" column="51" selection-start-line="36" selection-start-column="51" selection-end-line="36" selection-end-column="51" />
+            <state relative-caret-position="2190">
+              <caret line="146" column="64" selection-start-line="146" selection-start-column="64" selection-end-line="146" selection-end-column="64" />
               <folding>
-                <element signature="e#1129#1130#0" expanded="true" />
-                <element signature="e#1149#1150#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -272,62 +264,33 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/fragments/MapFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-390">
-              <caret line="200" column="69" selection-start-line="200" selection-start-column="69" selection-end-line="200" selection-end-column="69" />
-              <folding>
-                <element signature="e#8825#9037#0" expanded="true" />
-                <element signature="e#9036#9037#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/fragments/ListViewFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1890">
-              <caret line="201" column="61" selection-start-line="201" selection-start-column="61" selection-end-line="201" selection-end-column="61" />
-              <folding>
-                <element signature="e#8650#8874#0" expanded="true" />
-                <element signature="e#8873#8874#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw320dp/activity_settings.xml">
-          <provider editor-type-id="android-designer2" />
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="20" column="49" lean-forward="true" selection-start-line="20" selection-start-column="49" selection-end-line="20" selection-end-column="49" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/settings/Settings.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="22">
-              <caret line="112" column="37" selection-start-line="112" selection-start-column="37" selection-end-line="112" selection-end-column="37" />
+            <state relative-caret-position="1615">
+              <caret line="134" column="72" lean-forward="true" selection-start-line="134" selection-start-column="72" selection-end-line="134" selection-end-column="72" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2059#2087#0" expanded="true" />
-                <element signature="e#3985#4021#0" expanded="true" />
-                <element signature="e#4156#4178#0" expanded="true" />
-                <element signature="e#4398#4430#0" expanded="true" />
-                <element signature="e#4528#4559#0" expanded="true" />
-                <element signature="e#4707#4729#0" expanded="true" />
-                <element signature="e#5164#5187#0" expanded="true" />
-                <element signature="e#5230#5250#0" expanded="true" />
-                <element signature="e#5423#5455#0" expanded="true" />
-                <element signature="e#5582#5608#0" expanded="true" />
-                <element signature="e#5671#5704#0" expanded="true" />
-                <element signature="e#5767#5800#0" expanded="true" />
-                <element signature="e#6069#6100#0" expanded="true" />
-                <element signature="e#6560#6582#0" expanded="true" />
-                <element signature="e#6911#6947#0" expanded="true" />
+                <element signature="e#6007#6008#0" expanded="true" />
+                <element signature="e#13339#13340#0" expanded="true" />
+                <element signature="e#13400#13401#0" expanded="true" />
+                <element signature="e#14396#15244#0" expanded="true" />
+                <element signature="e#15243#15244#0" expanded="true" />
+                <element signature="e#15321#15537#0" expanded="true" />
+                <element signature="e#15536#15537#0" expanded="true" />
+                <element signature="e#15631#17233#0" expanded="true" />
+                <element signature="e#16510#17200#0" expanded="true" />
+                <element signature="e#17199#17200#0" expanded="true" />
+                <element signature="e#17232#17233#0" expanded="true" />
+                <element signature="e#19270#20092#0" expanded="true" />
+                <element signature="e#20091#20092#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="385">
+              <caret line="145" column="90" selection-start-line="145" selection-start-column="90" selection-end-line="145" selection-end-column="90" />
             </state>
           </provider>
         </entry>
@@ -349,7 +312,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>resta</find>
       <find>Openi</find>
       <find>After</find>
       <find>Before</find>
@@ -379,6 +341,7 @@
       <find>BEFORE</find>
       <find>BEFOREC</find>
       <find>CLOSIN</find>
+      <find>closi</find>
     </findStrings>
   </component>
   <component name="GenerateSignedApkSettings">
@@ -392,20 +355,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/layout-sw320dp/activity_chat.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout-sw300dp/activity_chat.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout-sw480dp/activity_chat.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout-sw380dp/activity_chat.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/chat/ChatActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout-sw380dp/chat_message.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_chat.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_map_view.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/app_bar_map_view.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/chat_message.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/details_joining_users.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/details_users_list.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_map.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/list_of_places_rv.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/list_of_workmates.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/nav_header_map_view.xml" />
@@ -417,32 +366,46 @@
         <option value="$PROJECT_DIR$/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/activity_map_view_drawer.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout-sw320dp/list_of_places_rv.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout-sw320dp/activity_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout-sw320dp/restaurant_info_bar.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout-sw380dp/activity_details.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout-sw320dp/activity_details.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_details.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout-sw480dp/activity_main.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values-sw320dp/dimens.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout-sw480dp/list_of_places_rv.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout-sw480dp/nav_header_map_view.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout-sw480dp/restaurant_info_bar.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values-sw480dp/dimens.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout-sw480dp/activity_details.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/activities/MapView.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout-sw320dp/chat_message.xml" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout-sw320dp/activity_settings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_settings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/settings/Settings.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values-sw320dp/styles.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values-sw380dp/styles.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values-sw480dp/styles.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/dialog/SettingsDialog.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/fragments/MapFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-sw380dp/activity_settings.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-sw480dp/activity_settings.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/service/Go4LunchService.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_settings.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values-sw380dp/dimens.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-sw320dp/activity_settings.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values-sw320dp/dimens.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values-sw480dp/dimens.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-sw320dp/activity_main.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-sw380dp/activity_main.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/service/ApiService.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/chat/ChatAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/adapters/RviewListAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/adapters/RestaurantListAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/fragments/ListViewFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/settings/Settings.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/fragments/MapFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/main/Main.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/dialog/LoadingDialog.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values-fr/strings.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values-pt/strings.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
       </list>
     </option>
   </component>
@@ -462,11 +425,6 @@
             <path>
               <item name="Go4Lunch" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
-            </path>
-            <path>
-              <item name="Go4Lunch" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="manifests" type="f94875db:AndroidManifestsGroupNode" />
             </path>
             <path>
               <item name="Go4Lunch" type="1abcf292:AndroidViewProjectNode" />
@@ -510,36 +468,7 @@
               <item name="dasilva" type="cbb59c9e:AndroidPsiDirectoryNode" />
               <item name="marco" type="462c0819:PsiDirectoryNode" />
               <item name="go4lunch" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Go4Lunch" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="dasilva" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="marco" type="462c0819:PsiDirectoryNode" />
-              <item name="go4lunch" type="462c0819:PsiDirectoryNode" />
               <item name="ui" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Go4Lunch" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="dasilva" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="marco" type="462c0819:PsiDirectoryNode" />
-              <item name="go4lunch" type="462c0819:PsiDirectoryNode" />
-              <item name="ui" type="462c0819:PsiDirectoryNode" />
-              <item name="chat" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Go4Lunch" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="dasilva" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="marco" type="462c0819:PsiDirectoryNode" />
-              <item name="go4lunch" type="462c0819:PsiDirectoryNode" />
-              <item name="ui" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Go4Lunch" type="1abcf292:AndroidViewProjectNode" />
@@ -550,28 +479,6 @@
               <item name="go4lunch" type="462c0819:PsiDirectoryNode" />
               <item name="ui" type="462c0819:PsiDirectoryNode" />
               <item name="map" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Go4Lunch" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="dasilva" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="marco" type="462c0819:PsiDirectoryNode" />
-              <item name="go4lunch" type="462c0819:PsiDirectoryNode" />
-              <item name="ui" type="462c0819:PsiDirectoryNode" />
-              <item name="map" type="462c0819:PsiDirectoryNode" />
-              <item name="activities" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Go4Lunch" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="dasilva" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="marco" type="462c0819:PsiDirectoryNode" />
-              <item name="go4lunch" type="462c0819:PsiDirectoryNode" />
-              <item name="ui" type="462c0819:PsiDirectoryNode" />
-              <item name="map" type="462c0819:PsiDirectoryNode" />
-              <item name="adapters" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Go4Lunch" type="1abcf292:AndroidViewProjectNode" />
@@ -587,23 +494,7 @@
             <path>
               <item name="Go4Lunch" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="dasilva" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="marco" type="462c0819:PsiDirectoryNode" />
-              <item name="go4lunch" type="462c0819:PsiDirectoryNode" />
-              <item name="ui" type="462c0819:PsiDirectoryNode" />
-              <item name="settings" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Go4Lunch" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="res" type="d4f16f75:AndroidResFolderNode" />
-            </path>
-            <path>
-              <item name="Go4Lunch" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="layout" type="ddeffd01:AndroidResFolderTypeNode" />
             </path>
             <path>
               <item name="Go4Lunch" type="1abcf292:AndroidViewProjectNode" />
@@ -616,18 +507,7 @@
               <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="res" type="d4f16f75:AndroidResFolderNode" />
               <item name="values" type="ddeffd01:AndroidResFolderTypeNode" />
-              <item name="styles" type="c431d0b8:AndroidResGroupNode" />
-            </path>
-            <path>
-              <item name="Go4Lunch" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res (generated)" type="d4f16f75:AndroidResFolderNode" />
-            </path>
-            <path>
-              <item name="Go4Lunch" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res (generated)" type="d4f16f75:AndroidResFolderNode" />
-              <item name="values" type="ddeffd01:AndroidResFolderTypeNode" />
+              <item name="strings" type="c431d0b8:AndroidResGroupNode" />
             </path>
           </expand>
           <select />
@@ -650,6 +530,16 @@
               <item name="app" type="616d4139:PackageViewModuleNode" />
               <item name="dasilva" type="1f31426a:PackageElementNode" />
               <item name="marco" type="1f31426a:PackageElementNode" />
+            </path>
+            <path>
+              <item name="Go4Lunch" type="58d84e3e:PackageViewProjectNode" />
+              <item name="app" type="616d4139:PackageViewModuleNode" />
+              <item name="layout" type="1f31426a:PackageElementNode" />
+            </path>
+            <path>
+              <item name="Go4Lunch" type="58d84e3e:PackageViewProjectNode" />
+              <item name="app" type="616d4139:PackageViewModuleNode" />
+              <item name="layout-sw320dp" type="1f31426a:PackageElementNode" />
             </path>
             <path>
               <item name="Go4Lunch" type="58d84e3e:PackageViewProjectNode" />
@@ -796,10 +686,10 @@
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/src/main/res/layout-sw480dp" />
-      <recent name="$PROJECT_DIR$/app/src/main/res/layout-sw380dp" />
-      <recent name="$PROJECT_DIR$/app/src/main/res/layout-sw320dp" />
-      <recent name="$PROJECT_DIR$/app" />
       <recent name="$PROJECT_DIR$/app/src/main/res/layout" />
+      <recent name="$PROJECT_DIR$/app/src/main/res/layout-sw320dp" />
+      <recent name="$PROJECT_DIR$/app/src/main/res/values-sw380dp" />
+      <recent name="$PROJECT_DIR$/app/src/main/res/layout-sw380dp" />
     </key>
     <key name="CreateClassDialog.RecentsKey">
       <recent name="dasilva.marco.go4lunch.ui.main" />
@@ -1056,6 +946,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1366" y="0" width="1600" height="900" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49473685" visible="true" weight="0.2084942" />
       <window_info id="Designer" order="1" />
@@ -1068,7 +959,7 @@
       <window_info id="Captures" order="8" sideWeight="0.5010846" side_tool="true" weight="0.2014157" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32853404" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4916345" weight="0.31020942" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4916345" visible="true" weight="0.31020942" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.494852" weight="0.31413612" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -1093,7 +984,7 @@
       <window_info anchor="right" id="Coverage" order="11" sideWeight="0.5026178" side_tool="true" weight="0.32689834" />
     </layout>
     <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49473685" visible="true" weight="0.2084942" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49473685" visible="true" weight="0.2084942" />
       <window_info id="Designer" order="1" />
       <window_info id="Build Variants" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
@@ -1115,18 +1006,18 @@
       <window_info anchor="bottom" id="Logcat" order="10" sideWeight="0.4993565" weight="0.32853404" />
       <window_info anchor="bottom" id="Version Control" order="11" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.4993565" weight="0.32853404" />
-      <window_info anchor="right" id="Coverage" order="0" sideWeight="0.5026178" side_tool="true" weight="0.32689834" />
-      <window_info anchor="right" id="Assistant" order="1" weight="0.32947233" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="2" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="4" weight="0.24967825" />
-      <window_info anchor="right" id="Capture Analysis" order="5" />
-      <window_info anchor="right" id="Preview" order="6" sideWeight="0.4973822" weight="0.32689834" />
-      <window_info anchor="right" id="Device File Explorer" order="7" side_tool="true" weight="0.32947233" />
-      <window_info anchor="right" id="Gradle" order="8" weight="0.32947233" />
-      <window_info anchor="right" id="Palette&#9;" order="9" />
-      <window_info anchor="right" id="Theme Preview" order="10" />
-      <window_info anchor="right" id="StringPreview" order="11" />
+      <window_info anchor="right" id="Assistant" order="0" weight="0.32947233" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.24967825" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info active="true" anchor="right" id="Preview" order="5" sideWeight="0.4973822" visible="true" weight="0.32689834" />
+      <window_info anchor="right" id="Device File Explorer" order="6" side_tool="true" weight="0.32947233" />
+      <window_info anchor="right" id="Gradle" order="7" weight="0.32947233" />
+      <window_info anchor="right" id="Palette&#9;" order="8" />
+      <window_info anchor="right" id="Theme Preview" order="9" />
+      <window_info anchor="right" id="StringPreview" order="10" />
+      <window_info anchor="right" id="Coverage" order="11" sideWeight="0.5026178" side_tool="true" weight="0.32689834" />
     </layout-to-restore>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
@@ -1135,218 +1026,6 @@
     </SUITE>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw380dp/activity_main.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="393">
-          <caret line="28" column="10" lean-forward="true" selection-start-line="28" selection-start-column="10" selection-end-line="28" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw320dp/activity_chat.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="72" column="31" lean-forward="true" selection-start-line="72" selection-start-column="31" selection-end-line="72" selection-end-column="31" />
-          <folding>
-            <element signature="e#3286#3310#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw320dp/list_of_places_rv.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="521">
-          <caret line="76" column="29" lean-forward="true" selection-start-line="76" selection-start-column="29" selection-end-line="76" selection-end-column="29" />
-          <folding>
-            <element signature="e#3082#3119#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw320dp/list_of_workmates.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" column="71" lean-forward="true" selection-start-line="23" selection-start-column="71" selection-end-line="23" selection-end-column="71" />
-          <folding>
-            <element signature="e#408#437#0" expanded="true" />
-            <element signature="e#468#497#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw320dp/nav_header_map_view.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="11" column="4" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw320dp/activity_main.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1035">
-          <caret line="69" column="36" lean-forward="true" selection-start-line="69" selection-start-column="36" selection-end-line="69" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/details/DetailsActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="61" column="37" selection-start-line="61" selection-start-column="37" selection-end-line="61" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="11" selection-start-line="9" selection-start-column="11" selection-end-line="9" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw320dp/restaurant_info_bar.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="28">
-          <caret line="15" column="36" lean-forward="true" selection-start-line="15" selection-start-column="36" selection-end-line="15" selection-end-column="81" />
-          <folding>
-            <element signature="e#729#774#0" expanded="true" />
-            <element signature="e#1524#1570#0" expanded="true" />
-            <element signature="e#1843#1890#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values-sw380dp/dimens.xml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw380dp/activity_details.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="43" lean-forward="true" selection-start-line="22" selection-start-column="43" selection-end-line="22" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values-sw320dp/dimens.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="15" column="43" selection-start-line="15" selection-start-column="43" selection-end-line="15" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw480dp/activity_chat.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="14">
-          <caret line="69" column="4" selection-start-line="69" selection-start-column="4" selection-end-line="69" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw480dp/activity_main.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="64" column="38" lean-forward="true" selection-start-line="64" selection-start-column="38" selection-end-line="64" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw480dp/chat_message.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw480dp/list_of_places_rv.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="12" column="44" selection-start-line="12" selection-start-column="44" selection-end-line="12" selection-end-column="44" />
-          <folding>
-            <element signature="e#3082#3119#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw480dp/list_of_workmates.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="73">
-          <caret line="10" column="29" lean-forward="true" selection-start-line="10" selection-start-column="29" selection-end-line="10" selection-end-column="29" />
-          <folding>
-            <element signature="e#408#437#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw480dp/nav_header_map_view.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="14" column="51" lean-forward="true" selection-start-line="14" selection-start-column="51" selection-end-line="14" selection-end-column="51" />
-          <folding>
-            <element signature="e#265#291#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw480dp/restaurant_info_bar.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="370">
-          <caret line="28" column="48" selection-start-line="28" selection-start-column="48" selection-end-line="28" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values-sw480dp/dimens.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="39" column="35" selection-start-line="39" selection-start-column="35" selection-end-line="39" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/google-services.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="9" selection-start-line="16" selection-start-column="9" selection-end-line="16" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/main/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-240">
-          <caret line="52" column="13" selection-start-line="52" selection-start-column="13" selection-end-line="52" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/adapters/RviewWorkmatesAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="54" column="87" selection-start-line="54" selection-start-column="12" selection-end-line="54" selection-end-column="154" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_details.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="36" column="43" lean-forward="true" selection-start-line="36" selection-start-column="43" selection-end-line="36" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_map_view.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="35" column="43" lean-forward="true" selection-start-line="35" selection-start-column="43" selection-end-line="35" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_workmates.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_map.xml">
       <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor" />
@@ -1385,71 +1064,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw320dp/activity_details.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-270">
-          <caret line="30" column="37" selection-start-line="30" selection-start-column="37" selection-end-line="30" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_chat.xml">
       <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw320dp/chat_message.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="40" column="59" selection-start-line="40" selection-start-column="59" selection-end-line="40" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/model/PlaceMarker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/adapters/RviewListAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-840">
-          <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/chat/ChatActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="46" column="63" lean-forward="true" selection-start-line="46" selection-start-column="63" selection-end-line="46" selection-end-column="63" />
-          <folding>
-            <element signature="e#1586#1624#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
       <provider editor-type-id="android-manifest" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
           <caret line="12" column="12" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw480dp/activity_settings.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw380dp/activity_settings.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw320dp/activity_settings.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="20" column="49" lean-forward="true" selection-start-line="20" selection-start-column="49" selection-end-line="20" selection-end-column="49" />
         </state>
       </provider>
     </entry>
@@ -1460,25 +1083,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/styles.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="607">
-          <caret line="134" column="57" selection-start-line="134" selection-start-column="57" selection-end-line="134" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values-sw380dp/styles.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
           <caret line="134" column="57" selection-start-line="134" selection-start-column="57" selection-end-line="134" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_settings.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="81" column="35" lean-forward="true" selection-start-line="81" selection-start-column="35" selection-end-line="81" selection-end-column="35" />
         </state>
       </provider>
     </entry>
@@ -1489,67 +1097,365 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/settings/Settings.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/service/Go4LunchService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="112" column="37" selection-start-line="112" selection-start-column="37" selection-end-line="112" selection-end-column="37" />
+        <state relative-caret-position="315">
+          <caret line="35" column="47" selection-start-line="35" selection-start-column="47" selection-end-line="35" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_settings.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="108" column="19" lean-forward="true" selection-start-line="108" selection-start-column="19" selection-end-line="108" selection-end-column="19" />
+          <folding>
+            <element signature="e#1179#1207#0" expanded="true" />
+            <element signature="e#1238#1266#0" expanded="true" />
+            <element signature="e#1566#1604#0" expanded="true" />
+            <element signature="e#1796#1831#0" expanded="true" />
+            <element signature="e#2296#2340#0" expanded="true" />
+            <element signature="e#2505#2552#0" expanded="true" />
+            <element signature="e#2591#2639#0" expanded="true" />
+            <element signature="e#2740#2785#0" expanded="true" />
+            <element signature="e#2988#3031#0" expanded="true" />
+            <element signature="e#3069#3115#0" expanded="true" />
+            <element signature="e#3153#3199#0" expanded="true" />
+            <element signature="e#3239#3287#0" expanded="true" />
+            <element signature="e#3662#3700#0" expanded="true" />
+            <element signature="e#3622#3644#0" expanded="true" />
+            <element signature="e#4441#4487#0" expanded="true" />
+            <element signature="e#4525#4571#0" expanded="true" />
+            <element signature="e#4611#4659#0" expanded="true" />
+            <element signature="e#4693#4736#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw380dp/activity_settings.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="453">
+          <caret line="41" selection-start-line="41" selection-end-line="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw320dp/activity_chat.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-815" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw320dp/activity_details.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-19">
+          <caret line="30" column="37" selection-start-line="30" selection-start-column="37" selection-end-line="30" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw480dp/activity_settings.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" column="37" lean-forward="true" selection-start-line="27" selection-start-column="37" selection-end-line="27" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw320dp/list_of_places_rv.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-709" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw320dp/nav_header_map_view.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="4" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw320dp/restaurant_info_bar.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="36" lean-forward="true" selection-start-line="15" selection-start-column="36" selection-end-line="15" selection-end-column="81" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw320dp/chat_message.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="40" column="59" selection-start-line="40" selection-start-column="59" selection-end-line="40" selection-end-column="59" />
+          <folding>
+            <element signature="e#1614#1630#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw320dp/activity_settings.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="34" selection-start-line="7" selection-start-column="34" selection-end-line="7" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values-sw320dp/dimens.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="60" selection-start-line="20" selection-start-column="60" selection-end-line="20" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values-sw380dp/dimens.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="682">
+          <caret line="95" column="57" lean-forward="true" selection-start-line="95" selection-start-column="57" selection-end-line="95" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" column="26" selection-start-line="14" selection-end-line="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/styles.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="32" column="51" selection-start-line="32" selection-start-column="51" selection-end-line="32" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values-sw480dp/dimens.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="26" selection-start-line="26" selection-end-line="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw480dp/activity_main.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="395">
+          <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw320dp/activity_main.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="49" column="33" lean-forward="true" selection-start-line="49" selection-start-column="33" selection-end-line="49" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw380dp/activity_main.xml">
+      <provider selected="true" editor-type-id="android-designer2" />
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="660">
+          <caret line="45" column="44" selection-start-line="45" selection-start-column="44" selection-end-line="45" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/model/PlaceMarker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/model/SelectedPlace.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-95">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/service/ApiService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="261" column="34" selection-start-line="261" selection-start-column="34" selection-end-line="261" selection-end-column="34" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2059#2087#0" expanded="true" />
-            <element signature="e#3985#4021#0" expanded="true" />
-            <element signature="e#4156#4178#0" expanded="true" />
-            <element signature="e#4398#4430#0" expanded="true" />
-            <element signature="e#4528#4559#0" expanded="true" />
-            <element signature="e#4707#4729#0" expanded="true" />
-            <element signature="e#5164#5187#0" expanded="true" />
-            <element signature="e#5230#5250#0" expanded="true" />
-            <element signature="e#5423#5455#0" expanded="true" />
-            <element signature="e#5582#5608#0" expanded="true" />
-            <element signature="e#5671#5704#0" expanded="true" />
-            <element signature="e#5767#5800#0" expanded="true" />
-            <element signature="e#6069#6100#0" expanded="true" />
-            <element signature="e#6560#6582#0" expanded="true" />
-            <element signature="e#6911#6947#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/chat/ChatActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-455">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/chat/ChatAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-195">
+          <caret line="29" column="43" selection-start-line="29" selection-start-column="43" selection-end-line="29" selection-end-column="43" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/chat/ChatMessage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/details/DetailsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2735">
+          <caret line="44" column="13" selection-start-line="44" selection-start-column="13" selection-end-line="44" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/details/DetailsRecyclerViewAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-155">
+          <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/activities/MapView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
+        <state relative-caret-position="-898">
           <caret line="155" column="35" lean-forward="true" selection-start-line="155" selection-start-column="35" selection-end-line="155" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/adapters/RestaurantListAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1245">
+          <caret line="26" column="23" selection-start-line="26" selection-start-column="23" selection-end-line="26" selection-end-column="23" />
+          <folding>
+            <element signature="e#5448#5812#0" expanded="true" />
+            <element signature="e#5811#5812#0" expanded="true" />
+            <element signature="e#5866#5867#0" expanded="true" />
+            <element signature="e#5911#5912#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/adapters/RviewWorkmatesAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/fragments/ListViewFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="63" column="4" selection-start-line="63" selection-start-column="4" selection-end-line="63" selection-end-column="4" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/fragments/WorkmatesFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1535">
+          <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/settings/Settings.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-245">
+          <caret line="134" column="91" selection-start-line="134" selection-start-column="91" selection-end-line="134" selection-end-column="91" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2048#2082#0" expanded="true" />
+            <element signature="e#3244#3283#0" expanded="true" />
+            <element signature="e#4109#4156#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="38" selection-start-line="5" selection-start-column="38" selection-end-line="5" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values-pt/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="295">
+          <caret line="53" column="63" selection-start-line="53" selection-start-column="63" selection-end-line="53" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values-fr/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="295">
+          <caret line="56" column="4" lean-forward="true" selection-start-line="56" selection-start-column="4" selection-end-line="57" selection-end-column="135" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="385">
+          <caret line="145" column="90" selection-start-line="145" selection-start-column="90" selection-end-line="145" selection-end-column="90" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/dialog/LoadingDialog.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="36" column="51" selection-start-line="36" selection-start-column="51" selection-end-line="36" selection-end-column="51" />
+        <state relative-caret-position="285">
+          <caret line="23" column="78" selection-start-line="23" selection-start-column="78" selection-end-line="23" selection-end-column="78" />
           <folding>
-            <element signature="e#1129#1130#0" expanded="true" />
-            <element signature="e#1149#1150#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#559#605#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/fragments/MapFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-390">
-          <caret line="200" column="69" selection-start-line="200" selection-start-column="69" selection-end-line="200" selection-end-column="69" />
+        <state relative-caret-position="1615">
+          <caret line="134" column="72" lean-forward="true" selection-start-line="134" selection-start-column="72" selection-end-line="134" selection-end-column="72" />
           <folding>
-            <element signature="e#8825#9037#0" expanded="true" />
-            <element signature="e#9036#9037#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#6007#6008#0" expanded="true" />
+            <element signature="e#13339#13340#0" expanded="true" />
+            <element signature="e#13400#13401#0" expanded="true" />
+            <element signature="e#14396#15244#0" expanded="true" />
+            <element signature="e#15243#15244#0" expanded="true" />
+            <element signature="e#15321#15537#0" expanded="true" />
+            <element signature="e#15536#15537#0" expanded="true" />
+            <element signature="e#15631#17233#0" expanded="true" />
+            <element signature="e#16510#17200#0" expanded="true" />
+            <element signature="e#17199#17200#0" expanded="true" />
+            <element signature="e#17232#17233#0" expanded="true" />
+            <element signature="e#19270#20092#0" expanded="true" />
+            <element signature="e#20091#20092#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/map/fragments/ListViewFragment.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/dasilva/marco/go4lunch/ui/main/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1890">
-          <caret line="201" column="61" selection-start-line="201" selection-start-column="61" selection-end-line="201" selection-end-column="61" />
+        <state relative-caret-position="2190">
+          <caret line="146" column="64" selection-start-line="146" selection-start-column="64" selection-end-line="146" selection-end-column="64" />
           <folding>
-            <element signature="e#8650#8874#0" expanded="true" />
-            <element signature="e#8873#8874#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

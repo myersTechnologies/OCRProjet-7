@@ -28,6 +28,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -72,7 +75,6 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener,  GoogleMap.OnMarkerClickListener{
 
-    private SupportMapFragment mapFragment;
     private static MapFragment map;
     private GoogleMap mapView;
     private LatLng current;
@@ -108,7 +110,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         toolbar = ((AppCompatActivity) getActivity()).findViewById(R.id.toolbar_search);
         service = DI.getService();
         loadingDialog = new LoadingDialog(getContext());
-        loadingDialog.showLoadingDialog();
+        if (service.getListMarkers() == null) {
+            loadingDialog.showLoadingDialog();
+        }
         FloatingActionButton fab = view.findViewById(R.id.my_location_fab);
         fab.setOnClickListener(this);
         dataBaseService = DI.getDatabaseService();
@@ -120,7 +124,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
     }
 
     private void startMap(){
-        mapFragment = (SupportMapFragment) getChildFragmentManager()
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
 
         if (mapFragment != null) {
@@ -128,29 +132,52 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         }
     }
 
+    private LocationCallback locationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            super.onLocationResult(locationResult);
+            Location location = locationResult.getLastLocation();
+            if (location != null) {
+                currentLocation = location;
+                current = new LatLng(location.getLatitude(), location.getLongitude());
+                if (service.getListMarkers() != null) {
+                    getMarkersFromList();
+                } else {
+                    setUserChoiceToList();
+                    getMapMarker();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadingDialog.dismissLoadingDialog();
+                            getMarkersFromList();
+                        }
+                    }, 3000);
+                }
+                mapView.addMarker(new MarkerOptions().position(current));
+                mapView.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 15));
+                service.setCurrentLocation(location);
+                getJoiningUsers();
+            }
+        }
+    };
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.my_location_fab:
-                FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
                 if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED) {
-
-                    mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            currentLocation = location;
-                            current = new LatLng(location.getLatitude(), location.getLongitude());
-                            if (service.getListMarkers() != null) {
-                                getMarkersFromList();
-                            } else {
-                                getMapMarker();
-                            }
-                            mapView.addMarker(new MarkerOptions().position(current));
-                            mapView.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 15));
-                        }
-                    });
+                    FusedLocationProviderClient mFusedLocationClient = null;
+                    LocationRequest mLocationRequest = LocationRequest.create()
+                            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                    if (mFusedLocationClient == null) {
+                        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+                        mFusedLocationClient.requestLocationUpdates(mLocationRequest,
+                                locationCallback,
+                                null /* Looper */);
+                    }
                 }
                 break;
         }
@@ -172,43 +199,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mapView = googleMap;
-        service.setGoogleMap(googleMap);
-        service.setMapView(mapFragment);
-        service.setCallback(this);
         mapView.setOnMarkerClickListener(this);
         Places.initialize(getContext(), API_KEY);
         client = Places.createClient(getContext());
 
-        FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
-
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-                @Override
-                public void onSuccess(Location location) {
-                    currentLocation = location;
-                    current = new LatLng(location.getLatitude(), location.getLongitude());
-                    if (service.getListMarkers() != null) {
-                       getMarkersFromList();
-                    } else {
-                        setUserChoiceToList();
-                        getMapMarker();
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                loadingDialog.dismissLoadingDialog();
-                                getMarkersFromList();
-                            }
-                        }, 3000);
-                    }
-                    mapView.addMarker(new MarkerOptions().position(current));
-                    mapView.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 15));
-                    service.setCurrentLocation(location);
-                    getJoiningUsers();
-                }
-            });
+
+            FusedLocationProviderClient mFusedLocationClient = null;
+
+            LocationRequest mLocationRequest = LocationRequest.create()
+                    .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+            if (mFusedLocationClient == null) {
+                mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+                mFusedLocationClient.requestLocationUpdates(mLocationRequest,
+                        locationCallback,
+                        null /* Looper */);
+            }
         }
     }
 
@@ -257,7 +266,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         }
     }
 
-
     public void setMarker(MarkerOptions markerOptions){
         if (service.getListMarkers() != null){
             for (PlaceMarker placeMarker : service.getListMarkers()) {
@@ -268,7 +276,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
             }
         }
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -325,7 +332,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                 }
                 adapter = new ArrayAdapter<>((getActivity()), android.R.layout.simple_list_item_1, places);
                 autoCompleteTextView.setAdapter(adapter);
-
             }
         });
 
@@ -365,7 +371,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                         loadingDialog.dismissLoadingDialog();
                     }
                 }, 1000);
-
             }
         });
     }

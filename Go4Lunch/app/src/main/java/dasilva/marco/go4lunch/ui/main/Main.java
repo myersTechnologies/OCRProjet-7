@@ -3,17 +3,17 @@ package dasilva.marco.go4lunch.ui.main;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.Signature;
+import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
@@ -43,6 +43,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import dasilva.marco.go4lunch.R;
 import dasilva.marco.go4lunch.di.DI;
+import dasilva.marco.go4lunch.dialog.LoadingDialog;
 import dasilva.marco.go4lunch.firebase.DataBaseService;
 import dasilva.marco.go4lunch.model.User;
 import dasilva.marco.go4lunch.notification.NotificationService;
@@ -62,6 +63,7 @@ public class Main extends AppCompatActivity {
     private static String  EMAIL = "email";
     private static String PUBLIC_PROFILE =  "public_profile";
     private static int REQUEST_CODE = 5;
+    private LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +75,8 @@ public class Main extends AppCompatActivity {
 
         service = DI.getService();
         dataBaseService = DI.getDatabaseService();
+
+        loadingDialog = new LoadingDialog(this);
 
         googleSignIn = findViewById(R.id.signInGoogle);
         signInFb = findViewById(R.id.fb_login_button);
@@ -95,17 +99,53 @@ public class Main extends AppCompatActivity {
 
     }
 
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
+    }
+
+    public static boolean isLocationEnabled(Context context) {
+        int locationMode;
+        String locationProviders;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            try {
+                locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+
+            } catch (Settings.SettingNotFoundException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            return locationMode != Settings.Secure.LOCATION_MODE_OFF;
+
+        }else{
+            locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+            return !TextUtils.isEmpty(locationProviders);
+        }
+
+
+    }
+
     @Override
     public void onRestart(){
         super.onRestart();
-        checkIfUserIsConnected();
+        if (isLocationEnabled(this) && isNetworkConnected()) {
+            checkIfUserIsConnected();
+        } else {
+            loadingDialog.noConnectionOrPositionEnabledDialog();
+        }
     }
 
     public void connectUser(){
+        if (isLocationEnabled(this) && isNetworkConnected()){
         LoginManager.getInstance().logOut();
         FirebaseAuth.getInstance().signOut();
         signInWithFacebook();
         signInWithGoogle();
+        } else {
+            loadingDialog.noConnectionOrPositionEnabledDialog();
+        }
     }
 
     //if user id connected get to map activity directly

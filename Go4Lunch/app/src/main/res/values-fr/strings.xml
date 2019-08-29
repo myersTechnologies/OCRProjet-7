@@ -46,4 +46,16 @@
     <string name="closed_today">Fermé aujourd\'hui</string>
     <string name="closed_today_text_toast">Restaurant fermé aujourd\'hui</string>
 
+    <string name="loading_title">Chargement...</string>
+
+    <string name="loading_message">Recherche de restaurants en cours...</string>
+
+    <string name="setting_tittle">Paramètres</string>
+    <string name="lunch_text_settings">Votre déjeuner : </string>
+    <string name="lunch_text_nothing_selected">Pas de restaurant choisi</string>
+
+    <string name="error_dialog_title">Aucune connexion</string>
+    <string name="error_dialog_message">Vérifiez si l\'internet e la position GPS sont activées et redémarrez l\'application !</string>
+
+
 </resources>
