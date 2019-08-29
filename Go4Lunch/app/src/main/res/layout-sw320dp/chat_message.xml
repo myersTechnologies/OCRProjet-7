@@ -39,7 +39,6 @@
                 android:layout_marginTop="@dimen/ten_dp"
                 android:layout_marginBottom="@dimen/ten_dp"
                 android:layout_marginRight="@dimen/five_dp"
-                android:layout_weight="@integer/layout_weight"
                 />
 
 
@@ -73,7 +72,6 @@
                 android:layout_marginTop="@dimen/ten_dp"
                 android:layout_marginBottom="@dimen/ten_dp"
                 android:layout_marginEnd="@dimen/five_dp"
-                android:layout_weight="@integer/layout_weight"
                 />
 
         </LinearLayout>

@@ -27,7 +27,6 @@ import dasilva.marco.go4lunch.BuildConfig;
 import dasilva.marco.go4lunch.R;
 import dasilva.marco.go4lunch.ui.chat.ChatActivity;
 import dasilva.marco.go4lunch.di.DI;
-import dasilva.marco.go4lunch.dialog.SettingsDialog;
 import dasilva.marco.go4lunch.firebase.DataBaseService;
 import dasilva.marco.go4lunch.model.PlaceMarker;
 import dasilva.marco.go4lunch.model.SelectedPlace;
@@ -39,6 +38,7 @@ import dasilva.marco.go4lunch.ui.map.fragments.ListViewFragment;
 import dasilva.marco.go4lunch.ui.map.fragments.MapFragment;
 import dasilva.marco.go4lunch.ui.map.fragments.WorkmatesFragment;
 import dasilva.marco.go4lunch.ui.map.utils.details.PlaceDetailsTask;
+import dasilva.marco.go4lunch.ui.settings.Settings;
 
 
 public class MapView extends AppCompatActivity
@@ -153,8 +153,8 @@ public class MapView extends AppCompatActivity
                 startActivity(chatIntent);
                 break;
                 case R.id.settings:
-                SettingsDialog settingsDialog = new SettingsDialog(this);
-                settingsDialog.createSettingsDialog();
+                Intent settingsActivity = new Intent(this, Settings.class);
+                startActivity(settingsActivity);
                 break;
             case R.id.logout:
                 service.setUser(null);

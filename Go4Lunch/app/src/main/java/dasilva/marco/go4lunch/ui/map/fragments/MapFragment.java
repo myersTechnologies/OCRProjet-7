@@ -17,7 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,6 +57,7 @@ import java.util.List;
 import dasilva.marco.go4lunch.BuildConfig;
 import dasilva.marco.go4lunch.R;
 import dasilva.marco.go4lunch.di.DI;
+import dasilva.marco.go4lunch.dialog.LoadingDialog;
 import dasilva.marco.go4lunch.events.DetailsEvent;
 import dasilva.marco.go4lunch.firebase.DataBaseService;
 import dasilva.marco.go4lunch.model.PlaceMarker;
@@ -88,6 +88,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
     private static final String RESTAURANT = "restaurant";
     private static final String FR = "fr";
     private List<String> idList;
+    private LoadingDialog loadingDialog;
 
     public MapFragment() {
         // Required empty public constructor
@@ -106,6 +107,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         toolbar = ((AppCompatActivity) getActivity()).findViewById(R.id.toolbar_search);
         service = DI.getService();
+        loadingDialog = new LoadingDialog(getContext());
+        loadingDialog.showLoadingDialog();
         FloatingActionButton fab = view.findViewById(R.id.my_location_fab);
         fab.setOnClickListener(this);
         dataBaseService = DI.getDatabaseService();
@@ -195,6 +198,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
+                                loadingDialog.dismissLoadingDialog();
                                 getMarkersFromList();
                             }
                         }, 3000);
@@ -346,6 +350,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                 getMarkerDetails(placeMarker);
                 toolbar.setVisibility(View.GONE);
                 autoCompleteTextView.getText().clear();
+                loadingDialog.showLoadingDialog();
                 hideSoftKeyboard(getActivity());
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
@@ -357,6 +362,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
                         mapView.animateCamera(CameraUpdateFactory.newLatLngZoom(placeMarker.getLatLng(), 17));
                         mapView.addMarker(markerOptions);
+                        loadingDialog.dismissLoadingDialog();
                     }
                 }, 1000);
 
@@ -441,6 +447,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
     public void onStart(){
         super.onStart();
         EventBus.getDefault().register(this);
+        startMap();
     }
 
     @Override

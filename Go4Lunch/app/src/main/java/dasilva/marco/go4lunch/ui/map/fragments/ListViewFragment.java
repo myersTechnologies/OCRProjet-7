@@ -3,6 +3,7 @@ package dasilva.marco.go4lunch.ui.map.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -42,6 +43,7 @@ import java.util.List;
 import dasilva.marco.go4lunch.BuildConfig;
 import dasilva.marco.go4lunch.R;
 import dasilva.marco.go4lunch.di.DI;
+import dasilva.marco.go4lunch.dialog.LoadingDialog;
 import dasilva.marco.go4lunch.events.DetailsEvent;
 import dasilva.marco.go4lunch.model.PlaceMarker;
 import dasilva.marco.go4lunch.service.Go4LunchService;
@@ -64,6 +66,7 @@ public class ListViewFragment extends Fragment {
     private static String FR = "fr";
     private List<String> idList;
     private LinearLayoutManager mLayoutManager;
+    private LoadingDialog loadingDialog;
 
     public ListViewFragment() {
         // Required empty public constructor
@@ -80,6 +83,7 @@ public class ListViewFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_view, container, false);
+        loadingDialog = new LoadingDialog(getContext());
         toolbar = ((AppCompatActivity)getActivity()).findViewById(R.id.toolbar_search);
         listRecyclerView = view.findViewById(R.id.list_of_places);
         mLayoutManager = new LinearLayoutManager(view.getContext());
@@ -189,8 +193,16 @@ public class ListViewFragment extends Fragment {
                 getMarkerDetails(placeMarker);
                 autoCompleteTextView.getText().clear();
                 toolbar.setVisibility(View.GONE);
+                loadingDialog.showLoadingDialog();
                 hideSoftKeyboard(getActivity());
-                initList();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingDialog.dismissLoadingDialog();
+                        initList();
+                    }
+                },1000);
 
             }
         });

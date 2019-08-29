@@ -14,7 +14,7 @@ android {
         multiDexEnabled true
     }
     buildTypes {
-        debug{
+        debug {
             resValue "string", "google_maps_api_key", API_KEY
         }
         release {
