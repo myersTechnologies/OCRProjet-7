@@ -164,6 +164,7 @@ public class Settings extends AppCompatActivity implements View.OnClickListener,
         } else {
             service.getUser().setRadius(editTextRadius.getText().toString());
             service.setUserRadius(service.getUser().getRadius());
+            service.setListMarkers(null);
         }
     }
 

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "808635566553-pf4oukdjrsfbodo3ogog3h5qu9g1973g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dasilva.marco.go4lunch",
+            "certificate_hash": "b5b75241170650e602b7f83a658414858f5961d1"
+          }
+        },
+        {
           "client_id": "808635566553-v9e2e47kh2a2ss4qjkkq8o8vs974rf2v.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

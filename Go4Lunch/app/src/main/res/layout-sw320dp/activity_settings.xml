@@ -119,7 +119,7 @@
             app:cardCornerRadius="@dimen/settings_card_view_confirm_corners"
             >
             <Button
-                android:text="Confirm changes"
+                android:text="@string/confirm_changes"
                 android:id="@+id/confirm_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

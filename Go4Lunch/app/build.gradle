@@ -2,6 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('/home/marco/AndroidStudioProjects/OCRProjet-7/Go4Lunch/app/release/go4lunch.jks')
+            storePassword 'marcognr666'
+            keyAlias = 'Go4LunchKey'
+            keyPassword 'marcognr666'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "dasilva.marco.go4lunch"
