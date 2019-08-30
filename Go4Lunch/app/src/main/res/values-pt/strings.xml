@@ -53,6 +53,6 @@
     <string name="error_dialog_title">Nenhuma conexão encontrada</string>
     <string name="error_dialog_message">Verifique se a internet et a position GPS estão activadas !</string>
 
-
+    <string name="confirm_changes">Confirmar mudanças</string>
 
 </resources>

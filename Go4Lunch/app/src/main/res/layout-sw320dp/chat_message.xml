@@ -59,7 +59,7 @@
                     android:id="@+id/txtMessage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="end"
+                    android:layout_gravity="end"
                     style="@style/MessageTextChatStyleText"
                     android:maxWidth="@dimen/edit_text_max_words" />
             </LinearLayout>

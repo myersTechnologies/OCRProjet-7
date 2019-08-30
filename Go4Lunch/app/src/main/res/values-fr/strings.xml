@@ -57,5 +57,5 @@
     <string name="error_dialog_title">Aucune connexion</string>
     <string name="error_dialog_message">Vérifiez si l\'internet e la position GPS sont activées et redémarrez l\'application !</string>
 
-
+    <string name="confirm_changes">Confirmer changements</string>
 </resources>

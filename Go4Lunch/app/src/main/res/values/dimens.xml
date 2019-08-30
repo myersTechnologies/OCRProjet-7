@@ -7,7 +7,8 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <integer name="max_length_places_title">20</integer>
-    <dimen name="max_length_places_Restaurant_title">200dp</dimen>
+    <dimen name="max_length_places_Restaurant_title">170dp</dimen>
+    <integer name="max_length_places_Restaurant">27</integer>
     <integer name="rating_bar_star_number">3</integer>
 
     <dimen name="main_text_title_size">75sp</dimen>

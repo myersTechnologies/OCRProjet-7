@@ -145,4 +145,6 @@
     <string name="error_dialog_title">No connection found</string>
     <string name="error_dialog_message">Check if your internet connection and GPS position are enabled and restart the App !</string>
 
+    <string name="confirm_changes">Confirm changes</string>
+
 </resources>

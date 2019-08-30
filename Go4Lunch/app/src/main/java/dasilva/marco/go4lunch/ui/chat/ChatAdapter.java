@@ -89,7 +89,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
                 layoutParams.gravity = Gravity.END;
                 viewHolder.txtInfo.setLayoutParams(layoutParams);
             } else {
-                if (users.getId().contains(message.getMessageUser())) {
+                if (users.getId().equals(message.getMessageUser())) {
                     viewHolder.txtInfo.setText(users.getUserName());
                     Glide.with(viewHolder.itemView.getContext()).load(users.getImageUrl())
                             .apply(RequestOptions.circleCropTransform()).into(viewHolder.usersImg);

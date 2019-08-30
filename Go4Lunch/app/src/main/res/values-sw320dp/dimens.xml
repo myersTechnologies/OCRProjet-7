@@ -8,6 +8,7 @@
 
     <integer name="max_length_places_title">28</integer>
     <dimen name="max_length_places_Restaurant_title">130dp</dimen>
+    <integer name="max_length_places_Restaurant">28</integer>
     <integer name="rating_bar_star_number">3</integer>
 
     <dimen name="main_text_title_size">55sp</dimen>
@@ -43,7 +44,7 @@
     <!-- Card View Margins-->
     <dimen name="ten_dp">10dp</dimen>
     <dimen name="card_view_divider">16sp</dimen>
-    <dimen name="edit_text_max_words">200dp</dimen>
+    <dimen name="edit_text_max_words">140dp</dimen>
     <integer name="layout_weight">1</integer>
 
     <!-- Card View 2 Margins-->

@@ -93,7 +93,7 @@
 
     <style name="RestaurantInfoStyle.Big">
         <item name="android:textSize">@dimen/restaurant_info_title</item>
-        <item name="android:maxWidth">@dimen/max_length_places_Restaurant_title</item>
+        <item name="android:maxLength">@integer/max_length_places_Restaurant</item>
     </style>
 
     <style name="RestaurantInfoStyle.Small">
