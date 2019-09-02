@@ -22,6 +22,7 @@ import java.util.List;
 
 import dasilva.marco.go4lunch.R;
 import dasilva.marco.go4lunch.di.DI;
+import dasilva.marco.go4lunch.model.ChatMessage;
 import dasilva.marco.go4lunch.service.Go4LunchService;
 
 public class ChatActivity extends AppCompatActivity {
@@ -46,6 +47,7 @@ public class ChatActivity extends AppCompatActivity {
 
         chatRecyclerView = findViewById(R.id.list_of_messages);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager.setStackFromEnd(true);
         chatRecyclerView.setLayoutManager(mLayoutManager);
 
         displayChatMessages();
@@ -83,7 +85,6 @@ public class ChatActivity extends AppCompatActivity {
                 }
                 chatAdapter = new ChatAdapter(chatMessages);
                 chatRecyclerView.setAdapter(chatAdapter);
-                chatRecyclerView.smoothScrollToPosition(chatAdapter.getItemCount());
 
             }
             @Override

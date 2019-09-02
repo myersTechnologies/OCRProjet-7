@@ -20,6 +20,7 @@ import java.util.List;
 import dasilva.marco.go4lunch.R;
 import dasilva.marco.go4lunch.di.DI;
 import dasilva.marco.go4lunch.firebase.DataBaseService;
+import dasilva.marco.go4lunch.model.ChatMessage;
 import dasilva.marco.go4lunch.model.User;
 import dasilva.marco.go4lunch.service.Go4LunchService;
 
@@ -49,12 +50,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
         viewHolder.txtTime.setText(DateFormat.format(format,
                 message.getMessageTime()));
         for (User users : dataBaseService.getUsersList()){
-            if (message.getMessageUser().equals(service.getUser().getId())){
+            if (message.getMessageUser().equals(service.getUser().getId())) {
                 viewHolder.txtInfo.setText(String.valueOf(service.getUser().getUserName()));
-                Glide.with(viewHolder.itemView.getContext()).load(service.getUser().getImageUrl())
+                Glide.with(viewHolder.userImg.getContext()).load(service.getUser().getImageUrl())
                         .apply(RequestOptions.circleCropTransform()).into(viewHolder.userImg);
                 viewHolder.contentWithBG.setBackgroundResource(R.drawable.in_message_bg);
-
 
                 LinearLayout.LayoutParams layout =
                         (LinearLayout.LayoutParams) viewHolder.avatarInfo.getLayoutParams();
@@ -88,10 +88,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
                 layoutParams = (LinearLayout.LayoutParams) viewHolder.txtInfo.getLayoutParams();
                 layoutParams.gravity = Gravity.END;
                 viewHolder.txtInfo.setLayoutParams(layoutParams);
-            } else {
+
+            } else  {
                 if (users.getId().equals(message.getMessageUser())) {
                     viewHolder.txtInfo.setText(users.getUserName());
-                    Glide.with(viewHolder.itemView.getContext()).load(users.getImageUrl())
+                    Glide.with(viewHolder.usersImg.getContext()).load(users.getImageUrl())
                             .apply(RequestOptions.circleCropTransform()).into(viewHolder.usersImg);
                     viewHolder.contentWithBG.setBackgroundResource(R.drawable.out_message_bg);
 
