@@ -85,6 +85,7 @@ public class ChatActivity extends AppCompatActivity {
                 }
                 chatAdapter = new ChatAdapter(chatMessages);
                 chatRecyclerView.setAdapter(chatAdapter);
+                chatRecyclerView.getRecycledViewPool().setMaxRecycledViews(0,0);
 
             }
             @Override

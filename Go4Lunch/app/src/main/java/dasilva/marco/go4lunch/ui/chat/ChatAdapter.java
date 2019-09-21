@@ -29,17 +29,23 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
     private Go4LunchService service = DI.getService();
     private DataBaseService dataBaseService;
     private List<ChatMessage> chatMessages;
+    private List<User> usersList;
 
     public ChatAdapter(List<ChatMessage> messages) {
         this.chatMessages = messages;
         dataBaseService = DI.getDatabaseService();
+        usersList = dataBaseService.getUsersList();
+
     }
+
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.chat_message, viewGroup, false);
-        return new ViewHolder(view);
+        ViewHolder viewHolder = new ViewHolder(view);
+        viewHolder.setIsRecyclable(false);
+        return viewHolder;
     }
 
     @Override
@@ -49,13 +55,57 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
         String format = "dd-MM-yyyy (HH:mm:ss)";
         viewHolder.txtTime.setText(DateFormat.format(format,
                 message.getMessageTime()));
-        for (User users : dataBaseService.getUsersList()){
+
+        Glide.with(viewHolder.itemView.getContext()).load(viewHolder.usersImg.getContext().getResources().getDrawable(R.drawable.user))
+                .apply(RequestOptions.circleCropTransform()).into(viewHolder.usersImg);
+        viewHolder.contentWithBG.setBackgroundResource(R.drawable.in_message_bg);
+
+        viewHolder.txtInfo.setText(viewHolder.usersImg.getContext().getString(R.string.deleted_user));
+        viewHolder.contentWithBG.setBackgroundResource(R.drawable.out_message_bg);
+
+        LinearLayout.LayoutParams layoutUnknownUser =
+                (LinearLayout.LayoutParams) viewHolder.avatarInfo.getLayoutParams();
+        layoutUnknownUser.gravity = Gravity.START;
+        viewHolder.avatarInfo.setLayoutParams(layoutUnknownUser);
+
+        LinearLayout.LayoutParams layoutParamsUnkownUser =
+                (LinearLayout.LayoutParams) viewHolder.contentWithBG.getLayoutParams();
+        layoutParamsUnkownUser.gravity = Gravity.START;
+        viewHolder.contentWithBG.setLayoutParams(layoutParamsUnkownUser);
+
+        RelativeLayout.LayoutParams lpUnkownUser =
+                (RelativeLayout.LayoutParams) viewHolder.content.getLayoutParams();
+        lpUnkownUser.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
+        lpUnkownUser.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        viewHolder.content.setLayoutParams(lpUnkownUser);
+
+        layoutParamsUnkownUser = (LinearLayout.LayoutParams) viewHolder.userImg.getLayoutParams();
+        layoutParamsUnkownUser.gravity = Gravity.START;
+        viewHolder.userImg.setLayoutParams(layoutParamsUnkownUser);
+
+        layoutParamsUnkownUser = (LinearLayout.LayoutParams) viewHolder.txtMessage.getLayoutParams();
+        layoutParamsUnkownUser.gravity = Gravity.START;
+        viewHolder.txtMessage.setLayoutParams(layoutParamsUnkownUser);
+
+        layoutParamsUnkownUser = (LinearLayout.LayoutParams) viewHolder.txtTime.getLayoutParams();
+        layoutParamsUnkownUser.gravity = Gravity.END;
+        viewHolder.txtTime.setLayoutParams(layoutParamsUnkownUser);
+
+        layoutParamsUnkownUser = (LinearLayout.LayoutParams) viewHolder.txtInfo.getLayoutParams();
+        layoutParamsUnkownUser.gravity = Gravity.START;
+        viewHolder.txtInfo.setLayoutParams(layoutParamsUnkownUser);
+
+        for (int j = 0; j < usersList.size(); j++){
+            User users = usersList.get(j);
+
             if (message.getMessageUser().equals(service.getUser().getId())) {
+
                 viewHolder.txtInfo.setText(String.valueOf(service.getUser().getUserName()));
-                Glide.with(viewHolder.userImg.getContext()).load(service.getUser().getImageUrl())
+                Glide.with(viewHolder.itemView.getContext()).load(service.getUser().getImageUrl())
                         .apply(RequestOptions.circleCropTransform()).into(viewHolder.userImg);
                 viewHolder.contentWithBG.setBackgroundResource(R.drawable.in_message_bg);
 
+                viewHolder.usersImg.setVisibility(View.GONE);
                 LinearLayout.LayoutParams layout =
                         (LinearLayout.LayoutParams) viewHolder.avatarInfo.getLayoutParams();
                 layout.gravity = Gravity.END;
@@ -89,12 +139,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
                 layoutParams.gravity = Gravity.END;
                 viewHolder.txtInfo.setLayoutParams(layoutParams);
 
-            } else  {
-                if (users.getId().equals(message.getMessageUser())) {
+            } else {
+                if (message.getMessageUser().equals(users.getId())) {
                     viewHolder.txtInfo.setText(users.getUserName());
-                    Glide.with(viewHolder.usersImg.getContext()).load(users.getImageUrl())
+                    Glide.with(viewHolder.itemView.getContext()).load(users.getImageUrl())
                             .apply(RequestOptions.circleCropTransform()).into(viewHolder.usersImg);
                     viewHolder.contentWithBG.setBackgroundResource(R.drawable.out_message_bg);
+                    viewHolder.userImg.setVisibility(View.GONE);
 
                     LinearLayout.LayoutParams layout =
                             (LinearLayout.LayoutParams) viewHolder.avatarInfo.getLayoutParams();
@@ -129,6 +180,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
                     viewHolder.txtInfo.setLayoutParams(layoutParams);
                 }
             }
+
         }
     }
 

@@ -58,4 +58,6 @@
     <string name="error_dialog_message">Vérifiez si l\'internet e la position GPS sont activées et redémarrez l\'application !</string>
 
     <string name="confirm_changes">Confirmer changements</string>
+    <string name="deleted_user">Utilisateur supprimé</string>
+
 </resources>

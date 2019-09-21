@@ -147,4 +147,6 @@
 
     <string name="confirm_changes">Confirm changes</string>
 
+    <string name="deleted_user">Deleted User</string>
+
 </resources>
