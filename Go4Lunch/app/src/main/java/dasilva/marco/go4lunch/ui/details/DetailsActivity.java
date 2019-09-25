@@ -123,6 +123,9 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
         }
     }
 
+    //if list of selected places is not null then check if list contains the place to add new user id
+    // else create new selected place because usersId array is null
+    //if list is null then create new selected place because selectedPlacesList is null
     public void setUserChoice(){
         if (dataBaseService.getListOfSelectedPlaces().size() > 0) {
             for (SelectedPlace place : dataBaseService.getListOfSelectedPlaces()) {
@@ -142,6 +145,8 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
             selectedPlace.setUserId(service.getUser().getId());
             databaseReference.child(getString(R.string.selection)).child(service.getPlaceMarker().getId()).setValue(selectedPlace);
         }
+
+        //set user choice and save it to shared preferences and start alarm service
         service.getUser().setChoice(service.getPlaceMarker().getName());
 
         sharedPreferences.edit().putString(getString(R.string.choice_adress), service.getPlaceMarker().getAdress()).apply();
@@ -179,6 +184,9 @@ public class DetailsActivity extends AppCompatActivity implements BottomNavigati
                     callRestaurant();
                 }
                 break;
+                // if user liked places is not null then count +1 like in place marker
+            //if user already liked that place a toast will be shown
+            //else just add a new place to the users liked paces and count the likes
             case R.id.details_like_item:
                 if (service.getUser().getLikedPlacesId() != null){
                     if (!service.getUser().getLikedPlacesId().contains(service.getPlaceMarker().getId())) {

@@ -1,6 +1,5 @@
 package dasilva.marco.go4lunch.ui.map.utils.details;
 
-import android.util.Log;
 
 import com.google.gson.JsonIOException;
 
@@ -48,7 +47,7 @@ public class DetailsDataParser {
     public HashMap<String, String> getPlace(JSONObject googleDetailsJson) {
         HashMap<String, String> googleDetailsMap = new HashMap<>();
 
-        String weekDayText;
+        String weekDayText = "-NA-";
         String phoneNumber;
         String website;
         String photo = "-NA-";
@@ -69,8 +68,17 @@ public class DetailsDataParser {
                 vicinity = googleDetailsJson.getString("vicinity");
             }
 
-            latitude = googleDetailsJson.getJSONObject("geometry").getJSONObject("location").getString("lat");
-            longitude = googleDetailsJson.getJSONObject("geometry").getJSONObject("location").getString("lng");
+            if (!googleDetailsJson.getJSONObject("geometry").getJSONObject("location").isNull("lat")){
+                latitude = googleDetailsJson.getJSONObject("geometry").getJSONObject("location").getString("lat");
+            } else {
+                latitude = "46.780764";
+            }
+
+            if (!googleDetailsJson.getJSONObject("geometry").getJSONObject("location").isNull("lng")){
+                longitude = googleDetailsJson.getJSONObject("geometry").getJSONObject("location").getString("lng");
+            } else {
+                longitude = "4.853947";
+            }
 
 
             if (!googleDetailsJson.isNull("opening_hours")) {
@@ -92,12 +100,16 @@ public class DetailsDataParser {
                 website = " ";
             }
 
-            JSONObject jsonObject = googleDetailsJson.getJSONObject("opening_hours");
-            weekDayText = jsonObject.getJSONArray("weekday_text").toString();
+            try {
+                JSONObject jsonObject = googleDetailsJson.getJSONObject("opening_hours");
+                weekDayText = jsonObject.getJSONArray("weekday_text").toString();
+            } catch (NullPointerException e){
+
+            }
 
             if(!googleDetailsJson.isNull("photos")){
                 JSONArray photos = googleDetailsJson.getJSONArray("photos");
-                photo = ((JSONObject)photos.get(1)).getString("photo_reference");
+                photo = ((JSONObject)photos.get(0)).getString("photo_reference");
             }
 
             googleDetailsMap.put("place_name", placeName);

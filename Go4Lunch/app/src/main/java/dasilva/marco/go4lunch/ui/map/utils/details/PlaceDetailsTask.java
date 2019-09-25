@@ -53,8 +53,8 @@ public class PlaceDetailsTask extends AsyncTask<Object, String, String> {
     }
 
     private void setPlaceMarkerMoreInfo(List<HashMap<String, String>> detailsPlaceList) {
-        for (int i = 0; i < detailsPlaceList.size(); i++) {
-            HashMap<String, String> googleDetails = detailsPlaceList.get(i);
+        for (int l = 0; l < detailsPlaceList.size(); l++) {
+            HashMap<String, String> googleDetails = detailsPlaceList.get(l);
 
             placeMarker.setName(googleDetails.get("place_name"));
 
@@ -69,51 +69,56 @@ public class PlaceDetailsTask extends AsyncTask<Object, String, String> {
 
                 placeMarker.setLatLng(latLng);
 
+
+                if (googleDetails.get("vicinity") != null) {
+                    placeMarker.setAdress(googleDetails.get("vicinity"));
+                }
+
+                placeMarker.setOpeningHours(Boolean.parseBoolean(googleDetails.get("open_now")));
+
+                placeMarker.setTelephone(googleDetails.get("phone_number"));
+
+                placeMarker.setWebSite(googleDetails.get("website"));
+
+                if (googleDetails.get("weekday_text") != null) {
+                    String[] openHours = googleDetails.get("weekday_text").split("\",\"");
+                    for (int j = 0; j < openHours.length; j++) {
+                        for (int k = 0; k < openHours[j].split("\\[\"").length; k++) {
+                            for (int o = 0; o < openHours[j].split("\\[\"")[k].split("\"\\]").length; o++) {
+                                placeMarker.addWeekToList(openHours[j].split("\\[\"")[k].split("\"\\]")[o]);
+                            }
+                        }
+                    }
+                }
+
+                if (googleDetails.get("photo_reference") != null) {
+                    placeMarker.setPhotoUrl(getPhotoUrl(googleDetails.get("photo_reference")));
+                }
             }
 
-            placeMarker.setAdress(googleDetails.get("vicinity"));
-
-            placeMarker.setOpeningHours(Boolean.parseBoolean(googleDetails.get("open_now")));
-
-            placeMarker.setTelephone(googleDetails.get("phone_number"));
-
-            placeMarker.setWebSite(googleDetails.get("website"));
-
-            if (googleDetails.get("weekday_text") != null) {
-                String[] openHours = googleDetails.get("weekday_text").split("\",\"");
-                for (int j = 0; j < openHours.length; j++) {
-                    for (int k = 0; k < openHours[j].split("\\[\"").length; k++) {
-                        for (int o = 0; o < openHours[j].split("\\[\"")[k].split("\"\\]").length; o++) {
-                            placeMarker.addWeekToList(openHours[j].split("\\[\"")[k].split("\"\\]")[o]);
+            if (service.getListMarkers() == null) {
+                List<PlaceMarker> placeMarkers = new ArrayList<>();
+                service.setListMarkers(placeMarkers);
+                service.getListMarkers().add(placeMarker);
+            } else {
+                if (service.getListMarkers() != null) {
+                    int count = 0;
+                    for (int i = 0; i < service.getListMarkers().size(); i++) {
+                        if (!service.getListMarkers().get(i).getId().equals(placeMarker.getId())) {
+                            count++;
+                            if (count == service.getListMarkers().size()) {
+                                service.getListMarkers().add(placeMarker);
+                            }
                         }
                     }
                 }
             }
 
-            placeMarker.setPhotoUrl(getPhotoUrl(googleDetails.get("photo_reference")));
+            service.countPlaceSelectedByUsers();
+
+            service.countPlacesLikes();
+
         }
-
-        if (service.getListMarkers() == null) {
-            List<PlaceMarker> placeMarkers = new ArrayList<>();
-            service.setListMarkers(placeMarkers);
-            service.getListMarkers().add(placeMarker);
-        } else{
-            if (service.getListMarkers() != null) {
-                int count = 0;
-                for (int i = 0; i < service.getListMarkers().size(); i++) {
-                    if (!service.getListMarkers().get(i).getId().equals(placeMarker.getId())) {
-                        count++;
-                        if (count == service.getListMarkers().size()){
-                            service.getListMarkers().add(placeMarker);
-                        }
-                    }
-                }
-            }
-        }
-
-        service.countPlaceSelectedByUsers();
-
-        service.countPlacesLikes();
 
     }
 

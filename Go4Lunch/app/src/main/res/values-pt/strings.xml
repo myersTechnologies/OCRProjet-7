@@ -54,7 +54,6 @@
     <string name="error_dialog_message">Verifique se a internet et a position GPS estão activadas !</string>
 
     <string name="confirm_changes">Confirmar mudanças</string>
-    <string name="deleted_user">Utilisador apagado</string>
-
+    <string name="deleted_user">Utilisador desconhecido</string>
 
 </resources>

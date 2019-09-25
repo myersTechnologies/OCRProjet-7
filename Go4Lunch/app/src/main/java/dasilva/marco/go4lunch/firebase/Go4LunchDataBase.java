@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dasilva.marco.go4lunch.di.DI;
+import dasilva.marco.go4lunch.model.PlaceMarker;
 import dasilva.marco.go4lunch.model.SelectedPlace;
 import dasilva.marco.go4lunch.model.User;
 import dasilva.marco.go4lunch.service.Go4LunchService;
@@ -89,13 +90,12 @@ public class Go4LunchDataBase implements DataBaseService {
         return users;
     }
 
+
     @Override
     public void deleteUserFromFireBase() {
         User user = service.getUser();
         try {
-
             removeCompleteSelectionDatabase();
-
         }catch (NullPointerException e){}
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -158,6 +158,9 @@ public class Go4LunchDataBase implements DataBaseService {
 
     }
 
+    //to remove selected restaurant
+    //if the usersId Arrays is superior or equals to 2 then delete only the user id
+    //else if its 1 then the selected place is deleted from database
     @Override
     public void removeCompleteSelectionDatabase() {
         User user = service.getUser();
@@ -179,16 +182,23 @@ public class Go4LunchDataBase implements DataBaseService {
                     for (String userId : selectedPlaces.get(i).getUserId()) {
                         if (user.getId().contains(userId)) {
                             selectedPlace = selectedPlaces.get(i);
+                            selectedPlace.getUserId().remove(userId);
                             selectedPlaces.remove(selectedPlace);
                             databaseReference.child(selectedPlace.getId()).removeValue();
                             user.setChoice(null);
                             userReference.child(user.getId()).child(CHOICE).removeValue();
+                        }
+                        for (PlaceMarker placeMarker : service.getListMarkers()){
+                            if (placeMarker.getId().equals(selectedPlace.getId())){
+                                placeMarker.setSelectedTimes(0);
+                            }
                         }
                     }
                 }
             }
     }
 
+    //to save radius on database
     @Override
     public void setUserRadius(String radius) {
         User user = service.getUser();
@@ -196,6 +206,7 @@ public class Go4LunchDataBase implements DataBaseService {
         databaseReference.child(USERS).child(user.getId()).child(RADIUS).setValue(radius);
     }
 
+    //add a liked place to users table
     @Override
     public void setUserLikedPlaces(List<String> userLikedPlaces) {
         User user = service.getUser();
@@ -203,6 +214,7 @@ public class Go4LunchDataBase implements DataBaseService {
         databaseReference.child(USERS).child(user.getId()).child(LIKED_PLACES_ID).setValue(userLikedPlaces);
     }
 
+    //get additional data, this is used because initially users haven't choiced, liked a place or radius is set up to google search
     @Override
     public void getAdditionalUserData(String userId){
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();

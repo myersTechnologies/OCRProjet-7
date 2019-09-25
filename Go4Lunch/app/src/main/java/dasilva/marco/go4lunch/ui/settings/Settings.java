@@ -55,6 +55,16 @@ public class Settings extends AppCompatActivity implements View.OnClickListener,
         getSupportActionBar().setTitle(getString(R.string.setting_tittle));
 
         sharedPreferences = getSharedPreferences(getString(R.string.app_name), MODE_PRIVATE);
+        findViews();
+
+        Glide.with(this).load(service.getUser().getImageUrl()).apply(RequestOptions.circleCropTransform()).into(userAvatar);
+
+        setUserChoiceIntoAndInfoIntoView();
+        editTextRadius.setOnClickListener(this);
+
+    }
+
+    private void findViews(){
         userAvatar = findViewById(R.id.user_avatar_settings);
         userName = findViewById(R.id.user_name_settings);
         restaurantName = findViewById(R.id.restaurant_name);
@@ -68,9 +78,11 @@ public class Settings extends AppCompatActivity implements View.OnClickListener,
         deleteLunchBtn.setOnClickListener(this);
         deleteAccountBtn.setOnClickListener(this);
         confirmChanges.setOnClickListener(this);
+        editTextRadius.setOnClickListener(this);
 
-        Glide.with(this).load(service.getUser().getImageUrl()).apply(RequestOptions.circleCropTransform()).into(userAvatar);
+    }
 
+    private void setUserChoiceIntoAndInfoIntoView(){
         userName.setText(service.getUser().getUserName());
 
         if (service.getUser().getChoice() != null){
@@ -96,8 +108,6 @@ public class Settings extends AppCompatActivity implements View.OnClickListener,
         } else {
             editTextRadius.setHint(R.string.radius_search);
         }
-        editTextRadius.setOnClickListener(this);
-
     }
 
     @Override

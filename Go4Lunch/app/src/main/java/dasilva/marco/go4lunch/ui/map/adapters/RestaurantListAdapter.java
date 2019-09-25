@@ -63,7 +63,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
                 String opened = viewHolder.itemView.getContext().getString(R.string.open_true);
                 String until = viewHolder.itemView.getContext().getString(R.string.until);
                 if (service.getTodayClosingHour(placeMarker).equals("Closing soon")){
-                    openInfo = service.getTodayClosingHour(placeMarker);
+                    openInfo = viewHolder.placeHoraires.getContext().getString(R.string.closing_soon);
                     viewHolder.placeHoraires.setText(openInfo);
                     viewHolder.placeHoraires.setTextColor(viewHolder.placeAdress.getContext().getResources().getColor(R.color.red));
                 } else {
@@ -81,12 +81,12 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
                 String closed = viewHolder.itemView.getContext().getString(R.string.open_false);
                 String until = viewHolder.itemView.getContext().getString(R.string.until);
                 if (service.getTodayOpenHour(placeMarker).equals("Opening soon")) {
-                    openInfo = service.getTodayOpenHour(placeMarker);
+                    openInfo = viewHolder.placeHoraires.getContext().getString(R.string.opening_soon);
                     viewHolder.placeHoraires.setText(openInfo);
                     viewHolder.placeHoraires.setTextColor(viewHolder.placeAdress.getContext().getResources().getColor(R.color.green));
                 } else {
                     if (service.getTodayOpenHour(placeMarker).equals("Closed today")) {
-                        openInfo = service.getTodayOpenHour(placeMarker);
+                        openInfo = viewHolder.placeHoraires.getContext().getString(R.string.closed_today);
                         viewHolder.placeHoraires.setText(openInfo);
                         viewHolder.placeHoraires.setTextColor(viewHolder.placeAdress.getContext().getResources().getColor(R.color.red));
                     } else {

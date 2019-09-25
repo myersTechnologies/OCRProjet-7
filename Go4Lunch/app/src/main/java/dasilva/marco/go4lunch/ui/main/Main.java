@@ -245,8 +245,10 @@ public class Main extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        //for facebook
         callbackManager.onActivityResult(requestCode, resultCode, data);
 
+        //for google
         if (requestCode == REQUEST_CODE) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {

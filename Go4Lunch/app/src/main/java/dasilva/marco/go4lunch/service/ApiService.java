@@ -5,6 +5,7 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -89,6 +90,7 @@ public class ApiService implements Go4LunchService {
         dataBaseService.setUserLikedPlaces(userLikedPlaces);
     }
 
+    //To count how many people are joining
     @Override
     public void countPlaceSelectedByUsers() {
         List<User> users = dataBaseService.getUsersList();
@@ -110,6 +112,7 @@ public class ApiService implements Go4LunchService {
         }
     }
 
+    //To convert Latitude and longitude String to LatLng Class
     @Override
     public LatLng getRealLatLng(SelectedPlace place) {
            String[] coordinates = place.getLatLng().split(",");
@@ -140,62 +143,41 @@ public class ApiService implements Go4LunchService {
         }
     }
 
+    private Calendar getCalendar(){
+        return Calendar.getInstance();
+    }
+
+    private String getDayOfTheWeek(){
+        return getCalendar().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH);
+    }
+
+    private List<String> getOpenHourList(PlaceMarker placeMarker){
+        return placeMarker.getWeekdayHours();
+    }
+
+    //To check if restaurant is open 24/7 or closed today, then if it's not according to Time Now if its AM or PM
+    // it could be in double format or in single format
     @Override
     public String getTodayClosingHour(PlaceMarker placeMarker) {
             String openUntil = "";
         if (placeMarker.getWeekdayHours() != null) {
-            Calendar calendar = Calendar.getInstance();
-            String dayOfTheWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH);
-            List<String> openHourList = placeMarker.getWeekdayHours();
-            for (String todays : openHourList) {
+            String dayOfTheWeek = getDayOfTheWeek();
+            for (String todays : getOpenHourList(placeMarker)) {
                 if (todays.contains(dayOfTheWeek)) {
                     if (!todays.contains(OPEN24)) {
                         if (!todays.contains(CLOSED)) {
-                            if (calendar.get(Calendar.AM_PM) == Calendar.AM) {
+                            if (getCalendar().get(Calendar.AM_PM) == Calendar.AM) {
                                 try {
-                                    String[] openHours = todays.split(",");
-                                    String[] openedUntil = openHours[0].split("–");
-                                    Calendar time = Calendar.getInstance();
-                                    time.add(Calendar.HOUR, Integer.parseInt(openedUntil[1].split(":")[0].trim()));
-                                    time.add(Calendar.MINUTE, Integer.parseInt(openedUntil[1].split(":")[1].split(PM)[0].trim()));
-                                    if (calendar.getTime().before(time.getTime())){
-                                        openUntil = checkClosingHours(openedUntil[1]);
-                                    } else {
-                                        openedUntil = openHours[1].split("–");
-                                        openUntil = checkClosingHours(openedUntil[1]);
-                                    }
+                                   openUntil = getClosingHoursDoubleFormatAM(todays);
                                 } catch (ArrayIndexOutOfBoundsException e) {
-                                    String[] openHours = todays.split("–");
-                                    String[] openHourWithoutDay = openHours[0].split(dayOfTheWeek + ":");
-                                    openUntil = checkClosingHours(openHourWithoutDay[1]);
+                                    openUntil = getClosingHoursSingleFormatWithoutDay(todays, dayOfTheWeek);
                                 }
                             } else {
                                 try {
-                                    String[] openHours = todays.split(",");
-                                    String[] openedUntil = openHours[1].split("–");
-                                    Calendar time = Calendar.getInstance();
-                                    time.add(Calendar.HOUR, Integer.parseInt(openedUntil[1].split(":")[0].trim()));
-                                    if (openedUntil[1].split(":")[1].contains(PM)) {
-                                        time.add(Calendar.MINUTE, Integer.parseInt(openedUntil[1].split(":")[1].split(PM)[0].trim()));
-                                    } else {
-                                        time.add(Calendar.MINUTE, Integer.parseInt(openedUntil[1].split(":")[1].split(AM)[0].trim()));
-                                    }
-                                    if (calendar.getTime().before(time.getTime())){
-                                        openUntil = checkClosingHours(openedUntil[1]);
-                                    } else {
-                                        openedUntil = openHours[0].split("–");
-                                        openUntil = checkClosingHours(openedUntil[1]);
-                                    }
+                                   openUntil = getClosingHoursDoubleFormatPM(todays);
 
                                 } catch (ArrayIndexOutOfBoundsException e) {
-                                    String[] openHours = todays.split("–");
-                                    if (openHours.length == 1) {
-                                        String[] openHourWithoutDay = openHours[0].split(dayOfTheWeek + ":");
-                                        openUntil = checkClosingHours(openHourWithoutDay[0]);
-                                    } else {
-                                        openUntil = checkClosingHours(openHours[1]);
-
-                                    }
+                                    openUntil = getSimplePMClosingHourFormat(todays, dayOfTheWeek);
                                 }
                             }
                         } else {
@@ -212,6 +194,60 @@ public class ApiService implements Go4LunchService {
         return openUntil;
     }
 
+    //To Format 10:00 - 14:00, 18:00 - 22:00 to get 14:00
+    private String getClosingHoursDoubleFormatAM(String todays){
+        String[] openHours = todays.split(",");
+        String[] openedUntil = openHours[0].split("–");
+        Calendar time = Calendar.getInstance();
+        time.add(Calendar.HOUR, Integer.parseInt(openedUntil[1].split(":")[0].trim()));
+        time.add(Calendar.MINUTE, Integer.parseInt(openedUntil[1].split(":")[1].split(PM)[0].trim()));
+        if (getCalendar().getTime().before(time.getTime())){
+            return checkClosingHours(openedUntil[1]);
+        } else {
+            openedUntil = openHours[1].split("–");
+            return checkClosingHours(openedUntil[1]);
+        }
+    }
+
+    //To Format 10:00 - 22:00 to get 22:00
+    private String getClosingHoursSingleFormatWithoutDay(String todays, String dayOfTheWeek){
+        String[] openHours = todays.split("–");
+        String[] openHourWithoutDay = openHours[0].split(dayOfTheWeek + ":");
+        return checkClosingHours(openHourWithoutDay[1]);
+    }
+
+    //To Format 10:00 - 14:00, 18:00 - 22:00 to get 22:00
+    private String getClosingHoursDoubleFormatPM(String todays){
+        String[] openHours = todays.split(",");
+        String[] openedUntil = openHours[1].split("–");
+        Calendar time = getCalendar();
+        time.add(Calendar.HOUR, Integer.parseInt(openedUntil[1].split(":")[0].trim()));
+        if (openedUntil[1].split(":")[1].contains(PM)) {
+            time.add(Calendar.MINUTE, Integer.parseInt(openedUntil[1].split(":")[1].split(PM)[0].trim()));
+        } else {
+            time.add(Calendar.MINUTE, Integer.parseInt(openedUntil[1].split(":")[1].split(AM)[0].trim()));
+        }
+        if (getCalendar().getTime().before(time.getTime())){
+            return checkClosingHours(openedUntil[1]);
+        } else {
+            openedUntil = openHours[0].split("–");
+            return checkClosingHours(openedUntil[1]);
+        }
+    }
+
+    //To Format 10:00 - 22:00 to get 22:00
+    private String getSimplePMClosingHourFormat(String todays, String dayOfTheWeek){
+        String[] openHours = todays.split("–");
+        if (openHours.length == 1) {
+            String[] openHourWithoutDay = openHours[0].split(dayOfTheWeek + ":");
+            return checkClosingHours(openHourWithoutDay[0]);
+        } else {
+            return checkClosingHours(openHours[1]);
+
+        }
+    }
+
+    //Math to  check if restaurant is closing soon, comparing date Now and Google details open hours
     private String checkClosingHours(String openUntil){
         String open;
         int closeHour = Integer.parseInt(openUntil.split(":")[0].trim());
@@ -235,62 +271,81 @@ public class ApiService implements Go4LunchService {
         return open;
     }
 
+    //For date as 10:00 - 14:00, 18:00 - 22:00 to get 10:00
+    private String openHourWithoutDayDoubleFormatAM(String days, String dayOfTheWeek){
+        String[] openHours = days.split(",");
+        String[] openedUntil = openHours[0].split("–");
+        String[] openHourWithoutDay = openedUntil[0].split(dayOfTheWeek + ":");
+        String day = openHourWithoutDay[1];
+        if (!day.contains(AM)) {
+            if (!openHourWithoutDay[1].contains(PM)) {
+                return  checkOpenHours(openHourWithoutDay[1] + PM);
+            } else {
+                return  checkOpenHours(openHourWithoutDay[1]);
+            }
+        } else {
+            return  checkOpenHours(openHourWithoutDay[1]);
+        }
+    }
+
+    //For date as 10:00 - 22:00 to get 10:00
+    private String openHourWithoutDaySingleFormatAM(String days, String dayOfTheWeek){
+        String[] openHours = days.split("–");
+        String[] openedUntil = openHours[0].split(dayOfTheWeek + ":");
+        return checkOpenHours(openedUntil[1]);
+    }
+
+    //For date as 10:00 - 14:00, 18:00 - 22:00 to get 18:00
+    private String openHourPMDoubleFormat(String days){
+        String[] openHours = days.split(",");
+        String[] openedUntil = openHours[1].split("–");
+        if (!openedUntil[0].contains(AM)) {
+            if (!openedUntil[0].contains(PM)) {
+                return checkOpenHours(openedUntil[0] + PM);
+            } else {
+               return checkOpenHours(openedUntil[0]);
+            }
+        } else {
+            return checkOpenHours(openedUntil[0]);
+        }
+    }
+
+    //To Format 10:00 - 22:00 to get 10:00
+    private String openHourSingleDateFormatPM(String days, String dayOfTheWeek){
+        String[] openHours = days.split("–");
+        String[] openHourWithoutDay = openHours[0].split(dayOfTheWeek + ":");
+        if (!openHourWithoutDay[1].contains(AM)) {
+            if (!openHourWithoutDay[1].contains(PM)) {
+                return checkOpenHours(openHourWithoutDay[1] + PM);
+            } else {
+                return checkOpenHours(openHourWithoutDay[1]);
+            }
+        } else {
+            return checkOpenHours(openHourWithoutDay[1]);
+        }
+    }
+
+    //the same logic as getClosingHours method
     @Override
     public String getTodayOpenHour(PlaceMarker placeMarker) {
         String openUntil = "";
         if (placeMarker.getWeekdayHours() != null) {
-            Calendar calendar = Calendar.getInstance();
-            String dayOfTheWeek = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH);
-            List<String> openHourList = placeMarker.getWeekdayHours();
-            for (String days : openHourList){
+            String dayOfTheWeek = getDayOfTheWeek();
+            for (String days : getOpenHourList(placeMarker)){
                     if (days.contains(dayOfTheWeek)) {
                         if (!days.contains(OPEN24)) {
                             if (!days.contains(CLOSED)) {
-                                if (calendar.get(Calendar.AM_PM) == Calendar.AM) {
+                                if (getCalendar().get(Calendar.AM_PM) == Calendar.AM) {
                                     try {
-                                        String[] openHours = days.split(",");
-                                        String[] openedUntil = openHours[0].split("–");
-                                        String[] openHourWithoutDay = openedUntil[0].split(dayOfTheWeek + ":");
-                                        if (!openHourWithoutDay[1].contains(AM)) {
-                                            if (!openHourWithoutDay[1].contains(PM)) {
-                                                openUntil = checkOpenHours(openHourWithoutDay[1] + PM);
-                                            } else {
-                                                openUntil = checkOpenHours(openHourWithoutDay[1]);
-                                            }
-                                        } else {
-                                            openUntil = checkOpenHours(openHourWithoutDay[1]);
-                                        }
+                                        openUntil = openHourWithoutDayDoubleFormatAM(days, dayOfTheWeek);
                                     } catch (ArrayIndexOutOfBoundsException e) {
-                                        String[] openHours = days.split("–");
-                                        String[] openedUntil = openHours[0].split(dayOfTheWeek + ":");
-                                        openUntil = checkOpenHours(openedUntil[1]);
+                                        openUntil = openHourWithoutDaySingleFormatAM(days, dayOfTheWeek);
                                     }
                                 } else {
                                     try {
-                                        String[] openHours = days.split(",");
-                                        String[] openedUntil = openHours[1].split("–");
-                                        if (!openedUntil[0].contains(AM)) {
-                                            if (!openedUntil[0].contains(PM)) {
-                                                openUntil = checkOpenHours(openedUntil[0] + PM);
-                                            } else {
-                                                openUntil = checkOpenHours(openedUntil[0]);
-                                            }
-                                        } else {
-                                            openUntil = checkOpenHours(openedUntil[0]);
-                                        }
-
+                                       openUntil = openHourPMDoubleFormat(days);
                                     } catch (ArrayIndexOutOfBoundsException e) {
-                                        String[] openHours = days.split("–");
-                                        String[] openHourWithoutDay = openHours[0].split(dayOfTheWeek + ":");
-                                        if (!openHourWithoutDay[1].contains(AM)) {
-                                            if (!openHourWithoutDay[1].contains(PM)) {
-                                                openUntil = checkOpenHours(openHourWithoutDay[1] + PM);
-                                            } else {
-                                                openUntil = checkOpenHours(openHourWithoutDay[1]);
-                                            }
-                                        } else {
-                                            openUntil = checkOpenHours(openHourWithoutDay[1]);
-                                        }
+                                      openUntil= openHourSingleDateFormatPM(days, dayOfTheWeek);
                                     }
                                 }
                             } else {
@@ -307,6 +362,8 @@ public class ApiService implements Go4LunchService {
         return openUntil;
     }
 
+    //Math to check if restaurant is opening soon
+    //between 660 and 720 for pm and below 60 for am
     private String checkOpenHours(String openUntil){
         String open;
         int openHour = Integer.parseInt(openUntil.split(":")[0].trim());
@@ -322,7 +379,8 @@ public class ApiService implements Go4LunchService {
         int timeOpen = openHour * 60 + openMinutes;
         int currentTime = hourNow * 60 + minutesNow;
         int opening = Math.abs(currentTime - timeOpen);
-        if (opening >= 660 && opening <= 720) {
+        Log.d("OpeningMath", String.valueOf(opening));
+        if (opening >= 660 && opening <= 720 || opening <= 60) {
             open = "Opening soon";
         } else {
             open = openUntil;
@@ -338,11 +396,11 @@ public class ApiService implements Go4LunchService {
 
     @Override
     public void setUserLunchChoice(PlaceMarker placeMarker, Context context) {
-
         getAdress(placeMarker, context);
 
     }
 
+    //get adress from geocoder in case if place marker as not one
     private void getAdress(PlaceMarker placeMarker, Context context){
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
         List<Address> addresses = null;

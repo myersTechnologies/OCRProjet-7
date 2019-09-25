@@ -87,13 +87,19 @@ public class MapView extends AppCompatActivity
 
         initView();
 
+        checkUserChoice();
+
+    }
+
+
+    private void checkUserChoice(){
         if (service.getUser().getChoice() != null) {
             startAlarmToSendANotification(service.getUser().getChoice());
         } else {
             checkChoiceStringToRemoveSelectedPlace();
         }
-
     }
+
     public void checkChoiceStringToRemoveSelectedPlace() {
         preferences.edit().remove(getString(R.string.choice)).apply();
         preferences.edit().remove(getString(R.string.choice_adress)).apply();

@@ -233,6 +233,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
             getNearbyPlacesData.execute(dataTransfer);
     }
 
+    //get markers from list in APIService loaded markers
     public void getMarkersFromList(){
         if (service.getListMarkers() != null){
             MarkerOptions markerOptions = new MarkerOptions();
@@ -241,17 +242,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
             for (SelectedPlace selectedPlace : dataBaseService.getListOfSelectedPlaces()) {
                 for (PlaceMarker placeMarker : service.getListMarkers()) {
                     if (selectedPlace.getId().equals(placeMarker.getId())) {
-                        markerOptions.position(placeMarker.getLatLng());
-                        markerOptions.title(placeMarker.getName());
-                        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                        mapView.addMarker(markerOptions);
-                    }
+                        if (placeMarker.getLatLng() != null) {
+                            markerOptions.position(placeMarker.getLatLng());
+                            markerOptions.title(placeMarker.getName());
+                            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                            mapView.addMarker(markerOptions);
+                        }
                     }
                 }
             }
         }
+        }
     }
 
+    //set choices into APIService markers list
     public void setUserChoiceToList(){
         if (dataBaseService.getListOfSelectedPlaces().size() > 0) {
             for (int i = 0; i < dataBaseService.getListOfSelectedPlaces().size(); i++) {
@@ -266,6 +270,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         }
     }
 
+    //set markers in maps
     public void setMarker(MarkerOptions markerOptions){
         if (service.getListMarkers() != null){
             for (PlaceMarker placeMarker : service.getListMarkers()) {
@@ -343,6 +348,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
         });
     }
 
+    //on clicking on searched item, loading dialog will start for 1s, the time needed to load google information
+    //and add marker to map
     private void onItemClick(){
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -362,19 +369,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        MarkerOptions markerOptions = new MarkerOptions();
-                        markerOptions.position(placeMarker.getLatLng());
-                        markerOptions.title(placeMarker.getName());
-                        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-                        mapView.animateCamera(CameraUpdateFactory.newLatLngZoom(placeMarker.getLatLng(), 17));
-                        mapView.addMarker(markerOptions);
-                        loadingDialog.dismissLoadingDialog();
+                        if (placeMarker.getLatLng() != null) {
+                            MarkerOptions markerOptions = new MarkerOptions();
+                            markerOptions.position(placeMarker.getLatLng());
+                            markerOptions.title(placeMarker.getName());
+                            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                            mapView.animateCamera(CameraUpdateFactory.newLatLngZoom(placeMarker.getLatLng(), 17));
+                            mapView.addMarker(markerOptions);
+                        }
+                            loadingDialog.dismissLoadingDialog();
                     }
                 }, 1000);
             }
         });
     }
 
+    //to get marker details
     public void getMarkerDetails(PlaceMarker marker){
         String uri = getContext().getString(R.string.url_begin) + marker.getId() +
                 getContext().getString(R.string.and_key) + API_KEY;
@@ -387,17 +397,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
     }
 
     public void getJoiningUsers() {
-        List<String> usersFistName = new ArrayList<>();
-        final PlaceMarker placeMarker = new PlaceMarker();
-        for (SelectedPlace selectedPlace : dataBaseService.getListOfSelectedPlaces()) {
-            for (String userId : selectedPlace.getUserId()) {
-                if (userId.equals(service.getUser().getId())) {
-                    placeMarker.setName(selectedPlace.getName());
-                    placeMarker.setId(selectedPlace.getId());
-                }
-            }
-        }
+        PlaceMarker placeMarker = getUserChoicePlaceMarker();
+        List<String> usersFistName = getUserChoiceJoiningUsers(placeMarker);
+        setChoiceAdress(placeMarker);
+        String joiningUsers = TextUtils.join(", ", usersFistName);
+        sharedPreferences.edit().putString(getString(R.string.joining_users), joiningUsers).apply();
+    }
 
+    //first bubble we get all users joining current user choice
+    //second bubble we remove the current user from the list
+    //third bubble adding joining users first name to join in notification
+    private List<String> getUserChoiceJoiningUsers(PlaceMarker placeMarker){
+        List<String> usersFistName = new ArrayList<>();
         List<User> userList = new ArrayList<>();
         for(SelectedPlace place : dataBaseService.getListOfSelectedPlaces()){
             for (User user : dataBaseService.getUsersList()){
@@ -424,6 +435,26 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
             usersFistName.add(getString(R.string.nobody_joining));
         }
 
+        return usersFistName;
+    }
+
+    //comparing each selected place users id in array whit current user id
+    // to get current restaurant choice
+    private PlaceMarker getUserChoicePlaceMarker(){
+        PlaceMarker placeMarker = new PlaceMarker();
+        for (SelectedPlace selectedPlace : dataBaseService.getListOfSelectedPlaces()) {
+            for (String userId : selectedPlace.getUserId()) {
+                if (userId.equals(service.getUser().getId())) {
+                    placeMarker.setName(selectedPlace.getName());
+                    placeMarker.setId(selectedPlace.getId());
+                }
+            }
+        }
+        return placeMarker;
+    }
+
+    //it must have a delay for this or concurrentItemModification error will show
+    private void setChoiceAdress(final PlaceMarker placeMarker){
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -443,11 +474,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, View.On
             }
         }, 2200);
 
-        String joiningUsers = TextUtils.join(", ", usersFistName);
-
-        sharedPreferences.edit().putString(getString(R.string.joining_users), joiningUsers).apply();
     }
-
     @Override
     public void onStart(){
         super.onStart();

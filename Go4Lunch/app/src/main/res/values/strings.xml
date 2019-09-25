@@ -146,7 +146,6 @@
     <string name="error_dialog_message">Check if your internet connection and GPS position are enabled and restart the App !</string>
 
     <string name="confirm_changes">Confirm changes</string>
-
-    <string name="deleted_user">Deleted User</string>
+    <string name="deleted_user">Deleted user</string>
 
 </resources>

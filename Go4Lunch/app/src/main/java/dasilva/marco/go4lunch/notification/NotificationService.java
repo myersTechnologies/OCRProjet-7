@@ -123,7 +123,7 @@ public class NotificationService extends Service {
                 }
             }
         };
-        timer.schedule(timerTask, 1000, 1000);
+        timer.schedule(timerTask, 100, 100);
     }
 
     public void checkIfTimeMatchesToNotify(){
